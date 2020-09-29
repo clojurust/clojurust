@@ -1,6 +1,6 @@
+
 * clojurust
 A proof of concept version of Clojure in Rust.
-
 ** Goal
 - Translate Clojure java code to Rust
 - Test a way to have an interpreter of Clojure code
