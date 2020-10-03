@@ -1,7 +1,7 @@
-
-* clojurust
+# clojurust
 A proof of concept version of Clojure in Rust.
-** Goal
+
+## Goal
 - Translate Clojure java code to Rust
 - Test a way to have an interpreter of Clojure code
 - Test a way to have a VM based on a FORTH system
