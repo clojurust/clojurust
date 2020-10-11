@@ -1,0 +1,4 @@
+/// Interface Object
+trait Object {
+
+}

@@ -1,3 +1,0 @@
-mod lang {
-    mod object;
-}
