@@ -1,0 +1,3 @@
+mod lang {
+    mod object;
+}
