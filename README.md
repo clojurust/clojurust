@@ -1,4 +1,4 @@
-# clojurust
+# ClojuRust
 A proof of concept version of Clojure in Rust.
 
 ## Goals
@@ -12,6 +12,7 @@ A proof of concept version of Clojure in Rust.
 * There are already some partial implementations.
   * [ClojureRS](https://github.com/clojure-rs/ClojureRS).
   * [MAL (make a lisp) Rust version](https://github.com/kanaka/mal/tree/master/impls/rust).
+  * [Ketos is a Lisp dialect compiled to bytecode and interpreted by pure Rust code](https://github.com/murarth/ketos).
 * Some difficulties
   * Base Object class doesn't exist.
   * We should use ARc to improve threading changes.
@@ -33,7 +34,7 @@ A proof of concept version of Clojure in Rust.
 * _Inline assemblers_, need Rust compilation  
   * [Rust asm! macro (inline llvm directives)](https://doc.rust-lang.org/beta/unstable-book/library-features/asm.html).
   * [Rust llvm_asm! macro](https://doc.rust-lang.org/unstable-book/library-features/llvm-asm.html).
-  * [Rust global_asm!](https://doc.rust-lang.org/unstable-book/library-features/global-asm.html).
+  * [Rust global_asm! nacro](https://doc.rust-lang.org/unstable-book/library-features/global-asm.html).
 * _Runtime assembler_, can generate code during execution.
     * [Registery assembler (only x86-64 long mode instructions, enable dynamic relocation)](https://crates.io/crates/assembler).
 *  Some difficulties
@@ -44,8 +45,13 @@ A proof of concept version of Clojure in Rust.
 * Compiler could carry on optimization.
 * Compilation could be a first part test of correct code.
 * Dynamic loading could be managed through FFI for both C and Rust.
-  * Rust: [abi_stable_crates](https://github.com/rodrimati1992/abi_stable_crates).
-  * C: [libc](https://doc.rust-lang.org/nomicon/ffi.html).
+  * Rust: 
+    * [abi_stable_crates](https://github.com/rodrimati1992/abi_stable_crates).
+    * [Rust FFI Guide](https://michael-f-bryan.github.io/rust-ffi-guide/overview.html).
+    * [Plugins in Rust](https://github.com/Michael-F-Bryan/plugins_in_rust).
+    * [Generates code for loading native libraries at runtime](https://github.com/Michael-F-Bryan/libloading-bindgen)
+  * C: 
+    * [libc](https://doc.rust-lang.org/nomicon/ffi.html).
 * A loader, call, and callback management should be written.
 * In case of compilation, static linking could be used.
 * Managing raw types could be tricky.
