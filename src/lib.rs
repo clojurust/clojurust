@@ -1,3 +1,6 @@
-#[allow(dead_code)]
-pub mod lang;
+pub mod clojure{
+    pub mod lang{
+        pub mod object;
+    }
+}
 
