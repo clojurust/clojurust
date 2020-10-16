@@ -27,7 +27,8 @@ A proof of concept version of Clojure in Rust.
 
 ### Test a way to have a VM based on a FORTH system
 * Could be a solution, but slow.
-* Easy dynamic loading. but not of external libraries with Rust interface.
+* The JVM is a stack machine too. so... ;)
+* Easy dynamic loading. but not for external libraries with Rust interface.
 * Easy compilation.
 
 ### Test a way to dynamically compile Clojure code in machine code

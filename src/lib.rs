@@ -1,5 +1,5 @@
-pub mod clojure{
-    pub mod lang{
+pub(crate) mod clojure{
+    mod lang{
         pub mod object;
     }
 }
