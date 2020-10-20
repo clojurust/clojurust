@@ -14,11 +14,16 @@ A proof of concept version of Clojure in Rust.
   * [MAL (make a lisp) Rust version](https://github.com/kanaka/mal/tree/master/impls/rust).
   * [Ketos is a Lisp dialect compiled to bytecode and interpreted by pure Rust code](https://github.com/murarth/ketos).
 * Some difficulties
-  * Base Object class doesn't exist.
   * We should use ARc to improve threading changes.
   * Implementation of Clojure protocols with class, traits, functions dispatch, and type coercion at the object trait level.
   * This should be implemented with macros for ease of programming, and code generation.
   * Implementation of RT calls.
+  * Base Object class doesn't exist create a trait? generic struct?
+  * For type coertion T -> S w/o v-table problem: 
+    * [downcast-rs](https://crates.io/crates/downcast-rs)
+  * For all data structures, it's possible to use the excellent crate from _Bodil Stokke, Esq._
+    * [Immutable Data Structures for Rust, Rc version](https://crates.io/crates/im-rc) 
+    * [Immutable Data Structures for Rust, Arc version](https://crates.io/crates/im) 
 
 ### Test a way to have an interpreter of Clojure code
 * Should be straitforward, but slow and clojure.core lib compilation is a problem.
