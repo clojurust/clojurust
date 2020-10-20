@@ -1,0 +1,67 @@
+{
+    "editor.codeActionsOnSave": null
+    "psi-header.config": {
+        "license": "MPL-2.0+",
+        "forceToTop": true,
+        "blankLinesAfter": 1,
+        "copyrightHolder": "Ivan Pierre",
+        "author": "Ivan Pierre",
+        "company": "kilroySoft",
+        "authoremail": "ivan@kilroysoft.ch"
+    },
+    "psi-header.changes-tracking": {
+        "autoHeader": "manualSave",
+        "enforceHeader": true,
+        "excludeGlob": [
+            "target/**",
+            "dist/**"
+        ],
+        "exclude": [
+            "jsonc",
+            "json",
+            "markdown",
+            "md",
+            "toml",
+            "yaml"
+        ]
+    },
+    "psi-header.lang-config": [
+        {
+            "language": "javascript",
+            "begin": "",
+            "end": "",
+            "prefix": "// "
+        },
+        {
+            "language": "typescript",
+            "mapTo": "javascript"
+        },
+        {
+            "language": "rust",
+            "mapTo": "javascript"
+        }
+    ],
+	"psi-header.variables": [
+		["projectCreationYear", "2020"]
+    ],
+    "psi-header.templates": [
+        {
+            "language": "*",
+            "template": [
+				"File: <<filename>>",
+				"Project: <<projectname>>",
+				"File Created: <<filecreated('dddd, Do MMMM YYYY h:mm:ss a')>>",
+				"Author: <<author>> (<<authoremail>>)",
+				"-----",
+				"Last Modified: <<dateformat('dddd, Do MMMM YYYY h:mm:ss a')>>",
+				"Modified By: <<author>> (<<authoremail>>>)",
+				"-----",
+				"Copyright <<projectCreationYear>> - <<year>> <<copyrightholder>>, <<company>>"
+
+                "This Source Code Form is subject to the terms of the Mozilla Public",
+                "License, v. 2.0. If a copy of the MPL was not distributed with this",
+                "file, You can obtain one at http://mozilla.org/MPL/2.0/."
+            ]
+        }
+    ]
+}

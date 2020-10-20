@@ -61,3 +61,7 @@ A proof of concept version of Clojure in Rust.
 * A loader, call, and callback management should be written.
 * In case of compilation, static linking could be used.
 * Managing raw types could be tricky.
+
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed withn this
+file, You can obtain one at http://mozilla.org/MPL/2.0/.
