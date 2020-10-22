@@ -23,7 +23,7 @@ A proof of concept version of Clojure in Rust.
     * [downcast-rs](https://crates.io/crates/downcast-rs)
     * [oso](https://www.osohq.com/post/rust-reflection-pt-1)
   * For Dynamic Casting for Trait.
-    * [Dynamic Casting for Traits]/(http://idubrov.name/rust/2018/06/16/dynamic-casting-traits.html).
+    * [Dynamic Casting for Traits](http://idubrov.name/rust/2018/06/16/dynamic-casting-traits.html).
   * For all data structures, it's possible to use the excellent crate from _Bodil Stokke, Esq._
     * [Immutable Data Structures for Rust, Rc version](https://crates.io/crates/im-rc).
     * [Immutable Data Structures for Rust, Arc version](https://crates.io/crates/im).
