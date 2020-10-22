@@ -16,6 +16,11 @@
             "target/**",
             "dist/**"
         ],
+        "isActive": true,
+		"modAuthor": "Modified By: ",
+		"modDate": "Last Modified: ",
+		"modDateFormat": "date",
+		"include": ["rs"],
         "exclude": [
             "jsonc",
             "json",

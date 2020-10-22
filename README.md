@@ -21,10 +21,12 @@ A proof of concept version of Clojure in Rust.
   * Base Object class doesn't exist create a trait? generic struct?
   * For type coertion T -> S w/o v-table problem: 
     * [downcast-rs](https://crates.io/crates/downcast-rs)
+    * [oso](https://www.osohq.com/post/rust-reflection-pt-1)
+  * For Dynamic Casting for Trait.
+    * [Dynamic Casting for Traits]/(http://idubrov.name/rust/2018/06/16/dynamic-casting-traits.html).
   * For all data structures, it's possible to use the excellent crate from _Bodil Stokke, Esq._
-    * [Immutable Data Structures for Rust, Rc version](https://crates.io/crates/im-rc) 
-    * [Immutable Data Structures for Rust, Arc version](https://crates.io/crates/im) 
-
+    * [Immutable Data Structures for Rust, Rc version](https://crates.io/crates/im-rc).
+    * [Immutable Data Structures for Rust, Arc version](https://crates.io/crates/im).
 ### Test a way to have an interpreter of Clojure code
 * Should be straitforward, but slow and clojure.core lib compilation is a problem.
 * Can be a first test for dynamic compilation before a full implementation.
