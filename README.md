@@ -20,10 +20,13 @@ A proof of concept version of Clojure in Rust.
   * Implementation of RT calls.
   * Base Object class doesn't exist create a trait? generic struct?
   * For type coertion T -> S w/o v-table problem: 
-    * [downcast-rs](https://crates.io/crates/downcast-rs)
-    * [oso](https://www.osohq.com/post/rust-reflection-pt-1)
+    * [downcast-rs](https://crates.io/crates/downcast-rs).
+    * [oso](https://www.osohq.com/post/rust-reflection-pt-1).
+    * [Rust compile time reflection](https://www.xspdf.com/resolution/50722130.html).
+    * [reflect](https://github.com/8BitMate/reflect).
   * For Dynamic Casting for Trait.
     * [Dynamic Casting for Traits](http://idubrov.name/rust/2018/06/16/dynamic-casting-traits.html).
+    * [query_interface. Implement Object](https://docs.rs/query_interface/0.3.5/query_interface/index.html).
   * For all data structures, it's possible to use the excellent crate from _Bodil Stokke, Esq._
     * [Immutable Data Structures for Rust, Rc version](https://crates.io/crates/im-rc).
     * [Immutable Data Structures for Rust, Arc version](https://crates.io/crates/im).
@@ -57,13 +60,17 @@ A proof of concept version of Clojure in Rust.
     * [abi_stable_crates](https://github.com/rodrimati1992/abi_stable_crates).
     * [Rust FFI Guide](https://michael-f-bryan.github.io/rust-ffi-guide/overview.html).
     * [Plugins in Rust](https://github.com/Michael-F-Bryan/plugins_in_rust).
-    * [Generates code for loading native libraries at runtime](https://github.com/Michael-F-Bryan/libloading-bindgen)
+    * [Generates code for loading dynamic libraries at runtime](https://github.com/Michael-F-Bryan/libloading-bindgen)
   * C: 
     * [libc](https://doc.rust-lang.org/nomicon/ffi.html).
 * A loader, call, and callback management should be written.
 * In case of compilation, static linking could be used.
 * Managing raw types could be tricky.
 
+## Copyright
+(c)2020, kilroySoft, <Ivan Pierre, ivan@kilroysoft.ch>
+
+## Licence
 This Source Code Form is subject to the terms of the Mozilla Public
 License, v. 2.0. If a copy of the MPL was not distributed withn this
 file, You can obtain one at http://mozilla.org/MPL/2.0/.
