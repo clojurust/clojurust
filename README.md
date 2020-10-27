@@ -9,7 +9,7 @@ A proof of concept version of Clojure in Rust.
 * Test a way to create Rust code to compile Clojure code.
 
 ## Documentation
-The whole documentation is located in the [wiki](wiki)
+The whole documentation is located in the [wiki](https://github.com/ivanpierre/clojurust/wiki)
 
 ## Copyright
 (c)2020, kilroySoft, <Ivan Pierre, ivan@kilroysoft.ch>
