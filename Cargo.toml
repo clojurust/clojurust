@@ -8,10 +8,13 @@ edition = "2018"
 
 [features]
 
+[lib]
+proc-macro = true
+
 [dependencies]
 # im = { version = "15.0.0", features = [] }
 query_interface = "0.3.5"
 rc = "0.1.1"
-bigdecimal = "0.2.0"
+# bigdecimal = "0.2.0"
 bigint = "4.4.3"
-f128 = "0.2.8"
+# f128 = "0.2.8"

@@ -1,19 +1,48 @@
+//! Numbers traits 
+//!
+
 extern crate query_interface;
 
 use query_interface::ObjectClone;
+use super::object::CljObject;
 use std::fmt::Debug;
+use super::object::Object;
 
-pub trait Numeric {}
-
-pub trait Decimal {}
-
+/// All numeric values have the `Number` trait.
 pub trait Number {
-    fn long_value(self) -> Long;
-    fn int_value(self) -> Integer;
-    fn short_value(self) -> Short;
-    fn byte_value(self) -> Byte;
-    fn double_value(self) -> Double;
-    fn float_value(self) -> Float;
+    fn big_integer_value(&self) -> Object;
+    fn long_value(&self) -> Object;
+    fn int_value(&self) -> Object;
+    fn short_value(&self) -> Object;
+    fn byte_value(&self) -> Object;
+    fn double_value(&self) -> Object;
+    fn float_value(&self) -> Object;
+}
+
+#[derive(Copy, Clone, PartialEq, PartialOrd, Debug)]
+pub struct BigInteger {
+    value: i128,
+}
+
+interfaces!(BigInteger: dyn CljObject, dyn Number, 
+                        dyn ObjectClone, dyn Debug);
+
+#[allow(dead_code)]
+impl BigInteger {
+    pub fn new(value: i128) -> BigInteger {BigInteger {value,}}
+}
+
+impl CljObject for BigInteger {}
+
+#[allow(dead_code)]
+impl Number for BigInteger {
+    fn big_integer_value(&self) -> Object {Object::new(&BigInteger::new(self.value as i128))}
+    fn long_value(&self) -> Object {Object::new(&Long::new(self.value as i64))}
+    fn int_value(&self) -> Object {Object::new(&Integer::new(self.value as i32))}
+    fn short_value(&self) -> Object {Object::new(&Short::new(self.value as i16))}
+    fn byte_value(&self) -> Object {Object::new(&Byte::new(self.value as i8))}
+    fn double_value(&self) -> Object {Object::new(&Double::new(self.value as f64))}
+    fn float_value(&self) -> Object {Object::new(&Float::new(self.value as f32))}
 }
 
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Debug)]
@@ -21,23 +50,25 @@ pub struct Long {
     value: i64,
 }
 
-interfaces!(Long: dyn ObjectClone, dyn Debug, dyn Numeric);
+interfaces!(Long: dyn CljObject, dyn Number, 
+                  dyn ObjectClone, dyn Debug);
 
 #[allow(dead_code)]
 impl Long {
     pub fn new(value: i64) -> Long {Long { value, }}
 }
 
-impl Numeric for Long {}
+impl CljObject for Long {}
 
 #[allow(dead_code)]
 impl Number for Long {
-    fn long_value(self) -> Long {Long::new(self.value as i64)}
-    fn int_value(self) -> Integer {Integer::new(self.value as i32)}
-    fn short_value(self) -> Short {Short::new(self.value as i16)}
-    fn byte_value(self) -> Byte {Byte::new(self.value as i8)}
-    fn double_value(self) -> Double {Double::new(self.value as f64)}
-    fn float_value(self) -> Float {Float::new(self.value as f32)}
+    fn big_integer_value(&self) -> Object {Object::new(&BigInteger::new(self.value as i128))}
+    fn long_value(&self) -> Object {Object::new(&Long::new(self.value as i64))}
+    fn int_value(&self) -> Object {Object::new(&Integer::new(self.value as i32))}
+    fn short_value(&self) -> Object {Object::new(&Short::new(self.value as i16))}
+    fn byte_value(&self) -> Object {Object::new(&Byte::new(self.value as i8))}
+    fn double_value(&self) -> Object {Object::new(&Double::new(self.value as f64))}
+    fn float_value(&self) -> Object {Object::new(&Float::new(self.value as f32))}
 }
 
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Debug)]
@@ -45,23 +76,24 @@ pub struct Integer {
     value: i32,
 }
 
-interfaces!(Integer: dyn ObjectClone, dyn Debug, dyn Numeric);
+interfaces!(Integer: dyn CljObject, dyn Number, dyn ObjectClone, dyn Debug);
 
 #[allow(dead_code)]
 impl Integer {
     pub fn new(value: i32) -> Integer {Integer {value,}}
 }
 
-impl Numeric for Integer {}
+impl CljObject for Integer {}
 
 #[allow(dead_code)]
-impl Number for Integer {
-    fn long_value(self) -> Long {Long::new(self.value as i64)}
-    fn int_value(self) -> Integer {Integer::new(self.value as i32)}
-    fn short_value(self) -> Short {Short::new(self.value as i16)}
-    fn byte_value(self) -> Byte {Byte::new(self.value as i8)}
-    fn double_value(self) -> Double {Double::new(self.value as f64)}
-    fn float_value(self) -> Float {Float::new(self.value as f32)}
+impl<'a> Number for Integer {
+    fn big_integer_value(&self) -> Object {Object::new(&BigInteger::new(self.value as i128))}
+    fn long_value(&self) -> Object {Object::new(&Long::new(self.value as i64))}
+    fn int_value(&self) -> Object {Object::new(&Integer::new(self.value as i32))}
+    fn short_value(&self) -> Object {Object::new(&Short::new(self.value as i16))}
+    fn byte_value(&self) -> Object {Object::new(&Byte::new(self.value as i8))}
+    fn double_value(&self) -> Object {Object::new(&Double::new(self.value as f64))}
+    fn float_value(&self) -> Object {Object::new(&Float::new(self.value as f32))}
 }
 
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Debug)]
@@ -69,23 +101,24 @@ pub struct Short {
     value: i16,
 }
 
-interfaces!(Short: dyn ObjectClone, dyn Debug);
+interfaces!(Short: dyn CljObject, dyn Number, dyn ObjectClone, dyn Debug);
 
 #[allow(dead_code)]
 impl Short {
     pub fn new(value: i16) -> Short {Short {value,}}
 }
 
-impl Numeric for Short {}
+impl CljObject for Short {}
 
 #[allow(dead_code)]
 impl Number for Short {
-    fn long_value(self) -> Long {Long::new(self.value as i64)}
-    fn int_value(self) -> Integer {Integer::new(self.value as i32)}
-    fn short_value(self) -> Short {Short::new(self.value as i16)}
-    fn byte_value(self) -> Byte {Byte::new(self.value as i8)}
-    fn double_value(self) -> Double {Double::new(self.value as f64)}
-    fn float_value(self) -> Float {Float::new(self.value as f32)}
+    fn big_integer_value(&self) -> Object {Object::new(&BigInteger::new(self.value as i128))}
+    fn long_value(&self) -> Object {Object::new(&Long::new(self.value as i64))}
+    fn int_value(&self) -> Object {Object::new(&Integer::new(self.value as i32))}
+    fn short_value(&self) -> Object {Object::new(&Short::new(self.value as i16))}
+    fn byte_value(&self) -> Object {Object::new(&Byte::new(self.value as i8))}
+    fn double_value(&self) -> Object {Object::new(&Double::new(self.value as f64))}
+    fn float_value(&self) -> Object {Object::new(&Float::new(self.value as f32))}
 }
 
 #[derive(Copy, Clone, PartialEq, Eq, PartialOrd, Ord, Debug)]
@@ -93,9 +126,9 @@ pub struct Byte {
     value: i8,
 }
 
-interfaces!(Byte: dyn ObjectClone, dyn Debug);
+interfaces!(Byte: dyn CljObject, dyn Number, dyn ObjectClone, dyn Debug);
 
-impl Numeric for Byte {}
+impl CljObject for Byte {}
 
 #[allow(dead_code)]
 impl Byte {
@@ -104,12 +137,13 @@ impl Byte {
 
 #[allow(dead_code)]
 impl Number for Byte {
-    fn long_value(self) -> Long {Long::new(self.value as i64)}
-    fn int_value(self) -> Integer {Integer::new(self.value as i32)}
-    fn short_value(self) -> Short {Short::new(self.value as i16)}
-    fn byte_value(self) -> Byte {Byte::new(self.value as i8)}
-    fn double_value(self) -> Double {Double::new(self.value as f64)}
-    fn float_value(self) -> Float {Float::new(self.value as f32)}
+    fn big_integer_value(&self) -> Object {Object::new(&BigInteger::new(self.value as i128))}
+    fn long_value(&self) -> Object {Object::new(&Long::new(self.value as i64))}
+    fn int_value(&self) -> Object {Object::new(&Integer::new(self.value as i32))}
+    fn short_value(&self) -> Object {Object::new(&Short::new(self.value as i16))}
+    fn byte_value(&self) -> Object {Object::new(&Byte::new(self.value as i8))}
+    fn double_value(&self) -> Object {Object::new(&Double::new(self.value as f64))}
+    fn float_value(&self) -> Object {Object::new(&Float::new(self.value as f32))}
 }
 
 #[derive(Copy, Clone, PartialEq, PartialOrd, Debug)]
@@ -117,23 +151,24 @@ pub struct Double {
     value: f64,
 }
 
-interfaces!(Double: dyn ObjectClone, dyn Debug);
+interfaces!(Double: dyn CljObject, dyn Number, dyn ObjectClone, dyn Debug);
 
 #[allow(dead_code)]
 impl Double {
     pub fn new(value: f64) -> Double {Double {value,}}
 }
 
-impl Decimal for Double {}
+impl CljObject for Double {}
 
 #[allow(dead_code)]
 impl Number for Double {
-    fn long_value(self) -> Long {Long::new(self.value as i64)}
-    fn int_value(self) -> Integer {Integer::new(self.value as i32)}
-    fn short_value(self) -> Short {Short::new(self.value as i16)}
-    fn byte_value(self) -> Byte {Byte::new(self.value as i8)}
-    fn double_value(self) -> Double {Double::new(self.value as f64)}
-    fn float_value(self) -> Float {Float::new(self.value as f32)}
+    fn big_integer_value(&self) -> Object {Object::new(&BigInteger::new(self.value as i128))}
+    fn long_value(&self) -> Object {Object::new(&Long::new(self.value as i64))}
+    fn int_value(&self) -> Object {Object::new(&Integer::new(self.value as i32))}
+    fn short_value(&self) -> Object {Object::new(&Short::new(self.value as i16))}
+    fn byte_value(&self) -> Object {Object::new(&Byte::new(self.value as i8))}
+    fn double_value(&self) -> Object {Object::new(&Double::new(self.value as f64))}
+    fn float_value(&self) -> Object {Object::new(&Float::new(self.value as f32))}
 }
 
 #[derive(Copy, Clone, PartialEq, PartialOrd, Debug)]
@@ -141,27 +176,26 @@ pub struct Float {
     value: f32,
 }
 
-interfaces!(Float: dyn ObjectClone, dyn Debug);
-
+interfaces!(Float: dyn CljObject, dyn Number, dyn ObjectClone, dyn Debug);
 #[allow(dead_code)]
 impl Float {
     pub fn new(value: f32) -> Float {Float {value,}}
 }
 
-impl Decimal for Float {}
+impl CljObject for Float {}
 
 #[allow(dead_code)]
 impl Number for Float {
-    fn long_value(self) -> Long {Long::new(self.value as i64)}
-    fn int_value(self) -> Integer {Integer::new(self.value as i32)}
-    fn short_value(self) -> Short {Short::new(self.value as i16)}
-    fn byte_value(self) -> Byte {Byte::new(self.value as i8)}
-    fn double_value(self) -> Double {Double::new(self.value as f64)}
-    fn float_value(self) -> Float {Float::new(self.value as f32)}
+    fn big_integer_value(&self) -> Object {Object::new(&BigInteger::new(self.value as i128))}
+    fn long_value(&self) -> Object {Object::new(&Long::new(self.value as i64))}
+    fn int_value(&self) -> Object {Object::new(&Integer::new(self.value as i32))}
+    fn short_value(&self) -> Object {Object::new(&Short::new(self.value as i16))}
+    fn byte_value(&self) -> Object {Object::new(&Byte::new(self.value as i8))}
+    fn double_value(&self) -> Object {Object::new(&Double::new(self.value as f64))}
+    fn float_value(&self) -> Object {Object::new(&Float::new(self.value as f32))}
 }
 
-use f128;
-
+/*
 #[derive(Copy, Clone, PartialEq, PartialOrd, Debug)]
 pub struct BigDecimal {
     value: f128,
@@ -183,8 +217,8 @@ impl Number for BigDecimal {
     fn int_value(self) -> Integer {Integer::new(self.value as i32)}
     fn short_value(self) -> Short {Short::new(self.value as i16)}
     fn byte_value(self) -> Byte {Byte::new(self.value as i8)}
-    fn big_decimal_value(self) -> BigDecimal {BigDecimal::new(self.value as f128)}
     fn double_value(self) -> Double {Double::new(self.value as f64)}
     fn float_value(self) -> Float {Float::new(self.value as f32)}
 }
+*/
 
