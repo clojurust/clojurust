@@ -3,16 +3,15 @@ extern crate proc_macro;
 #[allow(unused_imports)]
 use proc_macro::TokenStream;
 
-#[macro_use]
-pub(crate) extern crate query_interface;
+pub mod rust {
+    pub mod keyword;
+}
 
-#[feature(in_band_lifetimes)]
-
-pub(crate) 
-mod clojure{
-    pub(crate)  mod lang{
-        pub(crate) mod object;
-        pub(crate) mod number;
+pub mod clojure {
+    pub  mod lang {
+        pub mod object;
+        pub mod number;
     }
 }
 
+:D
