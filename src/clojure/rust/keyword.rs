@@ -31,9 +31,16 @@ fn add_keyword(keyword: &'static str) -> usize {
         println!("Don't exists");
         let index = KEYWORDS.read().unwrap().len();
         println!("len = {}", index);
-        let mut mut_handle = KEY_MAP.write().unwrap();
-        mut_handle.insert(keyword, index);
-        index
+        let mut_handle = KEY_MAP.write().unwrap().insert(keyword, index);
+        println!("got new index");
+        match mut_handle {
+            Some(new_index) => { 
+                println!("inserted index = {}", new_index);
+                new_index
+            }
+            
+            None => index
+        }
     }
 }
 

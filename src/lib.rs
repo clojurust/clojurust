@@ -1,12 +1,12 @@
-extern crate proc_macro;
+// extern crate proc_macro;
 extern crate lazy_static;
 extern crate mut_static;
 
 #[cfg(test)]
-extern crate pretty_assertions;
+// extern crate pretty_assertions;
 
-#[allow(unused_imports)]
-use proc_macro::TokenStream;
+// #[allow(unused_imports)]
+// use proc_macro::TokenStream;
 
 pub mod clojure {
     pub mod rust {
