@@ -4,5 +4,5 @@ implementation choices changes or addition, deletion, modifications
 in the project.
 
 | date | git id | subject |
-| ++++ | ++++++ | +++++++ |
-| 13.11.2020 | abed430a | First entry for current state |
+| ---- | ------ | ------- |
+| 13.11.2020 | abed430a | First entry for current state:<br>Table style update |
