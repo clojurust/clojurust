@@ -1,4 +1,4 @@
-//! clojure::rust::object: Defines the Rus equvalent of Java Objects.
+//! clojure::rust::object: Defines the Rust equvalent of Java Objects.
 
 use rc::Rc;
 
