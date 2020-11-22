@@ -7,27 +7,27 @@ use std::{sync::Arc, mem::transmute};
 #[derive(Clone)]
 pub struct Object<'i> {
     /// Keyword index of the `Class` of `Object`.
-    class: usize,
+    pub class: usize,
     /// Value of the `Object` as a raw pointer.
-    ptr: Arc<&'i ()>,
+    pub ptr: Arc<&'i ()>,
 }
 
 #[allow(dead_code)]
-impl Object<'_> {
-    pub fn new<T>(class: usize, obj: &T) -> Object {
+impl<'i> Object<'i> {
+    pub fn new<T>(class: usize, obj: &T) -> Arc<Object> {
         unsafe {
-            Object {
+            Arc::new(Object {
                 class,
-                ptr: Arc::new(transmute::<&T, &()>(obj)),
-            }
+                ptr: Arc::new(transmute::<& T, &()>(obj)),
+            })
         }
     }
-
 }
 
 impl<'i> Object<'i> {
     pub fn get<T>(obj: &Object) -> &'i T {
-    unsafe {
-        transmute::<&(), &T>(*obj.ptr)
+        unsafe {
+            transmute::<&(), &T>(*obj.ptr)
+        }
     }
 }

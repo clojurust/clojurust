@@ -1,6 +1,7 @@
 //! Numbers traits 
 //!
 
+use std::{sync::Arc, mem::transmute};
 use std::fmt::Debug;
 use crate::clojure::rust::object::Object;
 //  se std::mem::transmute;
@@ -17,15 +18,20 @@ pub trait Number {
 }
 
 #[derive(Copy, Clone, PartialEq, PartialOrd, Debug)]
-pub struct BigInteger {
-    value: i128,
+pub struct BigInteger<'i> {
+    value: &'i i128,
 }
 
 #[allow(dead_code)]
-impl<'i> BigInteger {
-    pub fn new(value: i128) -> &'i Object<'i> {
-        &Object::new(1,
-                     &BigInteger{value})
+impl<'i> BigInteger<'i>
+{
+    pub fn new(value: &i128) -> Arc<Object> {
+        unsafe {
+            Arc::new(Object {
+                class: 0,
+                ptr: Arc::new(transmute::<&i128, &()>(value)),
+            })
+        }
     }
 }
 
@@ -46,7 +52,7 @@ pub impl Number for BigInteger {
 fn bidirectionnal_convert() {
     // let f = BigInteger::big_integer_value;
     let i: i128 = 0;
-    let o = BigInteger::new(i);
-    let r = Object::get::<i128>(o);
+    let o = BigInteger::new(&i);
+    let r = Object::get::<i128>(&o);
     assert_eq!(i, *r);
 }
