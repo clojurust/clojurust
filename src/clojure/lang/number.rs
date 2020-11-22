@@ -33,6 +33,15 @@ impl<'i> BigInteger<'i>
             })
         }
     }
+
+    pub fn new_obj(value: &BigInteger) -> Arc<Object<'i>> {
+        unsafe {
+            Arc::new(Object {
+                class: 0,
+                ptr: Arc::new(transmute::<&BigInteger, &()>(value)),
+            })
+        }
+    }
 }
 
 /*
@@ -51,8 +60,16 @@ pub impl Number for BigInteger {
 #[test]
 fn bidirectionnal_convert() {
     // let f = BigInteger::big_integer_value;
-    let i: i128 = 0;
+    let i: i128 = 432143214321432143214;
     let o = BigInteger::new(&i);
     let r = Object::get::<i128>(&o);
+    println!("{} = {}", i, *r);
+
+    let i2: BigInteger = BigInteger{value: &i};
+    let o2: Arc<Object> = BigInteger::new_obj(&i2);
+    let r2: &BigInteger = Object::get::<BigInteger>(&o2);
+    println!("{:?} = {:?}", i2, *r2);
+
     assert_eq!(i, *r);
+    assert_eq!(i2, *r2);
 }
