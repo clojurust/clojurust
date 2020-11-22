@@ -2,47 +2,63 @@
 
 use im::vector::Vector;
 use im::hashmap::HashMap;
-use std::sync::RwLock;
+use std::sync::*;
 use lazy_static::lazy_static;
+
+/// A keyword storage structure
+///
+/// We will store all `String`s used as reference to objects as `usize`.
+/// `usize` values are unique and immutable for every `String`.
+/// `Strings` are added incrementally to the `vect` `Vector` and cannot be destroyed.
+/// as a `String` is added, it's index is added in the `map` `HashMap`.
+/// # Exxamples
+/// ```
+///
 struct Keywords {
-    map: HashMap<&'static str, usize>,
-    vect: Vector<&'static str>,
+    map: HashMap<String, usize>,
+    vect: Vector<String>,
 }
 
 impl Keywords {
     fn new() -> Keywords {
         Keywords {
-            map: HashMap::<&'static str, usize>::new(),
-            vect: Vector::<&'static str>::new(),
+            map: HashMap::<String, usize>::new(),
+            vect: Vector::<String>::new(),
         }
     }
 
     pub fn len() -> usize {
-        KEYWORDS.read().unwrap().vect.len()
+        KEYWORDS.read().unwrap().vect.len().clone()
     }
 
-    pub fn get(key: &'static str) -> usize {
-        let length = Keywords::len();
-        let mut m = KEYWORDS.write().unwrap();
-        
+    pub fn get(key: &str) -> usize {
+        // warning len cannot be called when there's a lockWrite on keyword
+        // let length = Keywords::len(); // can be false as out of the write lock
+        let k = Arc::clone(&KEYWORDS);
+        let mut m = k.write().unwrap();
+
+        // so we get the length from LockWrite
+        let length = m.vect.len();
+
         match m.map.get(key) {
             // found entry
             Some(idx) => { *idx }
+
+            // Not found: add entry in vect and map
             None => {
-                // add entry in vect and map
-                m.vect.insert(length, key);
-                m.map.insert(key, length);
+                m.vect.insert(length, String::from(key));
+                m.map.insert(String::from(key), length);
                 
-                // return new index
+                // return new index that was length of vector
                 length
             }
         }
     }
 
-    pub fn to_string(index: usize) -> &'static str {
+    pub fn to_string(index: usize) -> String {
         match KEYWORDS.read().unwrap().vect.get(index) {
-            Some(key) => { *key }
-            None => {""}
+            Some(key) => { String::from(key) }
+            None => {String::from("")}
         }
     }
 
@@ -51,10 +67,12 @@ impl Keywords {
     }
 }
 
-// Test with RwLock for now, change to 
 lazy_static! {
-    static ref KEYWORDS: RwLock<Keywords> = 
-                        RwLock::new(Keywords::new());
+    /// Private access to static global `Keywords` struture.
+    ///
+    /// Here will be stored and retrived keywords data.
+    static ref KEYWORDS: Arc<RwLock<Keywords>> = 
+                        Arc::new(RwLock::new(Keywords::new()));
 }
 
 #[test]

@@ -22,10 +22,10 @@ pub struct BigInteger {
 }
 
 #[allow(dead_code)]
-impl BigInteger {
-    pub fn new(value: i128) -> Object {
-        let tst = &value as *const i128 as usize;
-        Object::new(1, tst)
+impl<'i> BigInteger {
+    pub fn new(value: i128) -> &'i Object<'i> {
+        &Object::new(1,
+                     &BigInteger{value})
     }
 }
 
@@ -40,5 +40,13 @@ pub impl Number for BigInteger {
     fn double_value(&self) -> Object {Object::new(&Double::new(self.value as f64))}
     fn float_value(&self) -> Object {Object::new(&Float::new(self.value as f32))}
 }
-
 */
+
+#[test]
+fn bidirectionnal_convert() {
+    // let f = BigInteger::big_integer_value;
+    let i: i128 = 0;
+    let o = BigInteger::new(i);
+    let r = Object::get::<i128>(o);
+    assert_eq!(i, *r);
+}

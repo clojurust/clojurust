@@ -1,22 +1,33 @@
 //! clojure::rust::object: Defines the Rust equvalent of Java Objects.
 
-use rc::Rc;
+use std::{sync::Arc, mem::transmute};
 
 /// Object struture stores various data.
 #[allow(dead_code)]
-pub struct Object {
-    /// keyword index of the `Class` of `Object`.
+#[derive(Clone)]
+pub struct Object<'i> {
+    /// Keyword index of the `Class` of `Object`.
     class: usize,
-    /// value of the `Object` as a raw pointer.
-    ptr: Rc<usize>,
+    /// Value of the `Object` as a raw pointer.
+    ptr: Arc<&'i ()>,
 }
 
 #[allow(dead_code)]
-impl Object {
-    pub fn new(class: usize, ptr: usize) -> Object {
-        Object {
-            class,
-            ptr: Rc::new(ptr),
+impl Object<'_> {
+    pub fn new<T>(class: usize, obj: &T) -> Object {
+        unsafe {
+            Object {
+                class,
+                ptr: Arc::new(transmute::<&T, &()>(obj)),
+            }
         }
+    }
+
+}
+
+impl<'i> Object<'i> {
+    pub fn get<T>(obj: &Object) -> &'i T {
+    unsafe {
+        transmute::<&(), &T>(*obj.ptr)
     }
 }

@@ -1,18 +1,22 @@
-// extern crate proc_macro;
+//! ClojuRust main crate
+
 
 #[cfg(test)]
-// extern crate pretty_assertions;
 
-// #[allow(unused_imports)]
-// use proc_macro::TokenStream;
-
+/// clojure crate
 pub(crate) mod clojure {
+    /// clojure module
     pub mod rust {
+        /// keyword module
         pub mod keywords;
+        pub mod class;
+        pub mod function;
+        pub mod implementation;
         pub mod object;
         pub mod primitive;
     }
     
+    /// lang crate
     pub  mod lang {
         pub mod number;
     }
