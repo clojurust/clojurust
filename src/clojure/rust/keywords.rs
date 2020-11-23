@@ -1,6 +1,6 @@
 //! clojure::rust::keyword: keyword index
 
-use im::vector::Vector;
+use im::*;
 use im::hashmap::HashMap;
 use std::sync::*;
 use lazy_static::lazy_static;
@@ -19,7 +19,7 @@ struct Keywords {
     vect: Vector<String>,
 }
 
-impl Keywords {
+impl<'i> Keywords {
     fn new() -> Keywords {
         Keywords {
             map: HashMap::<String, usize>::new(),

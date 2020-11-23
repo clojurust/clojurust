@@ -1,6 +1,7 @@
 //! ClojuRust main crate
 
-
+#![recursion_limit="256"]
+#![feature(fn_traits)]
 #[cfg(test)]
 
 /// clojure crate

@@ -18,27 +18,27 @@ pub trait Number {
 }
 
 #[derive(Copy, Clone, PartialEq, PartialOrd, Debug)]
-pub struct BigInteger<'i> {
-    value: &'i i128,
+pub struct BigInteger {
+    value: i128,
 }
 
 #[allow(dead_code)]
-impl<'i> BigInteger<'i>
+impl BigInteger
 {
-    pub fn new(value: &i128) -> Arc<Object> {
+    pub fn new_i128(value: i128) -> Arc<Object> {
         unsafe {
             Arc::new(Object {
-                class: 0,
-                ptr: Arc::new(transmute::<&i128, &()>(value)),
+                class: 3,
+                ptr: transmute::<*const i128, usize>(Arc::into_raw(Arc::new(value))),
             })
         }
     }
 
-    pub fn new_obj(value: &BigInteger) -> Arc<Object<'i>> {
+    pub fn new(value: BigInteger) -> Arc<Object> {
         unsafe {
             Arc::new(Object {
-                class: 0,
-                ptr: Arc::new(transmute::<&BigInteger, &()>(value)),
+                class: 4,
+                ptr: transmute::<*const BigInteger, usize>(Arc::into_raw(Arc::new(value))),
             })
         }
     }
@@ -59,17 +59,25 @@ pub impl Number for BigInteger {
 
 #[test]
 fn bidirectionnal_convert() {
-    // let f = BigInteger::big_integer_value;
+    // Test object with primitive
     let i: i128 = 432143214321432143214;
-    let o = BigInteger::new(&i);
+    let o = BigInteger::new_i128(i);
+    println!("{:?}", o);
     let r = Object::get::<i128>(&o);
-    println!("{} = {}", i, *r);
+    println!("{} = {}", i, r);
 
-    let i2: BigInteger = BigInteger{value: &i};
-    let o2: Arc<Object> = BigInteger::new_obj(&i2);
-    let r2: &BigInteger = Object::get::<BigInteger>(&o2);
-    println!("{:?} = {:?}", i2, *r2);
+    // Test object with structure
+    let i2: BigInteger = BigInteger{value: i};
+
+    let o2: Arc<Object> = BigInteger::new(i2);
+    let r2: Arc<BigInteger> = Object::get::<BigInteger>(&o2);
+    println!("{:?} = {:?}", i2, r2);
+
+    // Test bad translation
+    // cache_thread_shutdown(): unaligned tcache chunk detected
+    // let r3: Arc<i64> = Object::get::<i64>(&o);
 
     assert_eq!(i, *r);
     assert_eq!(i2, *r2);
+    // assert_ne!(i, *r3); // missmatched types
 }
