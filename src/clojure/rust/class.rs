@@ -5,7 +5,6 @@ use std::sync::*;
 use super::function::*;
 // use super::keywords::*;
 
-#[allow(dead_code)]
 pub struct Class {
     class_name: usize, // Keyword id of name of the class. Key
     super_class: usize, // Keyword id of super-class
@@ -15,14 +14,12 @@ pub struct Class {
     functions: HashMap<usize, Arc<Function>>, // Static functions
 }
 
-#[allow(dead_code)]
 pub struct Classes {
     classes: HashMap<usize, Arc<Class>>,
 }
 
 impl<'i> Classes {
-    #[allow(dead_code)]
-    pub fn new() -> Classes {
+        pub fn new() -> Classes {
         Classes {
             classes: HashMap::<usize, Arc<Class>>::new(),
         }

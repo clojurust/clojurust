@@ -4,25 +4,22 @@
 use im::hashmap::HashMap;
 // use std::sync::*;
 // use lazy_static::lazy_static;
-use super::implementation::*;
+use clojure::rust::implementation::*;
 
-#[allow(dead_code)]
 pub struct Function {
     pub higher: Option<usize>, // optional maximum arity
     pub func: HashMap<usize, Implementation>, // all implementations
 }
 
 impl<'i> Function {
-    #[allow(dead_code)]
-    pub fn new() -> Function {
+        pub fn new() -> Function {
         Function {
             higher: None,
             func: HashMap::<usize, Implementation>::new(),
         }
     }
 
-    #[allow(dead_code)]
-    pub fn get(&self, arity: usize) -> Option<&Implementation> {
+        pub fn get(&self, arity: usize) -> Option<&Implementation> {
         match self.higher {
             Some(max) => {
                 if arity > max {
@@ -47,3 +44,4 @@ impl<'i> Function {
         }
     }
 }
+
