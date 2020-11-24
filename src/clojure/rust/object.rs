@@ -1,10 +1,25 @@
 //! clojure::rust::object: Defines the Rust equvalent of Java Objects.
+#![allow(non_snake_case)]
 
 use std::{sync::*, mem::transmute};
+use std::option::*;
+pub use crate::clojure;
 
 #[derive(Debug)]
 pub struct Object {
     pub content: Arc<RwLock<ObjectContent>>,
+}
+
+trait IObject {
+    fn get<'i, T: Copy>(&self) -> &'i T;
+    fn get_mut<'i, T: Copy>(&self) -> &'i mut T;
+}
+
+trait IContentObject {
+    fn getClass(&self) -> Option<&Object>;
+    fn hashCode(&self) -> usize;
+    fn equals(&self, other: &Object) -> bool;
+    fn toString(&self) -> String;
 }
 
 impl Object {
@@ -14,20 +29,33 @@ impl Object {
         }
     }
 
-    pub fn get<'i, T: Copy>(&self) -> &'i T {
+    fn count(&self) -> usize {
+        Arc::strong_count(&self.content)
+    }
+}
+
+impl IContentObject for Object {
+    fn getClass(&self) -> Option<&Object> {
+        let class = (&self.content.read().unwrap()).class;
+        super::rust_obj::init();
+        super::rust_obj::RUST_OBJ.objects.get(&9)
+    }
+    
+    fn hashCode(&self) -> usize {0}
+    fn equals(&self,other: &Object) -> bool{true}
+    fn toString(&self) -> String {"lkjlkjlkjl".to_string()}
+}
+
+impl IObject for Object {
+    fn get<'i, T: Copy>(&self) -> &'i T {
         // Return reference of pointed object
         ObjectContent::get::<T>(&self.content.read().unwrap())
     }
 
-    pub fn get_mut<'i, T: Copy>(&self) -> &'i mut T {
+    fn get_mut<'i, T: Copy>(&self) -> &'i mut T {
         // Return reference of pointed object
         ObjectContent::get_mut::<T>(&self.content.write().unwrap())
     }
-
-    pub fn count(&self) -> usize {
-        Arc::strong_count(&self.content)
-    }
-
 
 }
 
@@ -38,7 +66,6 @@ impl Clone for Object {
         }
     }
 }
-
 
 /// Object struture stores various data.
 #[derive(Debug)]
@@ -58,18 +85,27 @@ impl ObjectContent {
             }
         }
     }
+}
 
-    pub fn get<'i, T: Copy>(&self) -> &'i T {
+impl IObject for ObjectContent {
+    fn get<'i, T: Copy>(&self) -> &'i T {
         unsafe {
             // Return reference of pointed object
             &*transmute::<usize, &T>(self.ptr)
         }
     }
 
-    pub fn get_mut<'i, T: Copy>(&self) -> &'i mut T {
+    fn get_mut<'i, T: Copy>(&self) -> &'i mut T {
         unsafe {
             // Return reference of pointed object
             transmute::<usize, &mut T>(self.ptr)
         }
     }
+}
+
+impl IContentObject for ObjectContent {
+    fn getClass(&self) -> Option<&Object> {None}
+    fn hashCode(&self) -> usize {0}
+    fn equals(&self,other: &Object) -> bool{true}
+    fn toString(&self) -> String {"".to_string()}
 }

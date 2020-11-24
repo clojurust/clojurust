@@ -4,6 +4,7 @@
 use im::hashmap::HashMap;
 // use std::sync::*;
 // use lazy_static::lazy_static;
+pub use crate::clojure;
 use clojure::rust::implementation::*;
 
 pub struct Function {
@@ -19,7 +20,7 @@ impl<'i> Function {
         }
     }
 
-        pub fn get(&self, arity: usize) -> Option<&Implementation> {
+    pub fn get(&self, arity: usize) -> Option<&Implementation> {
         match self.higher {
             Some(max) => {
                 if arity > max {
