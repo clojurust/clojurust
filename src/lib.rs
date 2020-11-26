@@ -6,7 +6,9 @@
 
 #![recursion_limit="256"]
 #![feature(fn_traits)]
-// #![warn(unreachable_pub, missing_docs)]
+#![allow(dead_code)]
+#![allow(unused_variables)]
+// ![warn(unreachable_pub, missing_docs)]
 #![warn(missing_docs)]
 
 #[cfg(test)]
@@ -16,9 +18,10 @@ pub mod clojure {
         pub mod keywords;
         pub mod class;
         pub mod function;
+        pub mod member;
+        pub mod protocol;
         pub mod implementation;
         pub mod object;
-        pub mod primitive;
         pub mod rust_obj;
     }
     

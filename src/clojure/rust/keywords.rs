@@ -14,12 +14,21 @@ use lazy_static::lazy_static;
 /// # Exxamples
 /// ```
 ///
+#[derive(Default)]
 struct Keywords {
-    map: HashMap<String, usize>,
-    vect: Vector<String>,
+    map: RwLock<HashMap<String, usize>>,
+    vect: RwLock<Vector<String>>,
 }
 
-impl<'i> Keywords {
+impl Keywords {
+    pub fn current() -> Arc<Keywords> {
+        KEYWORDS.read().unwrap().clone()
+    }
+
+    pub fn make_current(self) {
+        *KEYWORDS.write().unwrap() = Arc::new(self);
+    }
+
     fn new() -> Keywords {
         Keywords {
             map: HashMap::<String, usize>::new(),
@@ -32,9 +41,11 @@ impl<'i> Keywords {
     }
 
     pub fn get(key: &str) -> usize {
+        let a = RwLock::new(RustObj::current();
+        let m = a
         // warning len cannot be called when there's a lockWrite on keyword
         // let length = Keywords::len(); // can be false as out of the write lock
-        let k = Arc::clone(&KEYWORDS);
+        let k = Arc::clone(KEYWORDS);
         let mut m = k.write().unwrap();
 
         // so we get the length from LockWrite
@@ -71,8 +82,8 @@ lazy_static! {
     /// Private access to static global `Keywords` struture.
     ///
     /// Here will be stored and retrived keywords data.
-    static ref KEYWORDS: Arc<RwLock<Keywords>> = 
-                        Arc::new(RwLock::new(Keywords::new()));
+    pub static ref KEYWORDS: RwLock<Arc<Keywords>> = 
+                        RwLock::new(Arc::new(Keywords::new()));
 }
 
 #[test]

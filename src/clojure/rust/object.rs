@@ -11,12 +11,10 @@ pub struct Object {
 }
 
 trait IObject {
-    fn get<'i, T: Copy>(&self) -> &'i T;
-    fn get_mut<'i, T: Copy>(&self) -> &'i mut T;
+    fn getClass(&self) -> Option<&Object>;
 }
 
-trait IContentObject {
-    fn getClass(&self) -> Option<&Object>;
+trait IObjectContent {
     fn hashCode(&self) -> usize;
     fn equals(&self, other: &Object) -> bool;
     fn toString(&self) -> String;
@@ -25,38 +23,45 @@ trait IContentObject {
 impl Object {
     pub fn new<T>(class: usize, ptr: &T) -> Object {
         Object {
-            content: Arc::new(RwLock::new(ObjectContent::new::<T>(class, ptr))).clone(),
+            content: Arc::new(RwLock::new(ObjectContent::new::<T>(class, ptr))),
         }
     }
 
-    fn count(&self) -> usize {
-        Arc::strong_count(&self.content)
-    }
-}
-
-impl IContentObject for Object {
-    fn getClass(&self) -> Option<&Object> {
-        let class = (&self.content.read().unwrap()).class;
-        super::rust_obj::init();
-        super::rust_obj::RUST_OBJ.objects.get(&9)
-    }
-    
-    fn hashCode(&self) -> usize {0}
-    fn equals(&self,other: &Object) -> bool{true}
-    fn toString(&self) -> String {"lkjlkjlkjl".to_string()}
-}
-
-impl IObject for Object {
-    fn get<'i, T: Copy>(&self) -> &'i T {
+    pub fn get<'i, T: Copy>(&self) -> &'i T {
         // Return reference of pointed object
         ObjectContent::get::<T>(&self.content.read().unwrap())
     }
 
-    fn get_mut<'i, T: Copy>(&self) -> &'i mut T {
+    pub fn get_mut<'i, T: Copy>(&self) -> &'i mut T {
         // Return reference of pointed object
         ObjectContent::get_mut::<T>(&self.content.write().unwrap())
     }
 
+    pub fn count(&self) -> usize {
+        Arc::strong_count(&self.content)
+    }
+}
+
+impl IObjectContent for Object {
+    fn hashCode(&self) -> usize {
+        self.content.read().unwrap().hashCode()
+    }
+
+    fn equals(&self,other: &Object) -> bool{
+        self.content.read().unwrap().equals(other)
+    }
+
+    fn toString(&self) -> String {
+        self.content.read().unwrap().toString()
+    }
+}
+
+impl IObject for Object {
+    fn getClass(&self) -> Option<&Object> {
+        // self.content.read().unwrap().class
+        None
+    }
+    
 }
 
 impl Clone for Object {
@@ -85,17 +90,15 @@ impl ObjectContent {
             }
         }
     }
-}
 
-impl IObject for ObjectContent {
-    fn get<'i, T: Copy>(&self) -> &'i T {
+    pub fn get<'i, T: Copy>(&self) -> &'i T {
         unsafe {
             // Return reference of pointed object
             &*transmute::<usize, &T>(self.ptr)
         }
     }
 
-    fn get_mut<'i, T: Copy>(&self) -> &'i mut T {
+    pub fn get_mut<'i, T: Copy>(&self) -> &'i mut T {
         unsafe {
             // Return reference of pointed object
             transmute::<usize, &mut T>(self.ptr)
@@ -103,9 +106,12 @@ impl IObject for ObjectContent {
     }
 }
 
-impl IContentObject for ObjectContent {
-    fn getClass(&self) -> Option<&Object> {None}
+impl IObjectContent for ObjectContent 
+{
+    // unimplemented for now
     fn hashCode(&self) -> usize {0}
-    fn equals(&self,other: &Object) -> bool{true}
+
+    fn equals(&self,other: &Object) -> bool {true}
+
     fn toString(&self) -> String {"".to_string()}
 }

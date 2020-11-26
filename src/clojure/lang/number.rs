@@ -45,11 +45,11 @@ pub impl Number for BigInteger {
 fn bidirectionnal_convert() {
     // Test object with primitive
     let i: i128 = 1;
-    let o = &Object::new::<BigInteger>(0, &BigInteger::new(i));
+    let o = Object::new::<BigInteger>(0, &BigInteger::new(i));
     println!("count {:?}", o.count());
-    let o2 = &o.clone();
+    let o2 = o.clone();
     println!("Object: {:?}", o);
-    let r = o.get::<BigInteger>();
+    let r = Object::get::<BigInteger>(&o);
     println!("Equality test {:?} = {:?}", i, r.value);
     println!("count {:?} = {:?}", o.count(), o2.count());
 
