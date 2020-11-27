@@ -1,6 +1,19 @@
 # ClojuRust
 A proof of concept version of Clojure in Rust.
 
+## Current state
+WIP in an analysis and test state, and so a working version is out of sight for now.
+
+As I'm a newbie in Rust, I hit all the bads of borrowing, referencing, Arcs, automatic derefs, timeline problems... But it begin to enter in my fingers... ;)
+
+For now, in the creation of the clojure::rust modules, say the Rust host environment, as Clojure is an hosted language. Rust, as a bare-metal language, has no dynamic abilities per se, and is even opposed to such an approach as all is verified at compile time. So a lot of information should be statically stored for the library to function.
+
+The idea, is not to have an optimized structure as first draft, but a working concepts framework, easy to refactor as experiments are tested.
+
+This part would likely to be put in an individual crate for other projects to use it, for his dynamic abilities.
+
+Meanwhile, the first Core Clojure classes can be developed in parallel, for testing purposes, but a strong separation shall be preserved.
+
 ##  Opiniated way to proceed, a wishfull thinking
 * Begining with documentation changes before testing or implementing code, so to be up-to-date.
 * integrating TTD into modules, easing the link between tests and code.
