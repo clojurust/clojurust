@@ -18,11 +18,15 @@ pub mod clojure {
         pub mod keywords;
         pub mod class;
         pub mod function;
+        pub mod implementation;
         pub mod member;
         pub mod protocol;
-        pub mod implementation;
+        pub mod prototype;
         pub mod object;
         pub mod rust_obj;
+        pub mod hashmap;
+        pub mod hashset;
+        pub mod vector;
     }
     
     pub  mod lang {

@@ -7,11 +7,11 @@ pub use crate::clojure;
 
 #[derive(Debug)]
 pub struct Object {
-    pub content: Arc<RwLock<ObjectContent>>,
+    pub content: Arc<ObjectContent>,
 }
 
 trait IObject {
-    fn getClass(&self) -> Option<&Object>;
+    fn getClass(&self) -> Object;
 }
 
 trait IObjectContent {
@@ -21,20 +21,20 @@ trait IObjectContent {
 }
 
 impl Object {
-    pub fn new<T>(class: usize, ptr: &T) -> Object {
+    pub fn new<T>(class: Object, ptr: &T) -> Object {
         Object {
-            content: Arc::new(RwLock::new(ObjectContent::new::<T>(class, ptr))),
+            content: Arc::new(ObjectContent::new::<T>(class, ptr)),
         }
     }
 
     pub fn get<'i, T: Copy>(&self) -> &'i T {
         // Return reference of pointed object
-        ObjectContent::get::<T>(&self.content.read().unwrap())
+        ObjectContent::get::<T>(&self.content)
     }
 
     pub fn get_mut<'i, T: Copy>(&self) -> &'i mut T {
         // Return reference of pointed object
-        ObjectContent::get_mut::<T>(&self.content.write().unwrap())
+        ObjectContent::get_mut::<T>(&self.content)
     }
 
     pub fn count(&self) -> usize {
@@ -44,22 +44,22 @@ impl Object {
 
 impl IObjectContent for Object {
     fn hashCode(&self) -> usize {
-        self.content.read().unwrap().hashCode()
+        self.content.hashCode()
     }
 
     fn equals(&self,other: &Object) -> bool{
-        self.content.read().unwrap().equals(other)
+        self.content.equals(other)
     }
 
     fn toString(&self) -> String {
-        self.content.read().unwrap().toString()
+        self.content.toString()
     }
 }
 
 impl IObject for Object {
-    fn getClass(&self) -> Option<&Object> {
+    fn getClass(&self) -> Object {
         // self.content.read().unwrap().class
-        None
+        self.content.class.clone()
     }
     
 }
@@ -76,13 +76,13 @@ impl Clone for Object {
 #[derive(Debug)]
 pub struct ObjectContent {
     /// Keyword index of the `Class` of `Object`.
-    pub class: usize,
+    pub class: Object,
     /// Reference to the `Object` as a raw pointer.
     pub ptr: usize,
 }
 
 impl ObjectContent {
-    pub fn new<T>(class: usize, ptr: &T) -> ObjectContent {
+    pub fn new<T>(class: Object, ptr: &T) -> ObjectContent {
         unsafe {
             ObjectContent {
                 class,
@@ -114,4 +114,8 @@ impl IObjectContent for ObjectContent
     fn equals(&self,other: &Object) -> bool {true}
 
     fn toString(&self) -> String {"".to_string()}
+}
+
+pub fn init() {
+
 }

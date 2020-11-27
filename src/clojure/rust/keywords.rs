@@ -78,9 +78,6 @@ impl Keywords {
             None => {String::from("")}
         }
     }
-
-    pub fn init_static() {
-    }
 }
 
 impl Drop for Keywords {
@@ -97,6 +94,10 @@ lazy_static! {
                         RwLock::new(Arc::new(Default::default()));
 }
 
+pub fn init() {
+
+}
+
 #[test]
 fn test_keywords() {
     // Initial state
@@ -105,7 +106,7 @@ fn test_keywords() {
     let e1 = Keywords::current();
 
     // Call init_static
-    Keywords::init_static(); // expected to succeed
+    init(); // expected to succeed
     println!("New state len = {:?} state = {:?}", Keywords::len(), Keywords::current());
 
     let e2 = Keywords::current();

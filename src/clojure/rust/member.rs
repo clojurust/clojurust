@@ -23,3 +23,7 @@ impl Member {
 
     }    
 }
+
+pub fn init() {
+
+}

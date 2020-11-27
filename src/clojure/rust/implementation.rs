@@ -27,6 +27,10 @@ impl Implementation
     }
 }
 
+pub fn init() {
+
+}
+
 ////////////////////////////////////////////////////////
 // Tests
 
@@ -61,3 +65,4 @@ fn test_function_call() {
     // but until here, there's no problem... ;)
 }
 */
+

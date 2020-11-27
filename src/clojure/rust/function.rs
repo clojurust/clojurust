@@ -46,3 +46,6 @@ impl<'i> Function {
     }
 }
 
+pub fn init() {
+
+}
