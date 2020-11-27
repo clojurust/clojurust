@@ -10,10 +10,6 @@ pub struct RustObj {
 }
 
 impl RustObj {
-    pub fn new() {
-
-    }
-    
     pub fn current() -> Arc<RustObj> {
         RUST_OBJ.read().unwrap().clone()
     }
@@ -22,10 +18,18 @@ impl RustObj {
         *RUST_OBJ.write().unwrap() = Arc::new(self);
     }
 
-    fn update(name: String, obj: Arc<Object>) {
+    pub fn update(name: String, obj: Arc<Object>) {
         RustObj{objects: RwLock::new(RustObj::current()
                 .objects.write().unwrap()
                 .update(name, obj.clone()))}.make_current();
+    }
+
+    pub fn get(name: String) -> Option<Arc<Object>> {
+        match RustObj::current().objects.read().unwrap().get(&name)
+        {
+            Some(obj) => {Some(obj.clone())}
+            None => {None}
+        }
     }
 }
 
