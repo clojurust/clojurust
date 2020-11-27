@@ -29,16 +29,25 @@ Meanwhile, the first Core Clojure classes can be developed in parallel, for test
 ## Documentation
 The whole documentation is located in the [wiki](https://github.com/ivanpierre/clojurust/wiki)
 
-## Copyright
-Copyright (c) 2020 Ivan Pierre, kilroySoft, <Ivan Pierre, ivan@kilroysoft.ch>
+## Copyrights
+* Copyright (c) 2020 Ivan Pierre, kilroySoft, <Ivan Pierre, ivan@kilroysoft.ch>, under MPL 2.0.
+* Code is on GitHub: https://github.com/ivanpierre/clojurust
 
 As clojure::lang::* is a translation of original code of Java Clojure core, reference is due to Rich Hickey:
 
-Copyright (c) Rich Hickey. All rights reserved.
-
-Original project can be found in the main repository:
+* Copyright (c) Rich Hickey. All rights reserved. Under EPL 1.0.
+* Original project can be found in the main repository:
 
 https://github.com/clojure/clojure
+
+But the project is not in this stage for now.
+
+`im` Crate for the persistent data structures:
+
+* Copyright 2017 Bodil Stokke, under MPL 2.0.
+* Crate doc is here: https://crates.io/crates/im
+* Code is on GitHub: https://github.com/bodil/im-rs
+
 
 ## Licence
 This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. 

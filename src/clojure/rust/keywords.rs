@@ -11,7 +11,7 @@ use lazy_static::lazy_static;
 /// `usize` values are unique and immutable for every `String`.
 /// `Strings` are added incrementally to the `vect` `Vector` and cannot be destroyed.
 /// as a `String` is added, it's index is added in the `map` `HashMap`.
-/// # Exxamples
+/// # Examples
 /// ```
 ///
 #[derive(Default)]
