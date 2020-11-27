@@ -6,7 +6,7 @@ use std::sync::{Arc, RwLock};
 
 #[derive(Default)]
 pub struct RustObj {
-    pub objects: RwLock<HashMap<String, Arc<Object>>>,
+    pub objects: HashMap<String, Arc<Object>>,
 }
 
 impl RustObj {
@@ -19,13 +19,13 @@ impl RustObj {
     }
 
     pub fn update(name: String, obj: Arc<Object>) {
-        RustObj{objects: RwLock::new(RustObj::current()
-                .objects.write().unwrap()
-                .update(name, obj.clone()))}.make_current();
+        RustObj{objects: RustObj::current()
+                .objects
+                .update(name, obj.clone())}.make_current();
     }
 
     pub fn get(name: String) -> Option<Arc<Object>> {
-        match RustObj::current().objects.read().unwrap().get(&name)
+        match RustObj::current().objects.get(&name)
         {
             Some(obj) => {Some(obj.clone())}
             None => {None}
@@ -34,7 +34,8 @@ impl RustObj {
 }
 
 pub fn init() {
-    RustObj { objects: RwLock::new(HashMap::<String, Arc<Object>>::new()), }.make_current()
+    RustObj { objects: HashMap::<String, Arc<Object>>::new(), }
+                    .make_current()
 }
 
 lazy_static! {
@@ -42,3 +43,8 @@ lazy_static! {
     pub static ref RUST_OBJ: RwLock<Arc<RustObj>> = RwLock::new(Default::default());
 }
 
+#[test]
+fn test_rust_obj() {
+    
+
+}

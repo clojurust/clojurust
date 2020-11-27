@@ -38,12 +38,10 @@ impl Keywords {
     }
 
     pub fn make_current(self) {
-        println!("make_current({:?})", self);
         *KEYWORDS.write().unwrap() = Arc::new(self);
     }
 
     pub fn len() -> usize {
-        println!("len()");
         Keywords::current().vect.len()
     }
 
@@ -85,6 +83,12 @@ impl Keywords {
     }
 }
 
+impl Drop for Keywords {
+    fn drop(&mut self) {
+        println!("Dropping Keyword state! -> {:?}", self);
+    }
+}
+
 lazy_static! {
     /// Private access to static global `Keywords` struture.
     ///
@@ -94,20 +98,50 @@ lazy_static! {
 }
 
 #[test]
-fn test_the_thing() {
-    println!("Init state {:?}", Keywords::len());
-    Keywords::init_static(); // expected to succeed
-    println!("New state {:?}", Keywords::len());
-    let o = Keywords::get(String::from("essai"));
-    println!("add essai {:?} {}", Keywords::len(), 
-                                    Keywords::to_string(0));
-    Keywords::get("essai2".to_string());
-    println!("add essai2 {:?} {} {}", Keywords::len(), 
-                                    Keywords::to_string(0),
-                                    Keywords::to_string(1));
+fn test_keywords() {
+    // Initial state
+    println!("Init state len = {:?} state = {:?}", Keywords::len(), Keywords::current());
     
+    let e1 = Keywords::current();
+
+    // Call init_static
+    Keywords::init_static(); // expected to succeed
+    println!("New state len = {:?} state = {:?}", Keywords::len(), Keywords::current());
+
+    let e2 = Keywords::current();
+
+    // add first keyword
+    let o = Keywords::get(String::from("essai"));
+    println!("add essai len = {:?} state = {:?}", Keywords::len(), Keywords::current());
+
+    let e3 = Keywords::current();
+
+    // add second keyword
+    Keywords::get("essai2".to_string());
+    println!("add essai2 len = {:?} state = {:?}", Keywords::len(), Keywords::current());
+
+    let e4 = Keywords::current();
+
+    // display existing keywords                                
     println!("Keyword 0 = \"{}\"", Keywords::to_string(0));
     println!("Keyword 1 = \"{}\"", Keywords::to_string(1));
+
+    // display inexisting keyword -> ""
     println!("Keyword 2 = \"{}\"", Keywords::to_string(2));
+
+    // Verify persistant state
+    println!("State 1 = {:?}", e1);
+    println!("State 2 = {:?}", e2);
+    println!("State 3 = {:?}", e3);
+    println!("State 4 = {:?}", e4);
+
     assert_eq!(1,1)
+
+    // display of droppings
+    // At the output state 1 and 2 are the same and so only one drop,
+    // event is there are two Arc, but it's a lone struct.
+    // State 3 is droped as it's the output of test function, and 
+    // e3 is the only link to the state.
+    // As state 4 is linked in the KEYWORDS global variable, the drop
+    // is not displayed..
 }
