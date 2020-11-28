@@ -1,6 +1,9 @@
 # ClojuRust
 A proof of concept version of Clojure in Rust.
 
+This is main branch Version2. You can find old versions here:
+*  [Version1](https://github.com/ivanpierre/clojurust/tree/version1).
+
 ## Current state
 WIP in an analysis and test state, and so a working version is out of sight for now.
 
