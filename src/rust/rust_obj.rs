@@ -1,12 +1,12 @@
 // use std::sync::*;
 use lazy_static::lazy_static;
-use im::hashmap::*;
+use im::vector::*;
 use super::object::*;
 use std::sync::{Arc, RwLock};
 
 #[derive(Default)]
 pub struct RustObj {
-    pub objects: HashMap<String, Arc<Object>>,
+    pub objects: Vector<Object>,
 }
 
 impl RustObj {
@@ -18,14 +18,14 @@ impl RustObj {
         *RUST_OBJ.write().unwrap() = Arc::new(self);
     }
 
-    pub fn update(name: String, obj: Arc<Object>) {
+    pub fn update(name: usize, obj: Object) {
         RustObj{objects: RustObj::current()
                 .objects
                 .update(name, obj.clone())}.make_current();
     }
 
-    pub fn get(name: String) -> Option<Arc<Object>> {
-        match RustObj::current().objects.get(&name)
+    pub fn get(name: usize) -> Option<Object> {
+        match RustObj::current().objects.get(name)
         {
             Some(obj) => {Some(obj.clone())}
             None => {None}
@@ -34,8 +34,7 @@ impl RustObj {
 }
 
 pub fn init() {
-    RustObj { objects: HashMap::<String, Arc<Object>>::new(), }
-                    .make_current()
+    RustObj { objects: Vector::<Object>::new(), }.make_current()
 }
 
 lazy_static! {

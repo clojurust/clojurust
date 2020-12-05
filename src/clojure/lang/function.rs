@@ -4,8 +4,8 @@
 use im::hashmap::HashMap;
 // use std::sync::*;
 // use lazy_static::lazy_static;
-pub use crate::clojure;
-use clojure::rust::implementation::*;
+pub use crate::rust;
+use rust::implementation::*;
 
 pub struct Function {
     pub higher: Option<usize>, // optional maximum arity
@@ -36,7 +36,7 @@ impl<'i> Function {
                     }
                 }
                 else {
-                    self.func.get(&max)
+                    Some(self.func.get(&arity))
                 }
             }
 

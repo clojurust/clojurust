@@ -1,6 +1,6 @@
 //! Members definition
 
-use super::function::*;
+use crate::clojure::lang::function::*;
 
 pub struct Member {
     name: usize,

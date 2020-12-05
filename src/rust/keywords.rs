@@ -48,20 +48,22 @@ impl Keywords {
     pub fn get(key: String) -> usize {
         let i = Keywords::current().clone();
         let a = i.as_ref();
-        let m = a.map.as_ref();
+        let mut m = a.map.clone();
         let mut v = a.vect.clone();
         let length = Keywords::len();
 
         match m.get(&key) {
             // found entry
-            Some(idx) => { *idx }
+            Some(idx) => *idx,
 
             // Not found: add entry in vect and map
             None => {
                 // Insert new values in vector and map
-                &v.push_back(key.clone()); 
+                &v.push_back(*&key);
+                &m.update(*&key, *&length);
+
                 let k = Keywords {
-                    map: m.update(key.clone(), length.clone()),
+                    map: m,
                     vect: v,
                 };
                 k.make_current();
@@ -72,11 +74,23 @@ impl Keywords {
         }
     }
 
+    pub fn test(key: String) -> bool {
+        let i = Keywords::current().clone();
+        let a = i.as_ref();
+        match a.map.get(&key) {
+            Some(_) => true,
+            None => false,
+        }
+    }
+
     pub fn to_string(index: usize) -> String {
         match Keywords::current().vect.get(index) {
             Some(key) => { String::from(key) }
             None => {String::from("")}
         }
+    }
+
+    pub unsafe fn init() {
     }
 }
 
@@ -86,16 +100,17 @@ impl Drop for Keywords {
     }
 }
 
+static INIT: bool = false;
+
+pub fn init_keywords() -> RwLock<Arc<Keywords>> {
+    RwLock::new(Arc::new(Default::default()))
+}
+
 lazy_static! {
     /// Private access to static global `Keywords` struture.
     ///
     /// Here will be stored and retrived keywords data.
-    pub static ref KEYWORDS: RwLock<Arc<Keywords>> = 
-                        RwLock::new(Arc::new(Default::default()));
-}
-
-pub fn init() {
-
+    pub static ref KEYWORDS: RwLock<Arc<Keywords>> = init_keywords();
 }
 
 #[test]
@@ -106,7 +121,6 @@ fn test_keywords() {
     let e1 = Keywords::current();
 
     // Call init_static
-    init(); // expected to succeed
     println!("New state len = {:?} state = {:?}", Keywords::len(), Keywords::current());
 
     let e2 = Keywords::current();
@@ -146,3 +160,4 @@ fn test_keywords() {
     // As state 4 is linked in the KEYWORDS global variable, the drop
     // is not displayed..
 }
+

@@ -1,7 +1,8 @@
 //! # Protocol
+use crate::clojure::lang::hashmap::*;
 
 struct Protocol {
-    prototype: HashMap<String, Object>,
+    prototype: HashMap,
     nb_arity: usize,
     multi_arity: bool,
 }
