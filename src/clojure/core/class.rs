@@ -1,8 +1,9 @@
 //! clojure::rust::class: Define class of objects
 
-use super::object::Object;
-use crate::clojure::lang::hashmap::HashMap;
-use super::keywords::*;
+pub use crate::clojure;
+use clojure::core::object::Object;
+use clojure::core::keywords::*;
+use clojure::lang::hashmap::HashMap;
 
 pub struct Class {
 }

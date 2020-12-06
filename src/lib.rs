@@ -13,22 +13,22 @@
 
 #[cfg(test)]
 
-pub(crate) mod rust {
-    pub mod keywords;
-    pub mod class;
-    pub mod implementation;
-    pub mod member;
-    pub mod protocol;
-    pub mod prototype;
-    pub mod object;
-    pub mod rust_obj;
-}
-pub(crate) mod clojure {
-    pub  mod lang {
+pub mod clojure {
+    pub mod lang {
         // pub mod number;
         pub mod hashmap;
         pub mod hashset;
         pub mod vector;
         pub mod function;
     }
-}
+    pub mod core {
+        pub mod keywords;
+        pub mod class;
+        pub mod implementation;
+        pub mod member;
+        pub mod protocol;
+        pub mod prototype;
+        pub mod object;
+        pub mod rust_obj;
+    }
+    }

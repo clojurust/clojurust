@@ -1,11 +1,7 @@
 //! Anonymous Function with multi-arity
 
-// use im::vector::Vector;
 use im::hashmap::HashMap;
-// use std::sync::*;
-// use lazy_static::lazy_static;
-pub use crate::rust;
-use rust::implementation::*;
+use crate::java::implementation::*;
 
 pub struct Function {
     pub higher: Option<usize>, // optional maximum arity

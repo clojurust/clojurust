@@ -2,7 +2,7 @@
 #![allow(non_snake_case)]
 
 use std::{sync::*, mem::transmute};
-pub use super::class::Class;
+pub use crate::clojure;
 
 #[derive(Debug)]
 pub struct Object {
