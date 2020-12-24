@@ -1,8 +1,11 @@
 // use std::sync::*;
 use lazy_static::lazy_static;
 use im::vector::*;
-use super::object::*;
 use std::sync::{Arc, RwLock};
+
+pub use crate::clojure;
+use clojure::core::object::*;
+
 
 #[derive(Default)]
 pub struct RustObj {
@@ -24,12 +27,16 @@ impl RustObj {
                 .update(name, obj.clone())}.make_current();
     }
 
-    pub fn get(name: usize) -> Option<Object> {
-        match RustObj::current().objects.get(name)
+    pub fn get(index: usize) -> Object {
+        match RustObj::current().objects.get(index)
         {
-            Some(obj) => {Some(obj.clone())}
-            None => {None}
+            Some(obj) => {obj.clone()}
+            None => {RustObj::null()}
         }
+    }
+
+    pub fn null() -> Object {
+        RustObj::current().objects.get(0).unwrap().clone()
     }
 }
 

@@ -6,6 +6,7 @@ use clojure::core::keywords::*;
 use clojure::lang::hashmap::HashMap;
 
 pub struct Class {
+    map: Object,
 }
 
 /// Class descriptor for Class :
@@ -29,21 +30,13 @@ pub struct Class {
 
 
 impl Class {
-    pub fn new(
-        super_class:        Object,
-        protocols:          Object,
-        members:            Object,
-        methods:            Object) 
-                            -> Object {
-            let ob = 
-                    Class {
-                        super_class:        super_class.clone(),
-                        protocols:          protocols.clone(),
-                        members:            members.clone(),
-                        methods:            methods.clone(),
-                    };
-            Object::new::<Class>("clojure.rust.class/Class",
-                                 &ob).clone()
+    pub fn new(name: String, map: Object) -> Object {
+        let ob = 
+                Class {
+                    map:        map.clone(),
+                };
+        Object::new::<Class>(Keywords::get(name, *CORE),
+                                Box::new(ob)).clone()
     }
     
 
@@ -52,12 +45,14 @@ impl Class {
         // only execute one time
         if INIT {return;}
         INIT = true;
+        
+        println!("Class::init");
 
         // Insures all is initialized
         Keywords::init();
         Object::init();
         HashMap::init();
-        let c = Keywords::get("clojure.rust.object/Objects");
+        // let c = Keywords::get("clojure.rust.object/Objects");
 
     }
 }

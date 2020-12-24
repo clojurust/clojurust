@@ -29,28 +29,28 @@ impl Keywords {
         }
     }
 
-    pub fn current() -> Arc<Keywords> {
-        KEYWORDS.read().unwrap().clone()
+    pub fn current(keywords: RwLock<Arc<Keywords>>) -> Arc<Keywords> {
+        keywords.read().unwrap().clone()
     }
 
-    pub fn current_mut() -> Arc<Keywords> {
-        KEYWORDS.write().unwrap().clone()
+    pub fn current_mut(keywords: RwLock<Arc<Keywords>>) -> Arc<Keywords> {
+        keywords.write().unwrap().clone()
     }
 
-    pub fn make_current(self) {
-        *KEYWORDS.write().unwrap() = Arc::new(self);
+    pub fn make_current(self, keywords: RwLock<Arc<Keywords>>) {
+        *keywords.write().unwrap() = Arc::new(self);
     }
 
-    pub fn len() -> usize {
-        Keywords::current().vect.len()
+    pub fn len(keywords: RwLock<Arc<Keywords>>) -> usize {
+        Keywords::current(keywords).vect.len()
     }
 
-    pub fn get(key: String) -> usize {
-        let i = Keywords::current().clone();
+    pub fn get(key: String, keywords: RwLock<Arc<Keywords>>) -> usize {
+        let i = Keywords::current(keywords).clone();
         let a = i.as_ref();
         let mut m = a.map.clone();
         let mut v = a.vect.clone();
-        let length = Keywords::len();
+        let length = Keywords::len(keywords);
 
         match m.get(&key) {
             // found entry
@@ -66,7 +66,7 @@ impl Keywords {
                     map: m,
                     vect: v,
                 };
-                k.make_current();
+                k.make_current(keywords);
 
                 // return new index that was length of vector
                 length
@@ -74,8 +74,8 @@ impl Keywords {
         }
     }
 
-    pub fn test(key: String) -> bool {
-        let i = Keywords::current().clone();
+    pub fn test(key: String, keywords: RwLock<Arc<Keywords>>) -> bool {
+        let i = Keywords::current(keywords).clone();
         let a = i.as_ref();
         match a.map.get(&key) {
             Some(_) => true,
@@ -83,8 +83,8 @@ impl Keywords {
         }
     }
 
-    pub fn to_string(index: usize) -> String {
-        match Keywords::current().vect.get(index) {
+    pub fn to_string(index: usize, keywords: RwLock<Arc<Keywords>>) -> String {
+        match Keywords::current(keywords).vect.get(index) {
             Some(key) => { String::from(key) }
             None => {String::from("")}
         }
@@ -111,38 +111,39 @@ lazy_static! {
     ///
     /// Here will be stored and retrived keywords data.
     pub static ref KEYWORDS: RwLock<Arc<Keywords>> = init_keywords();
+    pub static ref CORE: RwLock<Arc<Keywords>> = init_keywords();
 }
 
 #[test]
 fn test_keywords() {
     // Initial state
-    println!("Init state len = {:?} state = {:?}", Keywords::len(), Keywords::current());
+    println!("Init state len = {:?} state = {:?}", Keywords::len(*CORE), Keywords::current(*CORE));
     
-    let e1 = Keywords::current();
+    let e1 = Keywords::current(*CORE);
 
     // Call init_static
-    println!("New state len = {:?} state = {:?}", Keywords::len(), Keywords::current());
+    println!("New state len = {:?} state = {:?}", Keywords::len(*CORE), Keywords::current(*CORE));
 
-    let e2 = Keywords::current();
+    let e2 = Keywords::current(*CORE);
 
     // add first keyword
-    let o = Keywords::get(String::from("essai"));
-    println!("add essai len = {:?} state = {:?}", Keywords::len(), Keywords::current());
+    let o = Keywords::get(String::from("essai"), *CORE);
+    println!("add essai len = {:?} state = {:?}", Keywords::len(*CORE), Keywords::current(*CORE));
 
-    let e3 = Keywords::current();
+    let e3 = Keywords::current(*CORE);
 
     // add second keyword
-    Keywords::get("essai2".to_string());
-    println!("add essai2 len = {:?} state = {:?}", Keywords::len(), Keywords::current());
+    Keywords::get("essai2".to_string(), *CORE);
+    println!("add essai2 len = {:?} state = {:?}", Keywords::len(*CORE), Keywords::current(*CORE));
 
-    let e4 = Keywords::current();
+    let e4 = Keywords::current(*CORE);
 
     // display existing keywords                                
-    println!("Keyword 0 = \"{}\"", Keywords::to_string(0));
-    println!("Keyword 1 = \"{}\"", Keywords::to_string(1));
+    println!("Keyword 0 = \"{}\"", Keywords::to_string(0, *CORE));
+    println!("Keyword 1 = \"{}\"", Keywords::to_string(1, *CORE));
 
     // display inexisting keyword -> ""
-    println!("Keyword 2 = \"{}\"", Keywords::to_string(2));
+    println!("Keyword 2 = \"{}\"", Keywords::to_string(2, *CORE));
 
     // Verify persistant state
     println!("State 1 = {:?}", e1);

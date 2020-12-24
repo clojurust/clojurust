@@ -16,4 +16,5 @@ rc = "0.1.1"
 bigint = "4.4.3"
 lazy_static = "1.4.0"
 mut_static = "5.0.0"
-
+intertrait = "0.2"
+linkme = "0.2"

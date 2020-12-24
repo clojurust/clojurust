@@ -1,43 +1,46 @@
 //! Anonymous Function with multi-arity
 
 use im::hashmap::HashMap;
-use crate::java::implementation::*;
+pub use crate::clojure;
+use clojure::core::object::*;
+use clojure::core::rust_obj::*;
 
 pub struct Function {
-    pub higher: Option<usize>, // optional maximum arity
-    pub func: HashMap<usize, Implementation>, // all implementations
+    pub higher: Option<usize>,
+    pub func: HashMap<usize, Object>, // all implementations
 }
 
-impl<'i> Function {
-        pub fn new() -> Function {
+impl Function {
+    pub fn new() -> Function {
         Function {
             higher: None,
-            func: HashMap::<usize, Implementation>::new(),
+            func: HashMap::<usize, Object>::new(),
         }
     }
 
-    pub fn get(&self, arity: usize) -> Option<&Implementation> {
+    pub fn get(&self, arity: usize) -> Object {
         match self.higher {
             Some(max) => {
                 if arity > max {
-                    if let Some(implem) = self.func.get(&max) {
-                        if implem.multiary {
-                            Some(implem)
-                        } else {
-                            None
-                        }
-                    }
+                    let implem = self.func.get(&max).unwrap().clone();
+                    if implem.multiary {
+                        implem.clone()
+                    } 
                     else {
-                        None
+                        RustObj::null()
                     }
                 }
                 else {
-                    Some(self.func.get(&arity))
+                    let implem = self.func.get(&arity);
+                    match implem {
+                        Some(res) => res.clone(),
+                        None => RustObj::null(),
+                    }
                 }
             }
 
             // If no max => no implementation
-            None => None
+            None => RustObj::null()
         }
     }
 }

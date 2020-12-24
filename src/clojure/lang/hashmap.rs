@@ -1,5 +1,7 @@
 use im::hashmap;
-use crate::rust::object::*;
+
+pub use crate::clojure;
+use clojure::core::object::*;
 
 pub struct HashMap {
     map: hashmap::HashMap<Object, Object>,

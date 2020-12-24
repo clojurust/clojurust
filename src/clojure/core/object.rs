@@ -2,39 +2,40 @@
 #![allow(non_snake_case)]
 
 use std::{sync::*, mem::transmute};
+use intertrait::*;
+use intertrait::cast::*;
+
 pub use crate::clojure;
+use clojure::core::class::*;
+use clojure::core::iobject::*;
+use clojure::core::rust_obj::*;
 
 #[derive(Debug)]
+#[derive(Clone)]
+#[derive(IObject)]
 pub struct Object {
-    pub content: Arc<ObjectContent>,
-}
-
-trait IObject {
-    fn getClass(&self) -> Object;
-}
-
-trait IObjectContent {
+    pub content: usize,
 }
 
 impl Object {
-    pub fn new<T>(class: Object, ptr: &T) -> Object {
-        Object {
-            content: Arc::new(ObjectContent::new::<T>(class, ptr)),
+    pub fn new<T>(class: Box<dyn IObject>, ptr: Arc<T>) -> Object {
+        unsafe {
+            Object {
+                class,
+                ptr: transmute::<Arc<T>, usize>(ptr.clone()),
+            }
         }
     }
 
-    pub fn get<'im, T>(&self) -> &'i T {
-        // Return reference of pointed object
-        ObjectContent::get::<T>(self.content)
-    }
-
-    pub fn get_mut<'i, T: Copy>(&self) -> &'i mut T {
-        // Return reference of pointed object
-        ObjectContent::get_mut::<T>(self.content)
+    pub fn get<T>(&self) -> Arc<T> {
+        unsafe {
+            // Return reference of pointed object
+            transmute::<usize, Arc<T>>(self.content)
+        }
     }
 
     pub fn count(&self) -> usize {
-        Arc::strong_count(self.content)
+        Arc::strong_count(&self.content)
     }
 
     pub unsafe fn init() {
@@ -43,18 +44,28 @@ impl Object {
 
         // Insures all is initialized
         Class::init();
-    }
+    
+
 }
 
 static mut INIT: bool = false;
 
-impl IObjectContent for Object {
+trait IObject {
+    fn get_class(&self) -> Object;
+    fn call(&self, args: &Objects[]) -> Object;
+    fn get(&self, name: &str) -> Object;
+    fn is_class(&self, &str) -> bool;
+    fn is_protocol(&self, &str) -> bool;
+    fn to_string(&self) -> String;
+    fn get_hash(&self) -> usize;
 }
 
-impl IObject for Object {
+struct Null {}
+
+impl IObject for Null {
     fn getClass(&self) -> Object {
         // self.content.read().unwrap().class
-        self.content.class.clone()
+        RustObj::get(self.content.class.clone())
     }
 }
 
@@ -65,42 +76,3 @@ impl Clone for Object {
         }
     }
 }
-
-/// Object struture stores various data.
-#[derive(Debug)]
-pub struct ObjectContent {
-    /// Keyword index of the `Class` of `Object`.
-    pub class: usize,
-    /// Reference to the `Object` as a raw pointer.
-    pub ptr: usize,
-}
-
-impl ObjectContent {
-    pub fn new<T>(class: usize, ptr: &T) -> ObjectContent {
-        unsafe {
-            ObjectContent {
-                class,
-                ptr: transmute::<&T, usize>(ptr),
-            }
-        }
-    }
-
-    pub fn get<'i, T: Copy>(&self) -> &'i T {
-        unsafe {
-            // Return reference of pointed object
-            &*transmute::<usize, &T>(self.ptr)
-        }
-    }
-
-    pub fn get_mut<'i, T: Copy>(&self) -> &'i mut T {
-        unsafe {
-            // Return reference of pointed object
-            transmute::<usize, &mut T>(self.ptr)
-        }
-    }
-}
-
-impl IObjectContent for ObjectContent 
-{
-}
-
