@@ -5,7 +5,7 @@
 //! ## 
 
 #![recursion_limit="256"]
-#![feature(fn_traits)]
+// #![feature(fn_traits)]
 #![allow(dead_code)]
 #![allow(unused_variables)]
 // ![warn(unreachable_pub, missing_docs)]
@@ -19,7 +19,9 @@ mod tests {
     }
 }
 
+/// Clojure Module
 pub mod clojure {
+/// Lang Module
     pub mod lang {
         // pub mod number;
     }
