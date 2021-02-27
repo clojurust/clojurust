@@ -21,7 +21,7 @@ impl RustObj {
         RustObj { obj: new }
     }
 
-    pub fn update(&self, index: usize, value: &SObject) -> RustObj {
+    pub fn update(&self, index: usize, value: &Object) -> RustObj {
         RustObj {
             obj: {
                 if index == self.obj.len() {
@@ -33,7 +33,7 @@ impl RustObj {
         }
     }
 
-    pub fn get(&self, index: usize) -> SObject {
+    pub fn get(&self, index: usize) -> Object {
         self.obj.get(index)
     }
 
@@ -45,7 +45,7 @@ impl RustObj {
         INIT = true;
 
         // Insures all is initialized
-        SObject::init();
+        Object::init();
         PVector::init();
     }
 }

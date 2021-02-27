@@ -21,14 +21,14 @@ impl Globals {
         }
     }
 
-    fn update_object(&self, index: usize, value: &SObject) -> Globals {
+    fn update_object(&self, index: usize, value: &Object) -> Globals {
         Globals {
             id: self.id.clone(),
             obj: Arc::new(self.obj.update(index, value)),
         }
     }
 
-    pub fn get_obj_by_id(&self, index: usize) -> SObject {
+    pub fn get_obj_by_id(&self, index: usize) -> Object {
         self.obj.get(index)
     }
 }

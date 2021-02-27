@@ -11,21 +11,21 @@ use super::class::*;
 use super::object::*;
 
 pub struct PVector {
-    inner: Vector<SObject>,
+    inner: Vector<Object>,
 }
 
-castable_to!(PVector => [sync] Object);
+castable_to!(PVector => [sync] TObject);
 
-impl Object for PVector {
-    fn get_class<'a>(&'a self) -> &'a Class {
+impl TObject for PVector {
+    fn get_class<'a>(&'a self) -> &'a SClass {
         todo!()
     }
 
-    fn call(&self, name: &str, args: &[SObject]) -> SObject {
+    fn call(&self, name: &str, args: &[Object]) -> Object {
         todo!()
     }
 
-    fn get(&self, name: &str) -> SObject {
+    fn get(&self, name: &str) -> Object {
         todo!()
     }
 
@@ -39,7 +39,7 @@ impl Object for PVector {
 }
 
 impl PVector {
-    pub fn new_vect(inner: Vector<SObject>) -> PVector {
+    pub fn new_vect(inner: Vector<Object>) -> PVector {
         PVector { inner }
     }
 
@@ -53,21 +53,21 @@ impl PVector {
         self.inner.len()
     }
 
-    pub fn get(&self, index: usize) -> SObject {
+    pub fn get(&self, index: usize) -> Object {
         match self.inner.get(index) {
-            None => SObject::null().clone(),
+            None => Object::null().clone(),
             Some(o) => o.clone(),
         }
     }
 
-    pub fn update(&self, index: usize, value: &SObject) -> PVector {
+    pub fn update(&self, index: usize, value: &Object) -> PVector {
         let &mut vec = &mut self.inner;
         PVector {
             inner: vec.update(index, value.clone()),
         }
     }
 
-    pub fn add(&mut self, value: &SObject) -> PVector {
+    pub fn add(&mut self, value: &Object) -> PVector {
         let mut vect = &self.inner;
         vect.push_back(value.clone());
         PVector { inner: *vect }
@@ -81,7 +81,7 @@ impl PVector {
         INIT = true;
 
         // Insures all is initialized
-        SObject::init();
+        Object::init();
     }
 }
 

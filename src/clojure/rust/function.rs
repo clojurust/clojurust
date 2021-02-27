@@ -7,26 +7,27 @@ use std::{any::*, fmt::*, hash::*, result::*, sync::*};
 use intertrait::cast::*;
 use intertrait::*;
 
+use super::class::*;
 use super::object::*;
 use super::phashmap::*;
 use super::pvector::*;
 use super::rustobj::*;
 
-pub struct Function {
-    pub multiary: Option<usize>,
-    pub func: PHashMap, // all implementations
+pub struct SFunction {
+    pub multiary: Object,
+    pub func: Object, // all implementations
 }
 
-castable_to!(Function => [sync] Object, IFunction);
+castable_to!(SFunction => [sync] TObject, Function);
 
-trait IFunction {
-    fn call(args: PVector) -> SObject {}
+trait Function {
+    fn call(&self, args: &Object) -> Object;
 
-    fn get(&self, arity: usize) -> SObject {}
+    fn get(&self, arity: &Object) -> Object;
 }
 
-impl IFunction for Function {
-    fn get(&self, arity: usize) -> SObject {
+impl Function for SFunction {
+    fn get(&self, arity: &Object) -> Object {
         match self.multiary {
             Some(max) => {
                 if arity > max {
@@ -34,26 +35,52 @@ impl IFunction for Function {
                     if implem.multiary {
                         implem.clone()
                     } else {
-                        SObject::null()
+                        Object::null()
                     }
                 } else {
-                    let implem = self.func.get(&arity);
+                    let implem = self.func.get_hash(&arity);
                     match implem {
                         Some(res) => res.clone(),
-                        None => SObject::null(),
+                        None => Object::null(),
                     }
                 }
             }
 
             // If no max => no implementation
-            None => SObject::null(),
+            None => Object::null(),
         }
+    }
+
+    fn call(&self, args: Object) -> Object {
+        Object::null()
     }
 }
 
-impl Function {
-    pub fn new() -> Function {
-        Function {
+impl TObject for SFunction {
+    fn get_class<'a>(&'a self) -> Object {
+        todo!()
+    }
+
+    fn call(&self, name: &str, args: &[Object]) -> Object {
+        todo!()
+    }
+
+    fn get(&self, name: &str) -> Object {
+        todo!()
+    }
+
+    fn to_string(&self) -> String {
+        todo!()
+    }
+
+    fn get_hash(&self) -> usize {
+        todo!()
+    }
+}
+
+impl SFunction {
+    pub fn new() -> SFunction {
+        SFunction {
             multiary: None,
             func: PHashMap::new(),
         }

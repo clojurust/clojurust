@@ -1,4 +1,4 @@
-pub use im::hashmap::*;
+use im::hashmap::*;
 use im::*;
 use intertrait::cast::*;
 use intertrait::*;
@@ -8,21 +8,21 @@ use super::class::*;
 use super::object::*;
 
 pub struct PHashMap {
-    inner: HashMap<SObject, SObject>,
+    inner: HashMap<Object, Object>,
 }
 
-castable_to!(PHashMap => Object);
+castable_to!(PHashMap => TObject);
 
-impl Object for PHashMap {
-    fn get_class<'a>(&'a self) -> &'a Class {
+impl TObject for PHashMap {
+    fn get_class<'a>(&'a self) -> Object {
         todo!()
     }
 
-    fn call(&self, name: &str, args: &[SObject]) -> SObject {
+    fn call(&self, name: &str, args: &[Object]) -> Object {
         todo!()
     }
 
-    fn get(&self, name: &str) -> SObject {
+    fn get(&self, name: &str) -> Object {
         todo!()
     }
 
@@ -36,7 +36,13 @@ impl Object for PHashMap {
 }
 
 impl PHashMap {
-    pub fn new(inner: HashMap<SObject, SObject>) -> PHashMap {
+    pub fn new() -> PHashMap {
+        PHashMap {
+            inner: HashMap::new(),
+        }
+    }
+
+    pub fn new_hash(inner: HashMap<Object, Object>) -> PHashMap {
         PHashMap { inner }
     }
 
@@ -48,7 +54,7 @@ impl PHashMap {
         INIT = true;
 
         // Insures all is initialized
-        SObject::init();
+        Object::init();
     }
 }
 

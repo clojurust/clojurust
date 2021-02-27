@@ -7,6 +7,7 @@ use std::{any::*, fmt::*, result::*, sync::*};
 
 use super::object::*;
 use super::phashmap::*;
+use super::str::*;
 use super::unique::*;
 
 /// ## Clojure Class descriptor for Class :
@@ -37,16 +38,16 @@ use super::unique::*;
 ///     pub functions: SObject,   // HashMap of static functions
 /// }
 /// ```
-pub struct Class {
+pub struct SClass {
     inner: PHashMap,
 }
 
-castable_to!(Class => Object);
+castable_to!(SClass => TObject);
 
-impl Class {
-    pub fn new(inner: PHashMap) -> SObject {
-        SObject {
-            inner: Some(Arc::new(Class { inner })),
+impl SClass {
+    pub fn new(inner: PHashMap) -> Object {
+        Object {
+            inner: Some(Arc::new(SClass { inner })),
         }
     }
 
@@ -62,35 +63,51 @@ impl Class {
 
         // Insures all is initialized
         Unique::init();
-        SObject::init();
+        Object::init();
         PHashMap::init();
         // let c = Keywords::get("clojure.rust.object/Objects");
     }
 }
 
-impl Object for Class {
+trait Class {
+    fn call(obj: &TObject, name: &Object, args: &[Object]) -> Object;
+
+    fn implementation(&self, name: &Object) -> Object;
+}
+
+impl Class for SClass {
+    fn call(obj: &TObject, name: &Object, args: &[Object]) -> Object {
+        todo!()
+    }
+
+    fn implementation(&self, name: &Object) -> Object {
+        todo!()
+    }
+}
+
+impl TObject for SClass {
     /// Return `Class` of `Object`
-    fn get_class<'a>(&'a self) -> &'a Class {
+    fn get_class(&self) -> Object {
         todo!()
     }
 
     /// Call named `method` with `Object`s arguments
-    fn call(&self, name: &str, args: &[SObject]) -> SObject {
-        SObject::null()
+    fn call(&self, name: &Object, args: &[Object]) -> Object {
+        Object::null()
     }
 
     /// Call getter for a named `member`
-    fn get(&self, name: &str) -> SObject {
-        SObject::null()
+    fn get(&self, name: &Object) -> Object {
+        Object::null()
     }
 
     /// Return string representation of
-    fn to_string(&self) -> String {
-        String::from("class")
+    fn to_string(&self) -> Object {
+        Object::new::<Str>(String::from("class"))
     }
 
-    fn get_hash(&self) -> usize {
-        0
+    fn get_hash(&self) -> Object {
+        Object::null()
     }
 }
 
