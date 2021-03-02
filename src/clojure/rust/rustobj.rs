@@ -3,6 +3,10 @@ use im_rc::vector::*;
 use lazy_static::lazy_static;
 use std::sync::{Arc, RwLock};
 
+// use std::fmt::*;
+use intertrait::cast::*;
+use intertrait::*;
+
 use super::object::*;
 use super::pvector::*;
 
@@ -10,23 +14,55 @@ pub struct SRustObj {
     pub obj: Object,
 }
 
+castable_to!(Object => [sync] TObject);
+
 pub trait RustObj {
     fn update(&self, index: usize, value: &Object) -> Object;
+
+    fn add(&self, value: &Object) -> Object;
 
     fn get(&self, index: usize) -> Object;
 }
 
 impl RustObj for SRustObj {
     fn update(&self, index: usize, value: &Object) -> Object {
-        Object::new::<SRustObj>(SRustObj {
-            obj: {
-                if index == self.obj.len() {
-                    self.obj.add(value.clone())
-                } else {
-                    self.obj.update(index, value.clone())
+        let SRustObj { obj } = self;
+        let inner = obj.clone().inner;
+        match inner {
+            None => todo!(),
+            Some(o) => {
+                let v = o.clone().as_ref().cast::<PVector>();
+                match v {
+                    Some(vect) => Object::new::<SRustObj>(SRustObj {
+                        obj: {
+                            if index >= vect.len() {
+                                todo!();
+                            } else {
+                                Object::new::<SPVector>(vect.update(index, value.clone()))
+                            }
+                        },
+                    }),
+                    None => todo!(),
                 }
-            },
-        })
+            }
+        }
+    }
+
+    fn add(&self, value: &Object) -> Object {
+        let SRustObj { obj } = self;
+        let inner = obj.clone().inner;
+        match inner {
+            None => todo!(),
+            Some(o) => {
+                let v = o.clone().as_ref().cast::<PVector>();
+                match v {
+                    Some(vect) => Object::new::<SRustObj>(SRustObj {
+                        obj: { Object::new::<SPVector>(vect.add(value.clone())) },
+                    }),
+                    None => todo!(),
+                }
+            }
+        }
     }
 
     fn get(&self, index: usize) -> Object {

@@ -14,11 +14,21 @@ pub struct SPVector {
     inner: Vector<Object>,
 }
 
-castable_to!(SPVector => [sync] TObject);
+castable_to!(SPVector => [sync] TObject, PVector);
 
 unsafe impl Send for SPVector {}
 
 unsafe impl Sync for SPVector {}
+
+pub trait PVector {
+    fn len(&self) -> usize;
+
+    fn get(&self, index: usize) -> Object;
+
+    fn update(&self, index: usize, value: Object) -> SPVector;
+
+    fn add(&mut self, value: Object) -> SPVector;
+}
 
 impl TObject for SPVector {
     fn get_class<'a>(&'a self) -> &'a SClass {
@@ -57,30 +67,6 @@ impl SPVector {
         }
     }
 
-    pub fn len(&self) -> usize {
-        self.inner.len()
-    }
-
-    pub fn get(&self, index: usize) -> Object {
-        match self.inner.get(index) {
-            None => Object::null().clone(),
-            Some(o) => o.clone(),
-        }
-    }
-
-    pub fn update(&self, index: usize, value: &Object) -> SPVector {
-        let &mut vec = &mut self.inner;
-        SPVector {
-            inner: vec.update(index, value.clone()),
-        }
-    }
-
-    pub fn add(&mut self, value: &Object) -> SPVector {
-        let mut vect = &self.inner;
-        vect.push_back(value.clone());
-        SPVector { inner: *vect }
-    }
-
     pub unsafe fn init() {
         // only execute one time
         if INIT {
@@ -93,6 +79,32 @@ impl SPVector {
     }
 }
 
+impl PVector for SPVector {
+    fn len(&self) -> usize {
+        self.inner.len()
+    }
+
+    fn get(&self, index: usize) -> Object {
+        match self.inner.get(index) {
+            None => Object::null(),
+            Some(o) => o.clone(),
+        }
+    }
+
+    fn update(&self, index: usize, value: Object) -> SPVector {
+        let &mut vec = &mut self.inner;
+        SPVector {
+            inner: vec.update(index, value.clone()),
+        }
+    }
+
+    fn add(&mut self, value: Object) -> SPVector {
+        let mut vect = &self.inner;
+        vect.push_back(value.clone());
+        SPVector { inner: *vect }
+    }
+}
+
 // impl Clone for PVector {
 //     fn clone(&self) -> Self {
 //         PVector {
@@ -101,26 +113,20 @@ impl SPVector {
 //     }
 // }
 
-// impl std::fmt::Debug for PVector {
-//     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-//         let a = self;
-//         f.write_str(&self.to_string())
-//     }
-// }
+impl std::fmt::Debug for SPVector {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        let a = self.cast::<SPVector>();
+        match a {
+            Some(spv) => f.write_str(spv.to_string()),
+            None => todo!(),
+        }
+    }
+}
 
-// impl Hash for PVector {
-//     fn hash<H: Hasher>(&self, state: &mut H) {
-//         state.write_usize(self.get_hash())
-//     }
-
-//     fn hash_slice<H: Hasher>(data: &[Self], state: &mut H)
-//     where
-//         Self: Sized,
-//     {
-//         for piece in data {
-//             piece.hash(state);
-//         }
-//     }
-// }
+impl Hash for SPVector {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        state.write_usize(self.get_hash())
+    }
+}
 
 static mut INIT: bool = false;
