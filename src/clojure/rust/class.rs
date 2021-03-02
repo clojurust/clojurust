@@ -7,7 +7,7 @@ use std::{any::*, fmt::*, result::*, sync::*};
 
 use super::object::*;
 use super::phashmap::*;
-use super::str::*;
+use super::stri::*;
 use super::unique::*;
 
 /// ## Clojure Class descriptor for Class :
@@ -31,6 +31,7 @@ use super::unique::*;
 /// ## Rust Class descriptor for Class :
 /// ``` rust
 /// pub struct Class {
+///     const CLASS_NAME = "",
 ///     pub super_class: SObject, // Class
 ///     pub protocols: SObject,   // HashSet of Protocols
 ///     pub get: SObject,         // HashMap of Getters
@@ -39,13 +40,17 @@ use super::unique::*;
 /// }
 /// ```
 pub struct SClass {
-    inner: PHashMap,
+    inner: SPHashMap,
 }
+
+unsafe impl Send for SClass {}
+
+unsafe impl Sync for SClass {}
 
 castable_to!(SClass => TObject);
 
 impl SClass {
-    pub fn new(inner: PHashMap) -> Object {
+    pub fn new(inner: SPHashMap) -> Object {
         Object {
             inner: Some(Arc::new(SClass { inner })),
         }
@@ -64,7 +69,7 @@ impl SClass {
         // Insures all is initialized
         Unique::init();
         Object::init();
-        PHashMap::init();
+        SPHashMap::init();
         // let c = Keywords::get("clojure.rust.object/Objects");
     }
 }
@@ -87,27 +92,31 @@ impl Class for SClass {
 
 impl TObject for SClass {
     /// Return `Class` of `Object`
-    fn get_class(&self) -> Object {
+    fn get_class(&self) -> &SClass {
         todo!()
     }
 
     /// Call named `method` with `Object`s arguments
-    fn call(&self, name: &Object, args: &[Object]) -> Object {
+    fn call(&self, name: usize, args: &[Object]) -> Object {
         Object::null()
     }
 
     /// Call getter for a named `member`
-    fn get(&self, name: &Object) -> Object {
+    fn get(&self, name: usize) -> Object {
         Object::null()
     }
 
     /// Return string representation of
-    fn to_string(&self) -> Object {
-        Object::new::<Str>(String::from("class"))
+    fn to_string(&self) -> &str {
+        "Class"
     }
 
-    fn get_hash(&self) -> Object {
-        Object::null()
+    fn get_hash(&self) -> usize {
+        todo!()
+    }
+
+    fn equals(&self, other: &Object) -> bool {
+        todo!()
     }
 }
 

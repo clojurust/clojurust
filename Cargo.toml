@@ -1,8 +1,8 @@
 [package]
-name = "clojurust"
-version = "0.1.0"
 authors = ["ivanpierre <me@ivanpierre.world>"]
 edition = "2018"
+name    = "clojurust"
+version = "0.1.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -11,10 +11,10 @@ edition = "2018"
 [lib]
 
 [dependencies]
-im = { version = "15.0.0", features = [] }
-rc = "0.1.1"
-bigint = "4.4.3"
+bigint      = "4.4.3"
+im-rc       = { version = "15.0.0", features = [] }
+intertrait  = "0.2"
 lazy_static = "1.4.0"
-mut_static = "5.0.0"
-intertrait = "0.2"
-linkme = "0.2"
+linkme      = "0.2"
+mut_static  = "5.0.0"
+rc          = "0.1.1"

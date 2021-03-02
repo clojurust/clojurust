@@ -1,5 +1,5 @@
 // use std::sync::*;
-use im::vector::*;
+use im_rc::vector::*;
 use lazy_static::lazy_static;
 use std::sync::{Arc, RwLock};
 
@@ -9,15 +9,15 @@ use super::rustobj::*;
 use super::unique::*;
 
 pub struct Globals {
-    pub id: Arc<Unique>,
-    pub obj: Arc<RustObj>,
+    pub id: Object,
+    pub obj: Object,
 }
 
 impl Globals {
     pub fn new() -> Globals {
         Globals {
-            id: Arc::new(Unique::new()),
-            obj: Arc::new(RustObj::new()),
+            id: Unique::new(),
+            obj: RustObj::new(),
         }
     }
 

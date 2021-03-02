@@ -1,40 +1,48 @@
 // use std::sync::*;
-use im::vector::*;
+use im_rc::vector::*;
 use lazy_static::lazy_static;
 use std::sync::{Arc, RwLock};
 
 use super::object::*;
 use super::pvector::*;
 
-pub struct RustObj {
-    pub obj: PVector,
+pub struct SRustObj {
+    pub obj: Object,
 }
 
-impl RustObj {
-    pub fn new() -> RustObj {
-        RustObj {
-            obj: PVector::new(),
-        }
-    }
+pub trait RustObj {
+    fn update(&self, index: usize, value: &Object) -> Object;
 
-    fn new_vect(new: PVector) -> RustObj {
-        RustObj { obj: new }
-    }
+    fn get(&self, index: usize) -> Object;
+}
 
-    pub fn update(&self, index: usize, value: &Object) -> RustObj {
-        RustObj {
+impl RustObj for SRustObj {
+    fn update(&self, index: usize, value: &Object) -> Object {
+        Object::new::<SRustObj>(SRustObj {
             obj: {
                 if index == self.obj.len() {
-                    self.obj.add(value)
+                    self.obj.add(value.clone())
                 } else {
-                    self.obj.update(index, value)
+                    self.obj.update(index, value.clone())
                 }
             },
-        }
+        })
     }
 
-    pub fn get(&self, index: usize) -> Object {
+    fn get(&self, index: usize) -> Object {
         self.obj.get(index)
+    }
+}
+
+impl SRustObj {
+    pub fn new() -> Object {
+        Object::new::<SRustObj>(SRustObj {
+            obj: Object::new::<SPVector>(SPVector::new()),
+        })
+    }
+
+    fn new_vect(new: Object) -> Object {
+        Object::new::<SRustObj>(SRustObj { obj: new })
     }
 
     pub unsafe fn init() {
@@ -46,7 +54,33 @@ impl RustObj {
 
         // Insures all is initialized
         Object::init();
-        PVector::init();
+        SPVector::init();
+    }
+}
+
+impl TObject for SRustObj {
+    fn get_class(&self) -> &super::class::SClass {
+        todo!()
+    }
+
+    fn call(&self, name: usize, args: &[Object]) -> Object {
+        todo!()
+    }
+
+    fn get(&self, name: usize) -> Object {
+        todo!()
+    }
+
+    fn to_string(&self) -> &str {
+        todo!()
+    }
+
+    fn get_hash(&self) -> usize {
+        todo!()
+    }
+
+    fn equals(&self, other: &Object) -> bool {
+        todo!()
     }
 }
 

@@ -1,7 +1,7 @@
 //! clojure::rust::keyword: keyword index
 
-use im::hashmap::HashMap;
-use im::*;
+use im_rc::hashmap::HashMap;
+use im_rc::*;
 use lazy_static::{__Deref, lazy_static};
 use std::sync::*;
 
@@ -18,6 +18,10 @@ pub struct Unique {
     map: HashMap<String, usize>,
     vect: Vector<String>,
 }
+
+unsafe impl Send for Unique {}
+
+unsafe impl Sync for Unique {}
 
 impl Unique {
     pub fn new() -> Unique {

@@ -14,7 +14,7 @@ use intertrait::cast::*;
 use intertrait::*;
 
 use super::class::*;
-// use super::rust_obj::*;
+use super::stri::*;
 
 pub trait Inner: TObject + Debug + Eq + Hash + CastFromSync {}
 
@@ -22,7 +22,6 @@ pub trait Inner: TObject + Debug + Eq + Hash + CastFromSync {}
 // pub type Inner = IObject;
 
 /// Basic definition of a dynamic object
-// pub type Object = Option<Arc<Inner>>;
 pub struct Object {
     pub inner: Option<Arc<TObject>>,
 }
@@ -67,18 +66,19 @@ impl Object {
 ///
 pub trait TObject: CastFromSync {
     /// Return `Class` of `Object`
-    fn get_class(&self) -> Object;
+    fn get_class(&self) -> &SClass;
 
     /// Call named `method` with `Object`s arguments
-    fn call(&self, name: &Object, args: &[Object]) -> Object;
+    fn call(&self, name: usize, args: &[Object]) -> Object;
 
     /// Call getter for a named `member`
-    fn get(&self, name: &Object) -> Object;
+    fn get(&self, name: usize) -> Object;
 
-    /// Return string representation of
-    fn to_string(&self) -> Object;
+    fn to_string(&self) -> &str;
 
-    fn get_hash(&self) -> Object;
+    fn get_hash(&self) -> usize;
+
+    fn equals(&self, other: &Object) -> bool;
 }
 
 const NILSTRING: &str = "nil";
@@ -88,7 +88,7 @@ const NILSTRING: &str = "nil";
 /// Functions are applied to the `content` of `Object`
 // #[cast_to([sync] IObject, Debug)];
 impl TObject for Object {
-    fn get_class(&self) -> Object {
+    fn get_class(&self) -> &SClass {
         if let Some(o) = self.clone().inner {
             o.get_class()
         } else {
@@ -96,7 +96,7 @@ impl TObject for Object {
         }
     }
 
-    fn call(&self, name: &Object, args: &[Object]) -> Object {
+    fn call(&self, name: usize, args: &[Object]) -> Object {
         match self.clone().inner {
             None => panic!("Call on nil"),
             Some(o) => {
@@ -106,7 +106,7 @@ impl TObject for Object {
         }
     }
 
-    fn get(&self, name: &Object) -> Object {
+    fn get(&self, name: usize) -> Object {
         match self.clone().inner {
             None => panic!("Getter on nil"),
             Some(o) => {
@@ -117,9 +117,9 @@ impl TObject for Object {
         }
     }
 
-    fn to_string(&self) -> Object {
+    fn to_string(&self) -> &str {
         match self.clone().inner {
-            None => Object::new::<SStr>(String::from(NILSTRING)),
+            None => NILSTRING,
             Some(o) => {
                 let a = o.clone();
                 a.get_class().to_string()
@@ -127,7 +127,7 @@ impl TObject for Object {
         }
     }
 
-    fn get_hash(&self) -> Object {
+    fn get_hash(&self) -> usize {
         match self.clone().inner {
             None => 0,
             Some(o) => {
@@ -136,37 +136,16 @@ impl TObject for Object {
             }
         }
     }
-}
 
-impl<T> TObject for T
-where
-    T: Inner,
-{
-    fn get_class(&self) -> Object {
-        todo!()
-    }
-
-    fn call(&self, name: &Object, args: &[Object]) -> Object {
-        todo!()
-    }
-
-    fn get(&self, name: &Object) -> Object {
-        todo!()
-    }
-
-    fn to_string(&self) -> Object {
-        todo!()
-    }
-
-    fn get_hash(&self) -> Object {
+    fn equals(&self, other: &Object) -> bool {
         todo!()
     }
 }
 
-impl std::fmt::Debug for Object {
+impl Debug for Object {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let a = self;
-        f.write_str(&self.to_string())
+        let a = self.clone();
+        f.write_str(a.to_string())
     }
 }
 
@@ -190,7 +169,7 @@ impl Eq for Object {}
 
 impl PartialEq for Object {
     fn eq(&self, other: &Self) -> bool {
-        todo!()
+        self.equals(other)
     }
 }
 

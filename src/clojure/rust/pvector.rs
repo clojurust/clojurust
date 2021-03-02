@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
-pub use im::vector::*;
-use im::*;
+pub use im_rc::vector::*;
+use im_rc::*;
 use intertrait::cast::*;
 use intertrait::*;
 use lazy_static::__Deref;
@@ -10,41 +10,49 @@ use std::{any::*, fmt::*, hash::*, result::*, sync::*};
 use super::class::*;
 use super::object::*;
 
-pub struct PVector {
+pub struct SPVector {
     inner: Vector<Object>,
 }
 
-castable_to!(PVector => [sync] TObject);
+castable_to!(SPVector => [sync] TObject);
 
-impl TObject for PVector {
+unsafe impl Send for SPVector {}
+
+unsafe impl Sync for SPVector {}
+
+impl TObject for SPVector {
     fn get_class<'a>(&'a self) -> &'a SClass {
         todo!()
     }
 
-    fn call(&self, name: &str, args: &[Object]) -> Object {
+    fn call(&self, name: usize, args: &[Object]) -> Object {
         todo!()
     }
 
-    fn get(&self, name: &str) -> Object {
+    fn get(&self, name: usize) -> Object {
         todo!()
     }
 
-    fn to_string(&self) -> String {
+    fn to_string(&self) -> &str {
         todo!()
     }
 
     fn get_hash(&self) -> usize {
         todo!()
     }
+
+    fn equals(&self, other: &Object) -> bool {
+        todo!()
+    }
 }
 
-impl PVector {
-    pub fn new_vect(inner: Vector<Object>) -> PVector {
-        PVector { inner }
+impl SPVector {
+    pub fn new_vect(inner: Vector<Object>) -> SPVector {
+        SPVector { inner }
     }
 
-    pub fn new() -> PVector {
-        PVector {
+    pub fn new() -> SPVector {
+        SPVector {
             inner: Vector::new(),
         }
     }
@@ -60,17 +68,17 @@ impl PVector {
         }
     }
 
-    pub fn update(&self, index: usize, value: &Object) -> PVector {
+    pub fn update(&self, index: usize, value: &Object) -> SPVector {
         let &mut vec = &mut self.inner;
-        PVector {
+        SPVector {
             inner: vec.update(index, value.clone()),
         }
     }
 
-    pub fn add(&mut self, value: &Object) -> PVector {
+    pub fn add(&mut self, value: &Object) -> SPVector {
         let mut vect = &self.inner;
         vect.push_back(value.clone());
-        PVector { inner: *vect }
+        SPVector { inner: *vect }
     }
 
     pub unsafe fn init() {

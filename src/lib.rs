@@ -20,16 +20,17 @@ pub mod clojure {
     }
     pub mod rust {
         pub mod class;
+        pub mod error;
         pub mod function;
         pub mod globals;
+        pub mod implementation;
         pub mod object;
         pub mod phashmap;
         pub mod pvector;
         pub mod rustobj;
-        pub mod str;
+        pub mod stri;
         pub mod unique;
 
-        // pub mod implementation;
         // pub mod member;
         // pub mod protocol;
         // pub mod prototype;
