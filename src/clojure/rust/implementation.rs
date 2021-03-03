@@ -1,42 +1,47 @@
 //! Anonymous Function with one defined arity, and possible last element multi arity
-
-use super::object::*;
-use super::pvector::*;
 use std::sync::*;
+
+use intertrait::cast::*;
+use intertrait::*;
+
+use super::object;
 
 pub struct SImplementation {
     pub multiary: bool,
     pub function: FnPtr,
 }
 
-type FnPtr = fn(args: &Object) -> Object;
+castable_to!(SImplementation => [sync] object::TObject, Implementation);
+
+type FnPtr = fn(args: &object::Object) -> object::Object;
 
 pub trait Implementation {
-    fn call(&self, args: &Object) -> Object;
+    fn call(&self, args: &object::Object) -> object::Object;
 }
+
 impl SImplementation {
-    fn new(multiary: bool, function: FnPtr) -> Object {
-        Object::new::<SImplementation>(SImplementation { multiary, function })
+    fn new(multiary: bool, function: FnPtr) -> object::Object {
+        object::Object::new::<SImplementation>(SImplementation { multiary, function })
     }
 }
 
 impl Implementation for SImplementation {
-    fn call(&self, args: &Object) -> Object {
+    fn call(&self, args: &object::Object) -> object::Object {
         let f = self.function;
         f(args)
     }
 }
 
-impl TObject for SImplementation {
+impl object::TObject for SImplementation {
     fn get_class(&self) -> &super::class::SClass {
         todo!()
     }
 
-    fn call(&self, name: usize, args: &[Object]) -> Object {
+    fn call(&self, name: usize, args: &[object::Object]) -> object::Object {
         todo!()
     }
 
-    fn get(&self, name: usize) -> Object {
+    fn get(&self, name: usize) -> object::Object {
         todo!()
     }
 
@@ -48,7 +53,7 @@ impl TObject for SImplementation {
         todo!()
     }
 
-    fn equals(&self, other: &Object) -> bool {
+    fn equals(&self, other: &object::Object) -> bool {
         todo!()
     }
 }

@@ -1,32 +1,33 @@
 use im_rc::hashmap::*;
 use im_rc::*;
-use intertrait::cast::*;
-use intertrait::*;
 use std::{any::*, fmt::*, result::*, sync::*};
 
-use super::class::*;
-use super::object::*;
+use intertrait::cast::*;
+use intertrait::*;
+
+use super::class;
+use super::object;
 
 pub struct SPHashMap {
-    inner: HashMap<Object, Object>,
+    inner: HashMap<object::Object, object::Object>,
 }
 
-castable_to!(SPHashMap => [sync] TObject, Send);
+castable_to!(SPHashMap => [sync] object::TObject, Send);
 
 unsafe impl Send for SPHashMap {}
 
 unsafe impl Sync for SPHashMap {}
 
-impl TObject for SPHashMap {
-    fn get_class<'a>(&'a self) -> &SClass {
+impl object::TObject for SPHashMap {
+    fn get_class<'a>(&'a self) -> &class::SClass {
         todo!()
     }
 
-    fn call(&self, name: usize, args: &[Object]) -> Object {
+    fn call(&self, name: usize, args: &[object::Object]) -> object::Object {
         todo!()
     }
 
-    fn get(&self, name: usize) -> Object {
+    fn get(&self, name: usize) -> object::Object {
         todo!()
     }
 
@@ -38,7 +39,7 @@ impl TObject for SPHashMap {
         todo!()
     }
 
-    fn equals(&self, other: &Object) -> bool {
+    fn equals(&self, other: &object::Object) -> bool {
         todo!()
     }
 }
@@ -50,7 +51,7 @@ impl SPHashMap {
         }
     }
 
-    pub fn new_hash(inner: HashMap<Object, Object>) -> SPHashMap {
+    pub fn new_hash(inner: HashMap<object::Object, object::Object>) -> SPHashMap {
         SPHashMap { inner }
     }
 
@@ -62,7 +63,7 @@ impl SPHashMap {
         INIT = true;
 
         // Insures all is initialized
-        Object::init();
+        object::Object::init();
     }
 }
 

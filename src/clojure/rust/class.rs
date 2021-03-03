@@ -5,10 +5,8 @@ use intertrait::*;
 use std::sync::Arc;
 use std::{any::*, fmt::*, result::*, sync::*};
 
-use super::object::*;
-use super::phashmap::*;
-use super::stri::*;
-use super::unique::*;
+use super::object;
+use super::phashmap;
 
 /// ## Clojure Class descriptor for Class :
 /// ``` clojure
@@ -40,18 +38,18 @@ use super::unique::*;
 /// }
 /// ```
 pub struct SClass {
-    inner: SPHashMap,
+    inner: phashmap::SPHashMap,
 }
 
 unsafe impl Send for SClass {}
 
 unsafe impl Sync for SClass {}
 
-castable_to!(SClass => TObject);
+castable_to!(SClass => object::TObject);
 
 impl SClass {
-    pub fn new(inner: SPHashMap) -> Object {
-        Object {
+    pub fn new(inner: phashmap::SPHashMap) -> object::Object {
+        object::Object {
             inner: Some(Arc::new(SClass { inner })),
         }
     }
@@ -67,43 +65,50 @@ impl SClass {
         println!("Class::init");
 
         // Insures all is initialized
-        Unique::init();
-        Object::init();
-        SPHashMap::init();
+        object::Object::init();
+        phashmap::SPHashMap::init();
         // let c = Keywords::get("clojure.rust.object/Objects");
     }
 }
 
 trait Class {
-    fn call(obj: &TObject, name: &Object, args: &[Object]) -> Object;
+    fn call(
+        obj: &object::TObject,
+        name: &object::Object,
+        args: &[object::Object],
+    ) -> object::Object;
 
-    fn implementation(&self, name: &Object) -> Object;
+    fn implementation(&self, name: &object::Object) -> object::Object;
 }
 
 impl Class for SClass {
-    fn call(obj: &TObject, name: &Object, args: &[Object]) -> Object {
+    fn call(
+        obj: &object::TObject,
+        name: &object::Object,
+        args: &[object::Object],
+    ) -> object::Object {
         todo!()
     }
 
-    fn implementation(&self, name: &Object) -> Object {
+    fn implementation(&self, name: &object::Object) -> object::Object {
         todo!()
     }
 }
 
-impl TObject for SClass {
+impl object::TObject for SClass {
     /// Return `Class` of `Object`
     fn get_class(&self) -> &SClass {
         todo!()
     }
 
     /// Call named `method` with `Object`s arguments
-    fn call(&self, name: usize, args: &[Object]) -> Object {
-        Object::null()
+    fn call(&self, name: usize, args: &[object::Object]) -> object::Object {
+        object::Object::null()
     }
 
     /// Call getter for a named `member`
-    fn get(&self, name: usize) -> Object {
-        Object::null()
+    fn get(&self, name: usize) -> object::Object {
+        object::Object::null()
     }
 
     /// Return string representation of
@@ -115,7 +120,7 @@ impl TObject for SClass {
         todo!()
     }
 
-    fn equals(&self, other: &Object) -> bool {
+    fn equals(&self, other: &object::Object) -> bool {
         todo!()
     }
 }

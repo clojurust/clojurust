@@ -1,13 +1,10 @@
 //! # Protocol
-use crate::clojure::lang::hashmap::*;
+use crate::clojure::lang::phashmap;
 
-struct Protocol {
-    prototype: HashMap,
+struct SProtocol {
+    prototype: phashmap::SPHashMap,
     nb_arity: usize,
     multi_arity: bool,
 }
 
-
-pub fn init() {
-
-}
+pub fn init() {}

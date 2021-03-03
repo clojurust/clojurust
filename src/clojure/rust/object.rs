@@ -13,8 +13,8 @@ use std::{any::*, convert::*, fmt::*, hash::*, result::*, sync::*};
 use intertrait::cast::*;
 use intertrait::*;
 
-use super::class::*;
-use super::stri::*;
+use super::class;
+use super::stri;
 
 pub trait Inner: TObject + Debug + Eq + Hash + CastFromSync {}
 
@@ -57,7 +57,7 @@ impl Object {
         println!("Class::init");
 
         // Insures all is initialized
-        SClass::init();
+        class::SClass::init();
     }
 }
 
@@ -66,7 +66,7 @@ impl Object {
 ///
 pub trait TObject: CastFromSync {
     /// Return `Class` of `Object`
-    fn get_class(&self) -> &SClass;
+    fn get_class(&self) -> &class::SClass;
 
     /// Call named `method` with `Object`s arguments
     fn call(&self, name: usize, args: &[Object]) -> Object;
@@ -83,12 +83,12 @@ pub trait TObject: CastFromSync {
 
 const NILSTRING: &str = "nil";
 
-/// Implementation of protocol IObject for Object.
+/// SImplementation of protocol IObject for Object.
 ///
 /// Functions are applied to the `content` of `Object`
 // #[cast_to([sync] IObject, Debug)];
 impl TObject for Object {
-    fn get_class(&self) -> &SClass {
+    fn get_class(&self) -> &class::SClass {
         if let Some(o) = self.clone().inner {
             o.get_class()
         } else {

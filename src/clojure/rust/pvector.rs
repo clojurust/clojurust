@@ -1,20 +1,22 @@
 use std::sync::Arc;
 
-pub use im_rc::vector::*;
-use im_rc::*;
+use im_rc;
+
 use intertrait::cast::*;
 use intertrait::*;
+
 use lazy_static::__Deref;
+
 use std::{any::*, fmt::*, hash::*, result::*, sync::*};
 
-use super::class::*;
-use super::object::*;
+use super::class;
+use super::object;
 
 pub struct SPVector {
-    inner: Vector<Object>,
+    inner: object::Object,
 }
 
-castable_to!(SPVector => [sync] TObject, PVector);
+castable_to!(SPVector => [sync] object::TObject, PVector);
 
 unsafe impl Send for SPVector {}
 
@@ -23,23 +25,23 @@ unsafe impl Sync for SPVector {}
 pub trait PVector {
     fn len(&self) -> usize;
 
-    fn get(&self, index: usize) -> Object;
+    fn get(&self, index: usize) -> object::Object;
 
-    fn update(&self, index: usize, value: Object) -> SPVector;
+    fn update(&self, index: usize, value: object::Object) -> SPVector;
 
-    fn add(&mut self, value: Object) -> SPVector;
+    fn add(&mut self, value: object::Object) -> SPVector;
 }
 
-impl TObject for SPVector {
-    fn get_class<'a>(&'a self) -> &'a SClass {
+impl object::TObject for SPVector {
+    fn get_class<'a>(&'a self) -> &'a class::SClass {
         todo!()
     }
 
-    fn call(&self, name: usize, args: &[Object]) -> Object {
+    fn call(&self, name: usize, args: &[object::Object]) -> object::Object {
         todo!()
     }
 
-    fn get(&self, name: usize) -> Object {
+    fn get(&self, name: usize) -> object::Object {
         todo!()
     }
 
@@ -51,19 +53,19 @@ impl TObject for SPVector {
         todo!()
     }
 
-    fn equals(&self, other: &Object) -> bool {
+    fn equals(&self, other: &object::Object) -> bool {
         todo!()
     }
 }
 
 impl SPVector {
-    pub fn new_vect(inner: Vector<Object>) -> SPVector {
+    pub fn new_vect(inner: im_rc::vector::Vector<object::Object>) -> SPVector {
         SPVector { inner }
     }
 
     pub fn new() -> SPVector {
         SPVector {
-            inner: Vector::new(),
+            inner: im_rc::vector::Vector::new(),
         }
     }
 
@@ -75,7 +77,7 @@ impl SPVector {
         INIT = true;
 
         // Insures all is initialized
-        Object::init();
+        object::Object::init();
     }
 }
 
@@ -84,21 +86,21 @@ impl PVector for SPVector {
         self.inner.len()
     }
 
-    fn get(&self, index: usize) -> Object {
+    fn get(&self, index: usize) -> object::Object {
         match self.inner.get(index) {
-            None => Object::null(),
+            None => object::Object::null(),
             Some(o) => o.clone(),
         }
     }
 
-    fn update(&self, index: usize, value: Object) -> SPVector {
+    fn update(&self, index: usize, value: object::Object) -> SPVector {
         let &mut vec = &mut self.inner;
         SPVector {
             inner: vec.update(index, value.clone()),
         }
     }
 
-    fn add(&mut self, value: Object) -> SPVector {
+    fn add(&mut self, value: object::Object) -> SPVector {
         let mut vect = &self.inner;
         vect.push_back(value.clone());
         SPVector { inner: *vect }

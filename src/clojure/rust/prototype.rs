@@ -1,11 +1,9 @@
 //! # Prototype
 
-pub struct Prototype {
+pub struct SPrototype {
     start_arity: usize,
-    nb_arity: usize,
+    max_arity: usize,
     multi_arity: bool,
 }
 
-
-pub fn init() {
-}
+pub fn init() {}

@@ -5,6 +5,11 @@ use im_rc::*;
 use lazy_static::{__Deref, lazy_static};
 use std::sync::*;
 
+use intertrait::cast::*;
+use intertrait::*;
+
+use super::object;
+
 /// A keyword storage structure
 ///
 /// We will store all `String`s used as reference to objects as `usize`.
@@ -14,41 +19,73 @@ use std::sync::*;
 /// # Examples
 
 #[derive(Default, Debug)]
-pub struct Unique {
+pub struct SUnique {
     map: HashMap<String, usize>,
     vect: Vector<String>,
 }
 
-unsafe impl Send for Unique {}
+castable_to!(SUnique => [sync] object::TObject, Unique);
 
-unsafe impl Sync for Unique {}
+unsafe impl Send for SUnique {}
 
-impl Unique {
-    pub fn new() -> Unique {
-        Unique {
+unsafe impl Sync for SUnique {}
+
+pub trait Unique {}
+
+impl Unique for SUnique {}
+
+impl object::TObject for SUnique {
+    fn get_class(&self) -> &super::class::SClass {
+        todo!()
+    }
+
+    fn call(&self, name: usize, args: &[object::Object]) -> object::Object {
+        todo!()
+    }
+
+    fn get(&self, name: usize) -> object::Object {
+        todo!()
+    }
+
+    fn to_string(&self) -> &str {
+        todo!()
+    }
+
+    fn get_hash(&self) -> usize {
+        todo!()
+    }
+
+    fn equals(&self, other: &object::Object) -> bool {
+        todo!()
+    }
+}
+
+impl SUnique {
+    pub fn new() -> SUnique {
+        SUnique {
             map: HashMap::<String, usize>::new(),
             vect: Vector::<String>::new(),
         }
     }
 
-    pub fn current(keywords: &RwLock<Arc<Unique>>) -> Arc<Unique> {
-        keywords.read().unwrap().clone()
+    pub fn current(self: &RwLock<Arc<SUnique>>) -> Arc<SUnique> {
+        self.read().unwrap().clone()
     }
 
-    pub fn current_mut(keywords: &RwLock<Arc<Unique>>) -> Arc<Unique> {
+    pub fn current_mut(keywords: &RwLock<Arc<SUnique>>) -> Arc<SUnique> {
         keywords.write().unwrap().clone()
     }
 
-    pub fn make_current(self, keywords: &RwLock<Arc<Unique>>) {
+    pub fn make_current(self, keywords: &RwLock<Arc<SUnique>>) {
         *keywords.write().unwrap() = Arc::new(self);
     }
 
-    pub fn len(keywords: &RwLock<Arc<Unique>>) -> usize {
-        Unique::current(keywords).vect.len()
+    pub fn len(keywords: &RwLock<Arc<SUnique>>) -> usize {
+        SUnique::current(keywords).vect.len()
     }
 
-    pub fn get_id(key: usize, keywords: &RwLock<Arc<Unique>>) -> String {
-        let v = &Unique::current(keywords).vect;
+    pub fn get_id(key: usize, keywords: &RwLock<Arc<SUnique>>) -> String {
+        let v = &SUnique::current(keywords).vect;
         if v.len() < key + 1 {
             String::from("...vide...")
         } else {
@@ -56,12 +93,12 @@ impl Unique {
         }
     }
 
-    pub fn get_key(key: &str, keywords: &RwLock<Arc<Unique>>) -> usize {
-        let i = Unique::current(keywords).clone();
+    pub fn get_key(key: &str, keywords: &RwLock<Arc<SUnique>>) -> usize {
+        let i = SUnique::current(keywords).clone();
         let a = i.as_ref();
         let mut m = a.map.clone();
         let mut v = a.vect.clone();
-        let length = Unique::len(keywords);
+        let length = SUnique::len(keywords);
 
         let k = key.to_string();
         match m.get(&k) {
@@ -74,7 +111,7 @@ impl Unique {
                 v.push_back(k.clone());
                 m = m.update(k.clone(), length);
 
-                let k = Unique { map: m, vect: v };
+                let k = SUnique { map: m, vect: v };
                 k.make_current(keywords);
 
                 // return new index that was length of vector
@@ -83,8 +120,8 @@ impl Unique {
         }
     }
 
-    pub fn test(key: String, keywords: &RwLock<Arc<Unique>>) -> bool {
-        let i = Unique::current(keywords).clone();
+    pub fn test(key: String, keywords: &RwLock<Arc<SUnique>>) -> bool {
+        let i = SUnique::current(keywords).clone();
         let a = i.as_ref();
         match a.map.get(&key) {
             Some(_) => true,
@@ -95,7 +132,7 @@ impl Unique {
     pub unsafe fn init() {}
 }
 
-impl Drop for Unique {
+impl Drop for SUnique {
     fn drop(&mut self) {
         println!("Dropping Keyword state! -> {:?}", self);
     }
@@ -103,7 +140,7 @@ impl Drop for Unique {
 
 static INIT: bool = false;
 
-pub fn init_keywords() -> RwLock<Arc<Unique>> {
+pub fn init_keywords() -> RwLock<Arc<SUnique>> {
     RwLock::new(Arc::new(Default::default()))
 }
 
@@ -111,8 +148,8 @@ lazy_static! {
     /// Private access to static `Keywords` struture.
     ///
     /// Here will be stored and retrived keywords data.
-    pub static ref KEYWORDS: RwLock<Arc<Unique>> = init_keywords();
-    pub static ref CORE: RwLock<Arc<Unique>> = init_keywords();
+    pub static ref KEYWORDS: RwLock<Arc<SUnique>> = init_keywords();
+    pub static ref CORE: RwLock<Arc<SUnique>> = init_keywords();
 }
 
 #[test]
@@ -120,45 +157,45 @@ fn test_keywords() {
     // Initial state
     println!(
         "Init state len = {:?} state = {:?}",
-        Unique::len(&CORE),
-        Unique::current(&CORE)
+        SUnique::len(&CORE),
+        SUnique::current(&CORE)
     );
 
-    let e1 = Unique::current(&CORE);
+    let e1 = SUnique::current(&CORE);
 
     // Call init_static
     println!(
         "New state len = {:?} state = {:?}",
-        Unique::len(&CORE),
-        Unique::current(&CORE)
+        SUnique::len(&CORE),
+        SUnique::current(&CORE)
     );
 
-    let e2 = Unique::current(&CORE);
+    let e2 = SUnique::current(&CORE);
 
     // add first keyword
-    let o = Unique::get_key(&String::from("essai"), &CORE);
+    let o = SUnique::get_key(&String::from("essai"), &CORE);
     println!(
         "add essai len = {:?} state = {:?}",
-        Unique::len(&CORE),
-        Unique::current(&CORE)
+        SUnique::len(&CORE),
+        SUnique::current(&CORE)
     );
 
-    let e3 = Unique::current(&CORE);
+    let e3 = SUnique::current(&CORE);
 
     // add second keyword
-    Unique::get_key(&"essai2".to_string(), &CORE);
+    SUnique::get_key(&"essai2".to_string(), &CORE);
     println!(
         "add essai2 len = {:?} state = {:?}",
-        Unique::len(&CORE),
-        Unique::current(&CORE)
+        SUnique::len(&CORE),
+        SUnique::current(&CORE)
     );
 
-    let e4 = Unique::current(&CORE);
+    let e4 = SUnique::current(&CORE);
 
     // display existing keywords
-    println!("Keyword 0 = \"{}\"", Unique::get_id(0, &CORE));
-    println!("Keyword 1 = \"{}\"", Unique::get_id(1, &CORE));
-    println!("Keyword 2 = \"{}\"", Unique::get_id(2, &CORE));
+    println!("Keyword 0 = \"{}\"", SUnique::get_id(0, &CORE));
+    println!("Keyword 1 = \"{}\"", SUnique::get_id(1, &CORE));
+    println!("Keyword 2 = \"{}\"", SUnique::get_id(2, &CORE));
 
     // Verify persistant state
     println!("State 1 = {:?}", e1);

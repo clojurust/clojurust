@@ -8,7 +8,7 @@
 use super::object::Object;
 
 /// All numeric values have the `Number` trait.
-trait Number {
+pub trait Number {
     fn big_integer_value(&self) -> Object;
     fn long_value(&self) -> Object;
     fn int_value(&self) -> Object;
