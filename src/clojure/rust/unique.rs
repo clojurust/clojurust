@@ -1,11 +1,12 @@
 //! clojure::rust::keyword: keyword index
-
-use im_rc::hashmap::HashMap;
-use im_rc::*;
-use lazy_static::{__Deref, lazy_static};
 use std::sync::*;
 
-use intertrait::cast::*;
+use im::*;
+
+// use lazy_static::{__Deref};
+use lazy_static::lazy_static;
+
+// use intertrait::cast::*;
 use intertrait::*;
 
 use super::object;
@@ -68,8 +69,8 @@ impl SUnique {
         }
     }
 
-    pub fn current(self: &RwLock<Arc<SUnique>>) -> Arc<SUnique> {
-        self.read().unwrap().clone()
+    pub fn current(keywords: &RwLock<Arc<SUnique>>) -> Arc<SUnique> {
+        keywords.read().unwrap().clone()
     }
 
     pub fn current_mut(keywords: &RwLock<Arc<SUnique>>) -> Arc<SUnique> {

@@ -1,39 +1,37 @@
 //! Anonymous Function with multi-arity
-use crate::clojure::rust::implementation::SImplementation;
-use im_rc::hashmap::*;
-use im_rc::*;
-use lazy_static::{__Deref, lazy_static};
+use im::*;
+// use lazy_static::{__Deref, lazy_static};
 use std::clone::Clone;
-use std::{any::*, fmt::*, hash::*, result::*, sync::*};
+// use std::{any::*, fmt::*, hash::*, result::*, sync::*};
 
 // use std::fmt::*;
 use intertrait::cast::*;
 use intertrait::*;
 
-use super::class;
-use super::implementation;
-use super::object;
+use super::class::*;
+use super::implem_native::*;
+use super::object::*;
 
 pub struct SFunction {
     pub multiary: Option<usize>,
-    pub func: HashMap<usize, object::Object>, // all implementations
+    pub func: HashMap<usize, Object>, // all implementations
 }
 
-castable_to!(SFunction => [sync] object::TObject, Function);
+castable_to!(SFunction => [sync] TObject, Function);
 
 unsafe impl Send for SFunction {}
 
 unsafe impl Sync for SFunction {}
 
 trait Function {
-    fn call(&self, args: &object::Object) -> object::Object;
+    fn call(&self, args: &Object) -> Object;
 
-    fn get(&self, arity: usize) -> object::Object;
+    fn get(&self, arity: usize) -> Object;
 }
 
 impl Function for SFunction {
-    fn get(&self, arity: usize) -> object::Object {
-        let index = arity;
+    fn get(&self, arity: usize) -> Object {
+        let mut index = arity;
         match self.multiary {
             Some(max) => {
                 if arity > max {
@@ -42,35 +40,35 @@ impl Function for SFunction {
                 let implem = self.func.get(&index).clone();
                 match implem {
                     Some(o) => {
-                        let i = o.cast::<implementation::SImplementation>();
+                        let i = o.cast::<SImplemNative>();
                         match i {
                             Some(imp) => o.clone(),
-                            None => object::Object::null(),
+                            None => todo!(),
                         }
                     }
-                    None => object::Object::null(),
+                    None => todo!(),
                 }
             }
             // If no max => no implementation
-            None => object::Object::null(),
+            None => todo!(),
         }
     }
 
-    fn call(&self, args: &object::Object) -> object::Object {
-        object::Object::null()
+    fn call(&self, args: &Object) -> Object {
+        Object::null()
     }
 }
 
-impl object::TObject for SFunction {
-    fn get_class(&self) -> &class::SClass {
+impl TObject for SFunction {
+    fn get_class(&self) -> &SClass {
         todo!()
     }
 
-    fn call(&self, name: usize, args: &[object::Object]) -> object::Object {
+    fn call(&self, name: usize, args: &[Object]) -> Object {
         todo!()
     }
 
-    fn get(&self, name: usize) -> object::Object {
+    fn get(&self, name: usize) -> Object {
         todo!()
     }
 
@@ -82,7 +80,7 @@ impl object::TObject for SFunction {
         todo!()
     }
 
-    fn equals(&self, other: &object::Object) -> bool {
+    fn equals(&self, other: &Object) -> bool {
         todo!()
     }
 }

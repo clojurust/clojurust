@@ -3,18 +3,16 @@
 //! Define immutable dynamic objects
 //!
 
-#![allow(non_snake_case)]
-
-use lazy_static::{__Deref, lazy_static};
+// use lazy_static::{__Deref, lazy_static};
 use std::clone::Clone;
-use std::{any::*, convert::*, fmt::*, hash::*, result::*, sync::*};
+// use std::{any::*, convert::*, result::*};
+use std::{fmt::*, hash::*, sync::*};
 
 // use std::fmt::*;
 use intertrait::cast::*;
 use intertrait::*;
 
-use super::class;
-use super::stri;
+use super::class::*;
 
 pub trait Inner: TObject + Debug + Eq + Hash + CastFromSync {}
 
@@ -45,6 +43,12 @@ impl Object {
             Some(_) => false,
         }
     }
+    pub fn inn<T>(self) -> &'static T
+// where
+    //     T: TObject,
+    {
+        (&self.clone()).cast::<T>().expect("Unexpected error")
+    }
 
     pub unsafe fn init() {
         // only execute one time
@@ -57,7 +61,7 @@ impl Object {
         println!("Class::init");
 
         // Insures all is initialized
-        class::SClass::init();
+        SClass::init();
     }
 }
 
@@ -66,7 +70,7 @@ impl Object {
 ///
 pub trait TObject: CastFromSync {
     /// Return `Class` of `Object`
-    fn get_class(&self) -> &class::SClass;
+    fn get_class(&self) -> &SClass;
 
     /// Call named `method` with `Object`s arguments
     fn call(&self, name: usize, args: &[Object]) -> Object;
@@ -88,7 +92,7 @@ const NILSTRING: &str = "nil";
 /// Functions are applied to the `content` of `Object`
 // #[cast_to([sync] IObject, Debug)];
 impl TObject for Object {
-    fn get_class(&self) -> &class::SClass {
+    fn get_class(&self) -> &SClass {
         if let Some(o) = self.clone().inner {
             o.get_class()
         } else {
@@ -170,6 +174,26 @@ impl Eq for Object {}
 impl PartialEq for Object {
     fn eq(&self, other: &Self) -> bool {
         self.equals(other)
+    }
+}
+
+pub trait IntoInner<'a> {
+    fn into_inner<T: 'static + 'a>(&'a self) -> &'a T;
+}
+
+impl<'a> IntoInner<'a> for Object {
+    fn into_inner<U: 'static + 'a>(&'a self) -> &'a U {
+        let o = self.clone();
+        match o.inner {
+            None => panic!("Cannot "),
+            Some(o) => {
+                let a = o.as_ref().cast::<U>();
+                match a {
+                    None => panic!("Convert nil to string"),
+                    Some(o) => o,
+                }
+            }
+        }
     }
 }
 

@@ -7,7 +7,7 @@
 #![allow(unused_variables)]
 // ![warn(unreachable_pub, missing_docs)]
 #![allow(missing_docs)]
-#![allow(unused_imports)]
+// #![allow(unused_imports)]
 #![allow(bare_trait_objects)]
 #![recursion_limit = "256"]
 // #![feature(fn_traits)]
@@ -23,7 +23,7 @@ pub mod clojure {
         pub mod error;
         pub mod function;
         pub mod globals;
-        pub mod implementation;
+        pub mod implem_native;
         pub mod object;
         pub mod phashmap;
         pub mod pvector;
@@ -34,7 +34,7 @@ pub mod clojure {
         // pub mod member;
         // pub mod protocol;
         // pub mod prototype;
-        // pub mod hashset;
+        // pub mod phashset;
     }
 }
 

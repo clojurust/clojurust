@@ -1,9 +1,10 @@
 //! # Defines Rust dynamic Strings.
 //!
 
-use lazy_static::{__Deref, lazy_static};
-use std::clone::Clone;
-use std::{any::*, convert::*, fmt, hash::*, result::*, sync::*};
+// use lazy_static::{__Deref, lazy_static};
+// use std::{any::*, fmt, hash::*, sync::*};
+use std::{borrow::Borrow, clone::Clone};
+use std::{convert::*, result::*};
 
 use intertrait::cast::*;
 use intertrait::*;
@@ -18,18 +19,17 @@ pub struct SStri {
 
 pub trait Stri {}
 
-impl<'a> TryInto<&'a SStri> for &'a object::Object {
+impl<'a> TryInto<&'static SStri> for &'static object::Object {
     type Error = error::SCljError;
 
-    fn try_into(self) -> Result<&'a SStri, Self::Error> {
-        let o = self.clone();
-        match o.inner {
+    fn try_into(self) -> Result<&'static SStri, Self::Error> {
+        match self.inner {
             None => error::error::<SStri>("Convert nil to string"),
             Some(o) => {
                 let a = o.as_ref().cast::<SStri>();
                 match a {
                     None => error::error::<SStri>("Convert nil to string"),
-                    Some(o) => Ok(o),
+                    Some(b) => Ok(b),
                 }
             }
         }

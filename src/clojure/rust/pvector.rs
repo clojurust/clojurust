@@ -1,47 +1,37 @@
-use std::sync::Arc;
+// use lazy_static::__Deref;
+// use std::{any::*, result::*, sync::*};
+// use std::{fmt::*, hash::*};
 
-use im_rc;
-
-use intertrait::cast::*;
+// use intertrait::cast::*;
 use intertrait::*;
 
-use lazy_static::__Deref;
+use super::class::*;
+use super::object::*;
 
-use std::{any::*, fmt::*, hash::*, result::*, sync::*};
-
-use super::class;
-use super::object;
+pub type ObjVector = im::vector::Vector<Object>;
 
 pub struct SPVector {
-    inner: object::Object,
+    inner: ObjVector,
 }
 
-castable_to!(SPVector => [sync] object::TObject, PVector);
+castable_to!(SPVector => [sync] TObject, PVector);
+
+castable_to!(ObjVector => [sync] TObject);
 
 unsafe impl Send for SPVector {}
 
 unsafe impl Sync for SPVector {}
 
-pub trait PVector {
-    fn len(&self) -> usize;
-
-    fn get(&self, index: usize) -> object::Object;
-
-    fn update(&self, index: usize, value: object::Object) -> SPVector;
-
-    fn add(&mut self, value: object::Object) -> SPVector;
-}
-
-impl object::TObject for SPVector {
-    fn get_class<'a>(&'a self) -> &'a class::SClass {
+impl TObject for ObjVector {
+    fn get_class(&self) -> &SClass {
         todo!()
     }
 
-    fn call(&self, name: usize, args: &[object::Object]) -> object::Object {
+    fn call(&self, name: usize, args: &[Object]) -> Object {
         todo!()
     }
 
-    fn get(&self, name: usize) -> object::Object {
+    fn get(&self, name: usize) -> Object {
         todo!()
     }
 
@@ -53,19 +43,55 @@ impl object::TObject for SPVector {
         todo!()
     }
 
-    fn equals(&self, other: &object::Object) -> bool {
+    fn equals(&self, other: &Object) -> bool {
+        todo!()
+    }
+}
+
+pub trait PVector {
+    fn len(&self) -> usize;
+
+    fn get(&self, index: usize) -> Object;
+
+    fn update(&self, index: usize, value: Object) -> SPVector;
+
+    fn add(&mut self, value: Object) -> SPVector;
+}
+
+impl TObject for SPVector {
+    fn get_class<'a>(&'a self) -> &'a SClass {
+        todo!()
+    }
+
+    fn call(&self, name: usize, args: &[Object]) -> Object {
+        todo!()
+    }
+
+    fn get(&self, name: usize) -> Object {
+        todo!()
+    }
+
+    fn to_string(&self) -> &str {
+        todo!()
+    }
+
+    fn get_hash(&self) -> usize {
+        todo!()
+    }
+
+    fn equals(&self, other: &Object) -> bool {
         todo!()
     }
 }
 
 impl SPVector {
-    pub fn new_vect(inner: im_rc::vector::Vector<object::Object>) -> SPVector {
+    pub fn new_vect(inner: ObjVector) -> SPVector {
         SPVector { inner }
     }
 
     pub fn new() -> SPVector {
         SPVector {
-            inner: im_rc::vector::Vector::new(),
+            inner: ObjVector::new(),
         }
     }
 
@@ -77,7 +103,7 @@ impl SPVector {
         INIT = true;
 
         // Insures all is initialized
-        object::Object::init();
+        Object::init();
     }
 }
 
@@ -86,27 +112,28 @@ impl PVector for SPVector {
         self.inner.len()
     }
 
-    fn get(&self, index: usize) -> object::Object {
+    fn get(&self, index: usize) -> Object {
         match self.inner.get(index) {
-            None => object::Object::null(),
+            None => Object::null(),
             Some(o) => o.clone(),
         }
     }
 
-    fn update(&self, index: usize, value: object::Object) -> SPVector {
+    fn update(&self, index: usize, value: Object) -> SPVector {
         let &mut vec = &mut self.inner;
         SPVector {
             inner: vec.update(index, value.clone()),
         }
     }
 
-    fn add(&mut self, value: object::Object) -> SPVector {
+    fn add(&mut self, value: Object) -> SPVector {
         let mut vect = &self.inner;
         vect.push_back(value.clone());
         SPVector { inner: *vect }
     }
 }
 
+/// #[deprecated(since = "0.1.0", note = "Standard traits are only defined in the Object struct")]
 // impl Clone for PVector {
 //     fn clone(&self) -> Self {
 //         PVector {
@@ -115,20 +142,26 @@ impl PVector for SPVector {
 //     }
 // }
 
-impl std::fmt::Debug for SPVector {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let a = self.cast::<SPVector>();
-        match a {
-            Some(spv) => f.write_str(spv.to_string()),
-            None => todo!(),
-        }
-    }
-}
+/// #[deprecated(since = "0.1.0", note = "Standard traits are only defined in the Object struct")]
+// impl Debug for SPVector {
+//     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+//         let a = self.cast::<SPVector>();
+//         match a {
+//             Some(spv) => f.write_str(spv.to_string()),
+//             None => panic!("Optional None should not apply"),
+//         }
+//     }
+// }
 
-impl Hash for SPVector {
-    fn hash<H: Hasher>(&self, state: &mut H) {
-        state.write_usize(self.get_hash())
-    }
-}
+/// #[deprecated(since = "0.1.0", note = "Standard traits are only defined in the Object struct")]
+// impl Hash for SPVector {
+//     fn hash<H: Hasher>(&self, state: &mut H) {
+//         if let Some(o_vec) = self.cast::<TObject>() {
+//             state.write_usize(o_vec.get_hash())
+//         } else {
+//             panic!("Optional None should not apply");
+//         }
+//     }
+// }
 
 static mut INIT: bool = false;

@@ -1,19 +1,16 @@
 // use std::sync::*;
-use im_rc::vector::*;
 use lazy_static::lazy_static;
-use std::sync::{Arc, RwLock};
 
-use intertrait::cast::*;
+// use intertrait::cast::*;
 use intertrait::*;
 
 use super::object::*;
-use super::pvector::*;
 use super::rustobj::*;
 use super::unique::*;
 
 pub struct SGlobals {
-    pub id: Object,
-    pub obj: Object,
+    pub id: Object,  // SUnique
+    pub obj: Object, // SRustObj
 }
 
 castable_to!(SGlobals => [sync] TObject, Globals);
@@ -35,9 +32,15 @@ impl SGlobals {
 
 impl Globals for SGlobals {
     fn update_object(&self, index: usize, value: &Object) -> Object {
+        let new_obj = self.clone();
         Object::new::<SGlobals>(SGlobals {
-            id: self.id.clone(),
-            obj: Object::new::<SPVector>(self.obj.update(index, value)),
+            id: new_obj.id.clone(),
+            obj: {
+                let a = new_obj.obj.clone();
+                let b = a.inn::<SRustObj>();
+                let c = b.update(index, value);
+                c
+            },
         })
     }
 

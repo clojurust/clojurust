@@ -1,33 +1,31 @@
-use im_rc::hashmap::*;
-use im_rc::*;
-use std::{any::*, fmt::*, result::*, sync::*};
-
-use intertrait::cast::*;
+// use intertrait::cast::*;
 use intertrait::*;
 
-use super::class;
-use super::object;
+use super::class::*;
+use super::object::*;
+
+type ObjHashMap = im::hashmap::HashMap<Object, Object>;
 
 pub struct SPHashMap {
-    inner: HashMap<object::Object, object::Object>,
+    inner: ObjHashMap,
 }
 
-castable_to!(SPHashMap => [sync] object::TObject, Send);
+castable_to!(SPHashMap => [sync] TObject, Send);
 
 unsafe impl Send for SPHashMap {}
 
 unsafe impl Sync for SPHashMap {}
 
-impl object::TObject for SPHashMap {
-    fn get_class<'a>(&'a self) -> &class::SClass {
+impl TObject for SPHashMap {
+    fn get_class<'a>(&'a self) -> &SClass {
         todo!()
     }
 
-    fn call(&self, name: usize, args: &[object::Object]) -> object::Object {
+    fn call(&self, name: usize, args: &[Object]) -> Object {
         todo!()
     }
 
-    fn get(&self, name: usize) -> object::Object {
+    fn get(&self, name: usize) -> Object {
         todo!()
     }
 
@@ -39,7 +37,7 @@ impl object::TObject for SPHashMap {
         todo!()
     }
 
-    fn equals(&self, other: &object::Object) -> bool {
+    fn equals(&self, other: &Object) -> bool {
         todo!()
     }
 }
@@ -47,11 +45,11 @@ impl object::TObject for SPHashMap {
 impl SPHashMap {
     pub fn new() -> SPHashMap {
         SPHashMap {
-            inner: HashMap::new(),
+            inner: ObjHashMap::new(),
         }
     }
 
-    pub fn new_hash(inner: HashMap<object::Object, object::Object>) -> SPHashMap {
+    pub fn new_hash(inner: ObjHashMap) -> SPHashMap {
         SPHashMap { inner }
     }
 
@@ -63,7 +61,7 @@ impl SPHashMap {
         INIT = true;
 
         // Insures all is initialized
-        object::Object::init();
+        Object::init();
     }
 }
 

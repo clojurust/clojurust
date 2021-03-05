@@ -5,7 +5,7 @@
 // use std::fmt::Debug;
 //  se std::mem::transmute;
 
-use super::object::Object;
+use super::object::*;
 
 /// All numeric values have the `Number` trait.
 pub trait Number {

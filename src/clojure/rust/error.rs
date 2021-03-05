@@ -1,7 +1,8 @@
 use std::error::Error;
 use std::fmt;
 
-use super::object;
+use super::class::*;
+use super::object::*;
 
 pub struct SCljError {
     msg: String,
@@ -29,16 +30,16 @@ impl fmt::Debug for SCljError {
     }
 }
 
-impl object::TObject for SCljError {
-    fn get_class(&self) -> &super::class::SClass {
+impl TObject for SCljError {
+    fn get_class(&self) -> &SClass {
         todo!()
     }
 
-    fn call(&self, name: usize, args: &[object::Object]) -> object::Object {
+    fn call(&self, name: usize, args: &[Object]) -> Object {
         todo!()
     }
 
-    fn get(&self, name: usize) -> object::Object {
+    fn get(&self, name: usize) -> Object {
         todo!()
     }
 
@@ -50,7 +51,7 @@ impl object::TObject for SCljError {
         todo!()
     }
 
-    fn equals(&self, other: &object::Object) -> bool {
+    fn equals(&self, other: &Object) -> bool {
         todo!()
     }
 }
