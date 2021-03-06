@@ -90,7 +90,7 @@ impl Class for SClass {
 
 impl TObject for SClass {
     /// Return `Class` of `Object`
-    fn get_class(&self) -> &SClass {
+    fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }
 

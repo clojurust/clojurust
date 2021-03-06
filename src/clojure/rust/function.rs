@@ -60,7 +60,7 @@ impl Function for SFunction {
 }
 
 impl TObject for SFunction {
-    fn get_class(&self) -> &SClass {
+    fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }
 

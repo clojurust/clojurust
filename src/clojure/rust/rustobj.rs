@@ -2,9 +2,13 @@
 
 // use std::sync::{Arc, RwLock};
 
+// use std::borrow::Borrow;
+
+// use cast::CastRef;
 // use intertrait::cast::*;
 use intertrait::*;
 
+use super::class::*;
 use super::object::*;
 use super::pvector::*;
 
@@ -15,26 +19,27 @@ pub struct SRustObj {
 castable_to!(SRustObj => [sync] TObject, RustObj);
 
 pub trait RustObj {
-    fn update(&self, index: usize, value: &Object) -> Object;
+    fn update(&mut self, index: usize, value: &Object) -> Object;
 
-    fn add(&self, value: &Object) -> Object;
+    fn add(&mut self, value: &Object) -> Object;
 
-    fn get(&self, index: usize) -> Object;
+    fn get(&mut self, index: usize) -> Object;
 }
 
 impl RustObj for SRustObj {
-    fn update(&self, index: usize, value: &Object) -> Object {
-        let o = self.obj.inn::<SPVector>().update(index, value.clone());
+    fn update(&mut self, index: usize, value: &Object) -> Object {
+        let v = self.obj.inn_mut::<SPVector>().update(index, value.clone());
+        Object::new::<SPVector>(v)
+    }
+
+    fn add(&mut self, value: &Object) -> Object {
+        let v = self.obj.inn_mut::<SPVector>();
+        let o = v.add(value.clone());
         Object::new::<SPVector>(o)
     }
 
-    fn add(&self, value: &Object) -> Object {
-        let o = self.obj.inn::<SPVector>().add(value.clone());
-        Object::new::<SPVector>(o)
-    }
-
-    fn get(&self, index: usize) -> Object {
-        PVector::get((&self.obj).inn::<SPVector>(), index).clone()
+    fn get(&mut self, index: usize) -> Object {
+        PVector::get(self.obj.inn_mut::<SPVector>(), index).clone()
     }
 }
 
@@ -63,7 +68,7 @@ impl SRustObj {
 }
 
 impl TObject for SRustObj {
-    fn get_class(&self) -> &super::class::SClass {
+    fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }
 

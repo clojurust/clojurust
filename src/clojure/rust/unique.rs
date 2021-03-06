@@ -9,7 +9,8 @@ use lazy_static::lazy_static;
 // use intertrait::cast::*;
 use intertrait::*;
 
-use super::object;
+use super::class::*;
+use super::object::*;
 
 /// A keyword storage structure
 ///
@@ -25,7 +26,7 @@ pub struct SUnique {
     vect: Vector<String>,
 }
 
-castable_to!(SUnique => [sync] object::TObject, Unique);
+castable_to!(SUnique => [sync] TObject, Unique);
 
 unsafe impl Send for SUnique {}
 
@@ -35,16 +36,16 @@ pub trait Unique {}
 
 impl Unique for SUnique {}
 
-impl object::TObject for SUnique {
-    fn get_class(&self) -> &super::class::SClass {
+impl TObject for SUnique {
+    fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }
 
-    fn call(&self, name: usize, args: &[object::Object]) -> object::Object {
+    fn call(&self, name: usize, args: &[Object]) -> Object {
         todo!()
     }
 
-    fn get(&self, name: usize) -> object::Object {
+    fn get(&self, name: usize) -> Object {
         todo!()
     }
 
@@ -56,7 +57,7 @@ impl object::TObject for SUnique {
         todo!()
     }
 
-    fn equals(&self, other: &object::Object) -> bool {
+    fn equals(&self, other: &Object) -> bool {
         todo!()
     }
 }

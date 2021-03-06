@@ -12,6 +12,7 @@ version = "0.1.0"
 
 [dependencies]
 bigint      = "4.4.3"
+dashmap     = "4.0.2"
 im          = { version = "15.0.0", features = [] }
 intertrait  = "0.2"
 lazy_static = "1.4.0"

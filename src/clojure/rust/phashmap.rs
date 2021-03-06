@@ -17,7 +17,7 @@ unsafe impl Send for SPHashMap {}
 unsafe impl Sync for SPHashMap {}
 
 impl TObject for SPHashMap {
-    fn get_class<'a>(&'a self) -> &SClass {
+    fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }
 

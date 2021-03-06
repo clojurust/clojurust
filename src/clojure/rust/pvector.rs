@@ -23,7 +23,7 @@ unsafe impl Send for SPVector {}
 unsafe impl Sync for SPVector {}
 
 impl TObject for ObjVector {
-    fn get_class(&self) -> &SClass {
+    fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }
 
@@ -48,7 +48,7 @@ impl TObject for ObjVector {
     }
 }
 
-pub trait PVector {
+pub trait PVector: CastFromSync {
     fn len(&self) -> usize;
 
     fn get(&self, index: usize) -> Object;
@@ -59,7 +59,7 @@ pub trait PVector {
 }
 
 impl TObject for SPVector {
-    fn get_class<'a>(&'a self) -> &'a SClass {
+    fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }
 
@@ -120,16 +120,18 @@ impl PVector for SPVector {
     }
 
     fn update(&self, index: usize, value: Object) -> SPVector {
-        let &mut vec = &mut self.inner;
+        let vec = &self.inner;
         SPVector {
             inner: vec.update(index, value.clone()),
         }
     }
 
     fn add(&mut self, value: Object) -> SPVector {
-        let mut vect = &self.inner;
+        let vect = &mut self.inner;
         vect.push_back(value.clone());
-        SPVector { inner: *vect }
+        SPVector {
+            inner: vect.clone(),
+        }
     }
 }
 

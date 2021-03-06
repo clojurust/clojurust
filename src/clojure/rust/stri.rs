@@ -3,38 +3,22 @@
 
 // use lazy_static::{__Deref, lazy_static};
 // use std::{any::*, fmt, hash::*, sync::*};
-use std::{borrow::Borrow, clone::Clone};
-use std::{convert::*, result::*};
+// use std::{borrow::Borrow, clone::Clone};
+// use std::{result::*};
+use std::convert::*;
 
-use intertrait::cast::*;
+// use intertrait::cast::*;
 use intertrait::*;
 
-use super::class;
-use super::error;
-use super::object;
+use super::class::*;
+// use super::error;
+use super::object::*;
 
 pub struct SStri {
     inner: String,
 }
 
 pub trait Stri {}
-
-impl<'a> TryInto<&'static SStri> for &'static object::Object {
-    type Error = error::SCljError;
-
-    fn try_into(self) -> Result<&'static SStri, Self::Error> {
-        match self.inner {
-            None => error::error::<SStri>("Convert nil to string"),
-            Some(o) => {
-                let a = o.as_ref().cast::<SStri>();
-                match a {
-                    None => error::error::<SStri>("Convert nil to string"),
-                    Some(b) => Ok(b),
-                }
-            }
-        }
-    }
-}
 
 impl Stri for SStri {}
 
@@ -57,38 +41,38 @@ impl From<&str> for SStri {
 /// SStr -> Object
 /// We call new() because a new object is created.
 /// That's why we cannot use the reverse into function
-impl From<SStri> for object::Object {
+impl From<SStri> for Object {
     fn from(s: SStri) -> Self {
-        object::Object::new::<SStri>(s)
+        Object::new::<SStri>(s)
     }
 }
 
 /// String -> Object
-impl From<String> for object::Object {
+impl From<String> for Object {
     fn from(s: String) -> Self {
-        object::Object::from(SStri::from(s))
+        Object::from(SStri::from(s))
     }
 }
 
 /// &str -> Object
-impl From<&str> for object::Object {
+impl From<&str> for Object {
     fn from(s: &str) -> Self {
-        object::Object::from(SStri::from(s))
+        Object::from(SStri::from(s))
     }
 }
 
-castable_to!(SStri => [sync] object::TObject, Stri);
+castable_to!(SStri => [sync] TObject, Stri);
 
-impl object::TObject for SStri {
-    fn get_class(&self) -> &class::SClass {
+impl TObject for SStri {
+    fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }
 
-    fn call(&self, name: usize, args: &[object::Object]) -> object::Object {
+    fn call(&self, name: usize, args: &[Object]) -> Object {
         todo!()
     }
 
-    fn get(&self, name: usize) -> object::Object {
+    fn get(&self, name: usize) -> Object {
         todo!()
     }
 
@@ -100,7 +84,7 @@ impl object::TObject for SStri {
         todo!()
     }
 
-    fn equals(&self, other: &object::Object) -> bool {
+    fn equals(&self, other: &Object) -> bool {
         todo!()
     }
 }

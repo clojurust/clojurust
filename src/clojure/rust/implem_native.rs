@@ -39,7 +39,7 @@ impl ImplemNative for SImplemNative {
 }
 
 impl TObject for SImplemNative {
-    fn get_class(&self) -> &SClass {
+    fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }
 

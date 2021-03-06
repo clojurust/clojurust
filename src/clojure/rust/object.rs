@@ -4,7 +4,10 @@
 //!
 
 // use lazy_static::{__Deref, lazy_static};
-use std::clone::Clone;
+use std::{
+    borrow::{Borrow, BorrowMut},
+    clone::Clone,
+};
 // use std::{any::*, convert::*, result::*};
 use std::{fmt::*, hash::*, sync::*};
 
@@ -26,7 +29,7 @@ pub struct Object {
 
 castable_to!(Object => [sync] TObject);
 
-impl Object {
+impl<'a> Object {
     pub fn new<T: TObject>(obj: T) -> Object {
         Object {
             inner: Some(Arc::new(obj)),
@@ -43,11 +46,21 @@ impl Object {
             Some(_) => false,
         }
     }
-    pub fn inn<T>(self) -> &'static T
-// where
-    //     T: TObject,
+
+    pub fn inn<T>(&'a mut self) -> &'a T
+    where
+        T: TObject,
     {
-        (&self.clone()).cast::<T>().expect("Unexpected error")
+        let a = self.inner.borrow();
+        a.cast::<T>().expect("Unexpected error")
+    }
+
+    pub fn inn_mut<T>(&'a mut self) -> &'a mut T
+    where
+        T: TObject,
+    {
+        let a = self.inner.borrow_mut();
+        a.cast::<T>().expect("Unexpected error")
     }
 
     pub unsafe fn init() {
@@ -70,7 +83,7 @@ impl Object {
 ///
 pub trait TObject: CastFromSync {
     /// Return `Class` of `Object`
-    fn get_class(&self) -> &SClass;
+    fn get_class<'a>(&self) -> &'a SClass;
 
     /// Call named `method` with `Object`s arguments
     fn call(&self, name: usize, args: &[Object]) -> Object;
@@ -92,9 +105,9 @@ const NILSTRING: &str = "nil";
 /// Functions are applied to the `content` of `Object`
 // #[cast_to([sync] IObject, Debug)];
 impl TObject for Object {
-    fn get_class(&self) -> &SClass {
+    fn get_class<'a>(&self) -> &'a SClass {
         if let Some(o) = self.clone().inner {
-            o.get_class()
+            o.clone().get_class()
         } else {
             panic!("Get class from nil")
         }
@@ -174,26 +187,6 @@ impl Eq for Object {}
 impl PartialEq for Object {
     fn eq(&self, other: &Self) -> bool {
         self.equals(other)
-    }
-}
-
-pub trait IntoInner<'a> {
-    fn into_inner<T: 'static + 'a>(&'a self) -> &'a T;
-}
-
-impl<'a> IntoInner<'a> for Object {
-    fn into_inner<U: 'static + 'a>(&'a self) -> &'a U {
-        let o = self.clone();
-        match o.inner {
-            None => panic!("Cannot "),
-            Some(o) => {
-                let a = o.as_ref().cast::<U>();
-                match a {
-                    None => panic!("Convert nil to string"),
-                    Some(o) => o,
-                }
-            }
-        }
     }
 }
 

@@ -31,7 +31,7 @@ impl fmt::Debug for SCljError {
 }
 
 impl TObject for SCljError {
-    fn get_class(&self) -> &SClass {
+    fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }
 
