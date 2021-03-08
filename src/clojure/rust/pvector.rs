@@ -27,14 +27,6 @@ impl TObject for ObjVector {
         todo!()
     }
 
-    fn call(&self, name: usize, args: &[Object]) -> Object {
-        todo!()
-    }
-
-    fn get(&self, name: usize) -> Object {
-        todo!()
-    }
-
     fn to_string(&self) -> &str {
         todo!()
     }
@@ -60,14 +52,6 @@ pub trait PVector: CastFromSync {
 
 impl TObject for SPVector {
     fn get_class<'a>(&self) -> &'a SClass {
-        todo!()
-    }
-
-    fn call(&self, name: usize, args: &[Object]) -> Object {
-        todo!()
-    }
-
-    fn get(&self, name: usize) -> Object {
         todo!()
     }
 

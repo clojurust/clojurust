@@ -1,14 +1,24 @@
 [package]
-authors = ["ivanpierre <me@ivanpierre.world>"]
-edition = "2018"
-name    = "clojurust"
-version = "0.1.0"
+authors    = ["ivanpierre <me@ivanpierre.world>"]
+categories = ["compiler"]
+edition    = "2018"
+keywords   = ["clojure", "rust", "interpreter", "compiler", "repl"]
+license    = "MPL-2.0+"
+name       = "clojurust"
+readme     = "./README.md"
+repository = "https://github.com/ivanpierre/clojurust"
+version    = "0.1.0"
+
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [features]
 
 [lib]
+path = "./src/lib.rs"
+
+[badges]
+travis-ci = { repository = "ivanpierre/clojurust" }
 
 [dependencies]
 bigint      = "4.4.3"

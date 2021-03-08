@@ -85,12 +85,6 @@ pub trait TObject: CastFromSync {
     /// Return `Class` of `Object`
     fn get_class<'a>(&self) -> &'a SClass;
 
-    /// Call named `method` with `Object`s arguments
-    fn call(&self, name: usize, args: &[Object]) -> Object;
-
-    /// Call getter for a named `member`
-    fn get(&self, name: usize) -> Object;
-
     fn to_string(&self) -> &str;
 
     fn get_hash(&self) -> usize;
@@ -99,6 +93,29 @@ pub trait TObject: CastFromSync {
 }
 
 const NILSTRING: &str = "nil";
+
+impl Class for Object {
+    fn call(&self, name: usize, args: &[Object]) -> Object {
+        match self.clone().inner {
+            None => panic!("Call on nil"),
+            Some(o) => {
+                let a = o.clone();
+                o.get_class().call(name, args).clone()
+            }
+        }
+    }
+
+    fn get(&self, name: usize) -> Object {
+        match self.clone().inner {
+            None => panic!("Getter on nil"),
+            Some(o) => {
+                let a = o.clone();
+                let b = a.get_class();
+                b.get_class().get(name).clone()
+            }
+        }
+    }
+}
 
 /// SImplementation of protocol IObject for Object.
 ///
@@ -110,27 +127,6 @@ impl TObject for Object {
             o.clone().get_class()
         } else {
             panic!("Get class from nil")
-        }
-    }
-
-    fn call(&self, name: usize, args: &[Object]) -> Object {
-        match self.clone().inner {
-            None => panic!("Call on nil"),
-            Some(o) => {
-                let a = o.clone();
-                o.get_class().call(name, args)
-            }
-        }
-    }
-
-    fn get(&self, name: usize) -> Object {
-        match self.clone().inner {
-            None => panic!("Getter on nil"),
-            Some(o) => {
-                let a = o.clone();
-                let b = a.get_class();
-                b.get(name)
-            }
         }
     }
 

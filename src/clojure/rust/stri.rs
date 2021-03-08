@@ -68,14 +68,6 @@ impl TObject for SStri {
         todo!()
     }
 
-    fn call(&self, name: usize, args: &[Object]) -> Object {
-        todo!()
-    }
-
-    fn get(&self, name: usize) -> Object {
-        todo!()
-    }
-
     fn to_string(&self) -> &str {
         todo!()
     }

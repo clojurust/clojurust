@@ -72,28 +72,18 @@ impl SClass {
     }
 }
 
-trait Class {
-    fn call(obj: &TObject, name: &Object, args: &[Object]) -> Object;
+/// `Object` `Protocol` for all defined `Object`s
+///
+///
+pub trait Class {
+    /// Call named `method` with `Object`s arguments
+    fn call(&self, name: usize, args: &[Object]) -> Object;
 
-    fn implementation(&self, name: &Object) -> Object;
+    /// Call getter for a named `member`
+    fn get(&self, name: usize) -> Object;
 }
 
 impl Class for SClass {
-    fn call(obj: &TObject, name: &Object, args: &[Object]) -> Object {
-        todo!()
-    }
-
-    fn implementation(&self, name: &Object) -> Object {
-        todo!()
-    }
-}
-
-impl TObject for SClass {
-    /// Return `Class` of `Object`
-    fn get_class<'a>(&self) -> &'a SClass {
-        todo!()
-    }
-
     /// Call named `method` with `Object`s arguments
     fn call(&self, name: usize, args: &[Object]) -> Object {
         Object::null()
@@ -102,6 +92,13 @@ impl TObject for SClass {
     /// Call getter for a named `member`
     fn get(&self, name: usize) -> Object {
         Object::null()
+    }
+}
+
+impl TObject for SClass {
+    /// Return `Class` of `Object`
+    fn get_class<'a>(&self) -> &'a SClass {
+        todo!()
     }
 
     /// Return string representation of
