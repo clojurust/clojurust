@@ -1,57 +1,41 @@
-//! clojure::rust::class: Define class of objects
-
+//! Class module
+//!
+//! Define class of objects with
+//! * Name
+//! * [Protocols](crate::clojure::rust::protocol)
+//!
 // use std::{any::*, fmt::*, result::*};
 use std::sync::*;
 
 // use intertrait::cast::*;
 use intertrait::*;
 
+use super::obj_hashset::*;
 use super::object::*;
-use super::phashmap::*;
 
 /// ## Clojure Class descriptor for Class :
 /// ``` clojure
 /// {
-///     :super_class    Class
-///     :protocols      [
-///                        ... Protocols
-///                     ]
-///     :get            {
-///                         :name            :clojure.rust.class/Class
-///                         ... added from super-class
-///                     }
-///     :methods        {
-///                         ... added from super-class
-///                         ... added from protocols
-///                     }
+///     :name           usize
+///     :protocols      #{ Protocol }
 /// }
 /// ```
 ///
-/// ## Rust Class descriptor for Class :
-/// ``` rust
-/// pub struct Class {
-///     const CLASS_NAME = "",
-///     pub super_class: SObject, // Class
-///     pub protocols: SObject,   // HashSet of Protocols
-///     pub get: SObject,         // HashMap of Getters
-///     pub methods: SObject,     // HashMap of Methods
-///     pub functions: SObject,   // HashMap of static functions
-/// }
-/// ```
 pub struct SClass {
-    inner: SPHashMap,
+    name: usize,
+    protocols: SObjHashSet,
 }
 
 unsafe impl Send for SClass {}
 
 unsafe impl Sync for SClass {}
 
-castable_to!(SClass => TObject);
+castable_to!(SClass => TObject, Class);
 
 impl SClass {
-    pub fn new(inner: SPHashMap) -> Object {
+    pub fn new(name: usize, protocols: SObjHashSet) -> Object {
         Object {
-            inner: Some(Arc::new(SClass { inner })),
+            inner: Some(Arc::new(SClass { name, protocols })),
         }
     }
 
@@ -67,12 +51,12 @@ impl SClass {
 
         // Insures all is initialized
         Object::init();
-        SPHashMap::init();
+        ObjHashSet::init();
         // let c = Keywords::get("clojure.rust.object/Objects");
     }
 }
 
-/// `Object` `Protocol` for all defined `Object`s
+/// `Class`: `Protocol` for `Object`s and `SClass`es
 ///
 ///
 pub trait Class {

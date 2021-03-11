@@ -10,9 +10,9 @@ use std::convert::*;
 // use intertrait::cast::*;
 use intertrait::*;
 
-use super::class::*;
-// use super::error;
-use super::object::*;
+use crate::clojure;
+use clojure::rust::class::*;
+use clojure::rust::object::*;
 
 pub struct SStri {
     inner: String,

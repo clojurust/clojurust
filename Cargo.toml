@@ -23,9 +23,26 @@ travis-ci = { repository = "ivanpierre/clojurust" }
 [dependencies]
 bigint      = "4.4.3"
 dashmap     = "4.0.2"
+delegate    = "0.5.1"
 im          = { version = "15.0.0", features = [] }
 intertrait  = "0.2"
 lazy_static = "1.4.0"
 linkme      = "0.2"
 mut_static  = "5.0.0"
 rc          = "0.1.1"
+
+# docs.rs-specific configuration
+[package.metadata.docs.rs]
+# document all features
+all-features = true
+# defines the configuration attribute `docsrs`
+rustdoc-args = [
+    "--lib",
+    "--bins",
+    "--open",
+    "--package",
+    "clojurust",
+    "--exmples",
+    "--tests",
+    "--benches",
+]

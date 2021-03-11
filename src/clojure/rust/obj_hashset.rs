@@ -1,22 +1,18 @@
+// use lazy_static::__Deref;
+// use std::{any::*, result::*, sync::*};
+// use std::{fmt::*, hash::*};
+
 // use intertrait::cast::*;
 use intertrait::*;
 
 use super::class::*;
 use super::object::*;
 
-type ObjHashMap = im::hashmap::HashMap<Object, Object>;
+pub type SObjHashSet = im::hashset::HashSet<Object>;
 
-pub struct SPHashMap {
-    inner: ObjHashMap,
-}
+castable_to!(SObjHashSet => [sync] TObject, ObjHashSet);
 
-castable_to!(SPHashMap => [sync] TObject, Send);
-
-unsafe impl Send for SPHashMap {}
-
-unsafe impl Sync for SPHashMap {}
-
-impl TObject for SPHashMap {
+impl TObject for SObjHashSet {
     fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }
@@ -34,17 +30,11 @@ impl TObject for SPHashMap {
     }
 }
 
-impl SPHashMap {
-    pub fn new() -> SPHashMap {
-        SPHashMap {
-            inner: ObjHashMap::new(),
-        }
-    }
+pub trait ObjHashSet: CastFromSync {}
 
-    pub fn new_hash(inner: ObjHashMap) -> SPHashMap {
-        SPHashMap { inner }
-    }
+impl ObjHashSet for SObjHashSet {}
 
+impl ObjHashSet {
     pub unsafe fn init() {
         // only execute one time
         if INIT {
@@ -52,8 +42,12 @@ impl SPHashMap {
         }
         INIT = true;
 
+        println!("Class::init");
+
         // Insures all is initialized
         Object::init();
+        SClass::init();
+        // let c = Keywords::get("clojure.rust.object/Objects");
     }
 }
 

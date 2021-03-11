@@ -5,43 +5,47 @@ use lazy_static::lazy_static;
 use intertrait::*;
 
 use super::class::*;
+use super::obj_vector::*;
 use super::object::*;
-use super::rustobj::*;
 use super::unique::*;
 
 pub struct SGlobals {
     pub id: Object,  // SUnique
-    pub obj: Object, // SRustObj
+    pub obj: Object, // SObjVector
 }
 
 castable_to!(SGlobals => [sync] TObject, Globals);
 
 pub trait Globals {
-    fn update_object(&mut self, index: usize, value: &Object) -> Object;
+    fn update_object(&mut self, index: usize, value: &Object) -> (usize, Object);
 
     fn get_obj_by_id(&self, index: usize) -> Object;
 }
 
 impl SGlobals {
-    pub fn new() -> SGlobals {
-        SGlobals {
+    pub fn new() -> Object {
+        Object::new::<SGlobals>(SGlobals {
             id: Object::new::<SUnique>(SUnique::new()),
-            obj: Object::new::<SRustObj>(SRustObj::new()),
-        }
+            obj: Object::new::<SObjVector>(SObjVector::default()),
+        })
     }
 }
 
 impl Globals for SGlobals {
-    fn update_object(&mut self, index: usize, value: &Object) -> Object {
-        let v = self.obj.inn_mut::<SRustObj>().update(index, &value.clone());
+    fn update_object(&mut self, index: String, value: &Object) -> (usize, Object) {
+        let v = self;
+        let b =
+            v.id.clone()
+                .inn_mut::<SUnique>()
+                .get_id(index, value.clone());
         Object::new::<SGlobals>(SGlobals {
-            id: self.id.clone(),
+            id: self.id,
             obj: v,
         })
     }
 
     fn get_obj_by_id(&self, index: usize) -> Object {
-        self.obj.get(index)
+        self.obj.get(index).expect("TODO object not found").clone()
     }
 }
 

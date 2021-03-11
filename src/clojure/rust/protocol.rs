@@ -1,10 +1,8 @@
-//! # Protocol
-use crate::clojure::lang::phashmap;
+//! # Protocol module
+//! protocol is the Clojure equivalent of Rust traits.
 
-struct SProtocol {
-    prototype: phashmap::SPHashMap,
-    nb_arity: usize,
-    multi_arity: bool,
-}
+use crate::clojure::rust::obj_hashmap::*;
+
+type SProtocol = SObjHashMap;
 
 pub fn init() {}

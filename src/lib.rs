@@ -1,8 +1,18 @@
-//! # ClojuRust
+#![crate_name = "clojurust"]
+
+//! # `clojurust` crate: Proof of concept for a Clojure library in Rust.
 //!
-//! Proof of concept for a Clojure compiler in Rust.
+//! This library implements root functions for a Rust implemented `host` for
+//! manage a `Clojure` implemented in `Rust`.
+//! It implements also the core Java equivalent of the Java version of
+//! Clojure in Rust.
 //!
-//! ##
+//! ## `crate::clojure::rust` module
+//!
+//! This module contains the `Rust` host.
+//!
+//!
+//!
 #![allow(dead_code)]
 #![allow(unused_variables)]
 // ![warn(unreachable_pub, missing_docs)]
@@ -13,28 +23,33 @@
 // #![feature(fn_traits)]
 
 /// Clojure Module
+///
+/// description de clojure
 pub mod clojure {
-    /// Lang Module
-    pub mod lang {
-        // pub mod number;
-    }
+    /// Clojure language module
+    ///
+    /// description de lang
+    pub mod lang {}
+
+    /// Rust host Module
     pub mod rust {
         pub mod class;
         pub mod error;
+        pub mod fn_native;
         pub mod function;
         pub mod globals;
-        pub mod implem_native;
+        pub mod macros;
+        pub mod member;
+        pub mod nil;
+        pub mod number;
+        pub mod obj_hashmap;
+        pub mod obj_hashset;
+        pub mod obj_vector;
         pub mod object;
-        pub mod phashmap;
-        pub mod pvector;
-        pub mod rustobj;
+        pub mod protocol;
+        pub mod prototype;
         pub mod stri;
         pub mod unique;
-
-        // pub mod member;
-        // pub mod protocol;
-        // pub mod prototype;
-        // pub mod phashset;
     }
 }
 

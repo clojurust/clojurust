@@ -1,20 +1,20 @@
 //! Members definition
 
-use crate::clojure::lang::function;
+use crate::clojure::rust::function::*;
 
 pub struct Member {
     name: usize,
     class: usize,
-    getter: Option<function::Function>,
-    setter: Option<function::Function>,
+    getter: Option<SFunction>,
+    setter: Option<SFunction>,
 }
 
 impl Member {
     pub fn new(
         name: usize,
         class: usize,
-        getter: Option<function::Function>,
-        setter: Option<function::Function>,
+        getter: Option<SFunction>,
+        setter: Option<SFunction>,
     ) -> Member {
         Member {
             name,

@@ -1,5 +1,5 @@
-//! clojure::rust::keyword: keyword index
-use std::sync::*;
+//! Unique name storage associated with unique id
+use std::{borrow::BorrowMut, sync::*};
 
 use im::*;
 
@@ -22,8 +22,8 @@ use super::object::*;
 
 #[derive(Default, Debug)]
 pub struct SUnique {
-    map: HashMap<String, usize>,
-    vect: Vector<String>,
+    pub map: HashMap<String, usize>,
+    pub vect: Vector<String>,
 }
 
 castable_to!(SUnique => [sync] TObject, Unique);
@@ -62,36 +62,31 @@ impl SUnique {
         }
     }
 
-    pub fn current(keywords: &RwLock<Arc<SUnique>>) -> Arc<SUnique> {
-        keywords.read().unwrap().clone()
+    pub fn get(self: &SUnique) -> &SUnique {
+        self
     }
 
-    pub fn current_mut(keywords: &RwLock<Arc<SUnique>>) -> Arc<SUnique> {
-        keywords.write().unwrap().clone()
+    pub fn get_mut<'a>(self: SUnique) -> &'a mut SUnique {
+        self.borrow_mut()
     }
 
-    pub fn make_current(self, keywords: &RwLock<Arc<SUnique>>) {
-        *keywords.write().unwrap() = Arc::new(self);
+    pub fn len(self: &SUnique) -> usize {
+        SUnique::get(self).vect.len()
     }
 
-    pub fn len(keywords: &RwLock<Arc<SUnique>>) -> usize {
-        SUnique::current(keywords).vect.len()
-    }
-
-    pub fn get_id(key: usize, keywords: &RwLock<Arc<SUnique>>) -> String {
-        let v = &SUnique::current(keywords).vect;
+    pub fn get_id(key: usize, keywords: &SUnique) -> String {
+        let v = &SUnique::get(keywords).vect;
         if v.len() < key + 1 {
-            String::from("...vide...")
+            String::from("")
         } else {
             v.get(key).unwrap().clone()
         }
     }
 
-    pub fn get_key(key: &str, keywords: &RwLock<Arc<SUnique>>) -> usize {
-        let i = SUnique::current(keywords).clone();
-        let a = i.as_ref();
-        let mut m = a.map.clone();
-        let mut v = a.vect.clone();
+    pub fn get_key(key: &str, keywords: &SUnique) -> usize {
+        let i = SUnique::get(keywords).clone();
+        let mut m = i.map.clone();
+        let mut v = i.vect.clone();
         let length = SUnique::len(keywords);
 
         let k = key.to_string();
@@ -105,8 +100,8 @@ impl SUnique {
                 v.push_back(k.clone());
                 m = m.update(k.clone(), length);
 
-                let k = SUnique { map: m, vect: v };
-                k.make_current(keywords);
+                let k = &SUnique { map: m, vect: v };
+                k.update(keywords);
 
                 // return new index that was length of vector
                 length
@@ -114,8 +109,8 @@ impl SUnique {
         }
     }
 
-    pub fn test(key: String, keywords: &RwLock<Arc<SUnique>>) -> bool {
-        let i = SUnique::current(keywords).clone();
+    pub fn test(key: String, keywords: &SUnique) -> bool {
+        let i = SUnique::get(keywords).clone();
         let a = i.as_ref();
         match a.map.get(&key) {
             Some(_) => true,
@@ -134,7 +129,7 @@ impl Drop for SUnique {
 
 static INIT: bool = false;
 
-pub fn init_keywords() -> RwLock<Arc<SUnique>> {
+pub fn init_keywords() -> SUnique {
     RwLock::new(Arc::new(Default::default()))
 }
 
@@ -152,39 +147,39 @@ fn test_keywords() {
     println!(
         "Init state len = {:?} state = {:?}",
         SUnique::len(&CORE),
-        SUnique::current(&CORE)
+        SUnique::get(&CORE)
     );
 
-    let e1 = SUnique::current(&CORE);
+    let e1 = SUnique::get(&CORE);
 
     // Call init_static
     println!(
         "New state len = {:?} state = {:?}",
         SUnique::len(&CORE),
-        SUnique::current(&CORE)
+        SUnique::get(&CORE)
     );
 
-    let e2 = SUnique::current(&CORE);
+    let e2 = SUnique::get(&CORE);
 
     // add first keyword
     let o = SUnique::get_key(&String::from("essai"), &CORE);
     println!(
         "add essai len = {:?} state = {:?}",
         SUnique::len(&CORE),
-        SUnique::current(&CORE)
+        SUnique::get(&CORE)
     );
 
-    let e3 = SUnique::current(&CORE);
+    let e3 = SUnique::get(&CORE);
 
     // add second keyword
     SUnique::get_key(&"essai2".to_string(), &CORE);
     println!(
         "add essai2 len = {:?} state = {:?}",
         SUnique::len(&CORE),
-        SUnique::current(&CORE)
+        SUnique::get(&CORE)
     );
 
-    let e4 = SUnique::current(&CORE);
+    let e4 = SUnique::get(&CORE);
 
     // display existing keywords
     println!("Keyword 0 = \"{}\"", SUnique::get_id(0, &CORE));

@@ -9,11 +9,13 @@ use intertrait::cast::*;
 use intertrait::*;
 
 use super::class::*;
-use super::implem_native::*;
+use super::fn_native::*;
 use super::object::*;
 
 pub struct SFunction {
+    /// Mark optional arity of multi-arity function.
     pub multiary: Option<usize>,
+    /// Map of function keyed by arity
     pub func: HashMap<usize, Object>, // all implementations
 }
 
@@ -40,7 +42,7 @@ impl Function for SFunction {
                 let implem = self.func.get(&index).clone();
                 match implem {
                     Some(o) => {
-                        let i = o.cast::<SImplemNative>();
+                        let i = o.cast::<SFnNative>();
                         match i {
                             Some(imp) => o.clone(),
                             None => todo!(),
