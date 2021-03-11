@@ -1,17 +1,14 @@
 //! Class module
 //!
-//! Define class of objects with
-//! * Name
-//! * [Protocols](crate::clojure::rust::protocol)
-//!
-// use std::{any::*, fmt::*, result::*};
+//! This defines the `Class` name of the object and its `Protocol`s
+
 use std::sync::*;
 
 // use intertrait::cast::*;
 use intertrait::*;
 
-use super::obj_hashset::*;
-use super::object::*;
+use crate::clojure;
+use clojure::rust::object::*;
 
 /// ## Clojure Class descriptor for Class :
 /// ``` clojure
@@ -22,8 +19,10 @@ use super::object::*;
 /// ```
 ///
 pub struct SClass {
-    name: usize,
-    protocols: SObjHashSet,
+    /// Object usize: id of the classname
+    name: Object,
+    /// ObjHashSet of usize -> Protocol
+    protocols: Object,
 }
 
 unsafe impl Send for SClass {}
@@ -33,26 +32,10 @@ unsafe impl Sync for SClass {}
 castable_to!(SClass => TObject, Class);
 
 impl SClass {
-    pub fn new(name: usize, protocols: SObjHashSet) -> Object {
+    pub fn new(name: Object, protocols: Object) -> Object {
         Object {
             inner: Some(Arc::new(SClass { name, protocols })),
         }
-    }
-
-    /// Initialize all objects needed to create the Class interface
-    pub unsafe fn init() {
-        // only execute one time
-        if INIT {
-            return;
-        }
-        INIT = true;
-
-        println!("Class::init");
-
-        // Insures all is initialized
-        Object::init();
-        ObjHashSet::init();
-        // let c = Keywords::get("clojure.rust.object/Objects");
     }
 }
 
@@ -97,6 +80,21 @@ impl TObject for SClass {
     fn equals(&self, other: &Object) -> bool {
         todo!()
     }
+}
+
+pub unsafe fn init() {
+    // only execute one time
+    if INIT {
+        return;
+    }
+    INIT = true;
+
+    println!("Class::init");
+
+    // Insures all is initialized
+    clojure::rust::object::init();
+    clojure::rust::obj_hashset::init();
+    // let c = Keywords::get("clojure.rust.object/Objects");
 }
 
 static mut INIT: bool = false;

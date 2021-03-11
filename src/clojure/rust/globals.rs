@@ -4,10 +4,11 @@ use lazy_static::lazy_static;
 // use intertrait::cast::*;
 use intertrait::*;
 
-use super::class::*;
-use super::obj_vector::*;
-use super::object::*;
-use super::unique::*;
+use crate::clojure;
+use clojure::rust::class::*;
+use clojure::rust::obj_vector::*;
+use clojure::rust::object::*;
+use clojure::rust::unique::*;
 
 pub struct SGlobals {
     pub id: Object,  // SUnique
@@ -67,7 +68,22 @@ impl TObject for SGlobals {
     }
 }
 
-pub fn init() {}
+pub unsafe fn init() {
+    // only execute one time
+    if INIT {
+        return;
+    }
+    INIT = true;
+
+    println!("Globals::init");
+
+    // Insures all is initialized
+    clojure::rust::object::init();
+    clojure::rust::fn_method_native::init();
+    clojure::rust::class::init();
+}
+
+static mut INIT: bool = false;
 
 lazy_static! {
     pub static ref RUSTOBJ: SGlobals = SGlobals::new();

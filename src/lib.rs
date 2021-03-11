@@ -34,14 +34,14 @@ pub mod clojure {
     /// Rust host Module
     pub mod rust {
         pub mod class;
-        pub mod error;
-        pub mod fn_native;
+        pub mod fn_method_native;
         pub mod function;
         pub mod globals;
         pub mod macros;
         pub mod member;
         pub mod nil;
         pub mod number;
+        pub mod obj_error;
         pub mod obj_hashmap;
         pub mod obj_hashset;
         pub mod obj_vector;

@@ -1,7 +1,12 @@
 //! All numbers and `Number` protocol
 //!
 
-use super::object::*;
+// use intertrait::cast::*;
+use intertrait::*;
+
+use crate::clojure;
+use clojure::rust::class::*;
+use clojure::rust::object::*;
 
 /// All numeric values have the `Number` trait.
 pub trait Number {
@@ -22,10 +27,16 @@ pub trait Number {
     fn usize_value(self) -> Object;
 }
 
+pub trait Integer {}
+
+pub trait Decimal {}
+
 #[derive(Copy, Clone, PartialEq, PartialOrd)]
 pub struct BigInteger {
     value: i128,
 }
+
+castable_to!(BigInteger => [sync] TObject, Number);
 
 impl BigInteger {
     pub fn new(value: i128) -> Object {
@@ -34,7 +45,7 @@ impl BigInteger {
 }
 
 impl TObject for BigInteger {
-    fn get_class<'a>(&self) -> &'a super::class::SClass {
+    fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }
 
@@ -84,6 +95,22 @@ impl Number for BigInteger {
         todo!()
     }
 }
+
+pub unsafe fn init() {
+    // only execute one time
+    if INIT {
+        return;
+    }
+    INIT = true;
+
+    println!("Nil::init");
+
+    // Insures all is initialized
+    clojure::rust::object::init();
+    clojure::rust::class::init();
+}
+
+static mut INIT: bool = false;
 
 #[test]
 fn bidirectionnal_convert() {

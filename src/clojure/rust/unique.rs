@@ -22,8 +22,8 @@ use super::object::*;
 
 #[derive(Default, Debug)]
 pub struct SUnique {
-    pub map: HashMap<String, usize>,
-    pub vect: Vector<String>,
+    pub map: SObjHashMap,
+    pub vect: SObjVector,
 }
 
 castable_to!(SUnique => [sync] TObject, Unique);

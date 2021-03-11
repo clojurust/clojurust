@@ -1,22 +1,27 @@
 //! Members definition
 
-use crate::clojure::rust::function::*;
+// use intertrait::cast::*;
+use intertrait::*;
 
-pub struct Member {
+use crate::clojure;
+use clojure::rust::class::*;
+use clojure::rust::object::*;
+
+pub struct SMember {
     name: usize,
     class: usize,
-    getter: Option<SFunction>,
-    setter: Option<SFunction>,
+    getter: Object,
+    setter: Object,
 }
 
-impl Member {
+impl SMember {
     pub fn new(
         name: usize,
         class: usize,
-        getter: Option<SFunction>,
-        setter: Option<SFunction>,
-    ) -> Member {
-        Member {
+        getter: Object, // fn_native ?
+        setter: Object, // fn_native ?
+    ) -> SMember {
+        SMember {
             name,
             class,
             getter,
@@ -25,4 +30,44 @@ impl Member {
     }
 }
 
-pub fn init() {}
+castable_to!(SMember => [sync] TObject, Member);
+
+pub trait Member {}
+
+impl Member {}
+
+impl Member for SMember {}
+
+impl TObject for SMember {
+    fn get_class<'a>(&self) -> &'a SClass {
+        todo!()
+    }
+
+    fn to_string(&self) -> &str {
+        todo!()
+    }
+
+    fn get_hash(&self) -> usize {
+        todo!()
+    }
+
+    fn equals(&self, other: &Object) -> bool {
+        todo!()
+    }
+}
+
+pub unsafe fn init() {
+    // only execute one time
+    if INIT {
+        return;
+    }
+    INIT = true;
+
+    println!("Member::init");
+
+    // Insures all is initialized
+    clojure::rust::object::init();
+    clojure::rust::class::init();
+}
+
+static mut INIT: bool = false;

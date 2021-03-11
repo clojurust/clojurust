@@ -15,7 +15,8 @@ use std::{fmt::*, hash::*, sync::*};
 use intertrait::cast::*;
 use intertrait::*;
 
-use super::class::*;
+use crate::clojure;
+use clojure::rust::class::*;
 
 pub trait Inner: TObject + Debug + Eq + Hash + CastFromSync {}
 
@@ -61,20 +62,6 @@ impl<'a> Object {
     {
         let a = self.inner.borrow_mut();
         a.cast::<T>().expect("Unexpected error")
-    }
-
-    pub unsafe fn init() {
-        // only execute one time
-        if INIT {
-            return;
-        }
-
-        INIT = true;
-
-        println!("Class::init");
-
-        // Insures all is initialized
-        SClass::init();
     }
 }
 
@@ -205,6 +192,20 @@ impl Hash for TObject {
     fn hash<H: Hasher>(&self, state: &mut H) {
         state.write_usize(self.get_hash())
     }
+}
+
+pub unsafe fn init() {
+    // only execute one time
+    if INIT {
+        return;
+    }
+
+    INIT = true;
+
+    println!("Object::init");
+
+    // Insures all is initialized
+    clojure::rust::class::init();
 }
 
 static mut INIT: bool = false;

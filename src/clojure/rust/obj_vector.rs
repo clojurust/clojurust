@@ -5,8 +5,9 @@
 // use intertrait::cast::*;
 use intertrait::*;
 
-use super::class::*;
-use super::object::*;
+use crate::clojure;
+use clojure::rust::class::*;
+use clojure::rust::object::*;
 
 pub type SObjVector = im::vector::Vector<Object>;
 
@@ -32,19 +33,22 @@ impl TObject for SObjVector {
 
 pub trait ObjVector: CastFromSync {}
 
-impl ObjVector {
-    pub unsafe fn init() {
-        // only execute one time
-        if INIT {
-            return;
-        }
-        INIT = true;
-
-        // Insures all is initialized
-        Object::init();
-    }
-}
+impl ObjVector {}
 
 impl ObjVector for SObjVector {}
+
+pub unsafe fn init() {
+    // only execute one time
+    if INIT {
+        return;
+    }
+    INIT = true;
+
+    println!("ObjVector::init");
+
+    // Insures all is initialized
+    clojure::rust::object::init();
+    clojure::rust::class::init();
+}
 
 static mut INIT: bool = false;

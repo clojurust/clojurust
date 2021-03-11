@@ -1,22 +1,26 @@
 //! Anonymous Function with multi-arity
+//!
+//! This is a map of
+
 use im::*;
 // use lazy_static::{__Deref, lazy_static};
 use std::clone::Clone;
 // use std::{any::*, fmt::*, hash::*, result::*, sync::*};
 
 // use std::fmt::*;
-use intertrait::cast::*;
+// use intertrait::cast::*;
 use intertrait::*;
 
-use super::class::*;
-use super::fn_native::*;
-use super::object::*;
+use crate::clojure;
+use clojure::rust::class::*;
+use clojure::rust::fn_method_native::*;
+use clojure::rust::object::*;
 
 pub struct SFunction {
     /// Mark optional arity of multi-arity function.
-    pub multiary: Option<usize>,
+    pub multiary: Object,
     /// Map of function keyed by arity
-    pub func: HashMap<usize, Object>, // all implementations
+    pub func: Object,
 }
 
 castable_to!(SFunction => [sync] TObject, Function);
@@ -42,7 +46,7 @@ impl Function for SFunction {
                 let implem = self.func.get(&index).clone();
                 match implem {
                     Some(o) => {
-                        let i = o.cast::<SFnNative>();
+                        let i = o.cast::<SFnMethodNative>();
                         match i {
                             Some(imp) => o.clone(),
                             None => todo!(),
@@ -86,6 +90,21 @@ impl SFunction {
             func: HashMap::new(),
         }
     }
-
-    pub fn init() {}
 }
+
+pub unsafe fn init() {
+    // only execute one time
+    if INIT {
+        return;
+    }
+    INIT = true;
+
+    println!("Function::init");
+
+    // Insures all is initialized
+    clojure::rust::object::init();
+    clojure::rust::fn_method_native::init();
+    clojure::rust::class::init();
+}
+
+static mut INIT: bool = false;
