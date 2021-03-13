@@ -1,3 +1,11 @@
+//! # Stores for Rust `Objects` identified by unique string name
+//!
+//! There will be multiple stores:
+//! * `Class`es
+//! * `Prototype`s
+//! * `Class`es and `Prototype`s' `Function`s.
+//! * `Object`s' `Member`s' getter and setters.
+
 // use std::sync::*;
 use lazy_static::lazy_static;
 

@@ -1,4 +1,6 @@
-//! Members definition
+//! # Access to `Member`s getters and setters of `Objects` inner structure.
+//!
+//! This will be part of the `Class` store.
 
 // use intertrait::cast::*;
 use intertrait::*;

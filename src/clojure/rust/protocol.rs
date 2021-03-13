@@ -1,5 +1,7 @@
-//! # Protocol module
-//! protocol is the Clojure equivalent of Rust traits.
+//! # Protocol is the eqivalent of `traits`.
+//!
+//! `Protocol` defines the templates for the functions of the trait
+//! for the library usage.
 
 // use intertrait::cast::*;
 use intertrait::*;
@@ -9,7 +11,9 @@ use clojure::rust::class::*;
 use clojure::rust::object::*;
 
 struct SProtocol {
-    inner: Object, // SObjHashSet
+    /// This is the template functions of the `Prototype`.
+    /// TODO
+    template: Object, // SObjHashSet
 }
 
 castable_to!(SProtocol => [sync] TObject, Protocol);

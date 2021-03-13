@@ -1,4 +1,4 @@
-//! Class module
+//! # Class module
 //!
 //! This defines the `Class` name of the object and its `Protocol`s
 
@@ -19,10 +19,12 @@ use clojure::rust::object::*;
 /// ```
 ///
 pub struct SClass {
-    /// Object usize: id of the classname
-    name: Object,
-    /// ObjHashSet of usize -> Protocol
+    /// Object usize: `usize` of the classname
+    name: usize,
+    /// ObjHashSet of `usize` -> `Protocol`s
     protocols: Object,
+    /// ObjHashSet of `usize` -> `Member`s
+    members: Object,
 }
 
 unsafe impl Send for SClass {}
@@ -32,33 +34,46 @@ unsafe impl Sync for SClass {}
 castable_to!(SClass => TObject, Class);
 
 impl SClass {
-    pub fn new(name: Object, protocols: Object) -> Object {
-        Object {
-            inner: Some(Arc::new(SClass { name, protocols })),
-        }
+    pub fn new(name: usize, protocols: Object, members: Object) -> Object {
+        Object::new(Arc::new(SClass {
+            name,
+            protocols,
+            members,
+        }))
     }
+
+    // pub fn o_new_o(name: Object, protocols: Object, members: Object) -> Object {
+    //     let a = Object::inn::<Usize>(name);
+    //     Object::new::<SClass>(SClass::new(name, protocols, members))
+    // }
 }
 
 /// `Class`: `Protocol` for `Object`s and `SClass`es
 ///
 ///
 pub trait Class {
-    /// Call named `method` with `Object`s arguments
+    /// Call `method` by id with `Object`s arguments
     fn call(&self, name: usize, args: &[Object]) -> Object;
 
-    /// Call getter for a named `member`
+    /// Call getter by id
     fn get(&self, name: usize) -> Object;
+
+    /// Call setter by id
+    fn set(&self, name: usize, value: Object) -> Object;
 }
 
 impl Class for SClass {
     /// Call named `method` with `Object`s arguments
     fn call(&self, name: usize, args: &[Object]) -> Object {
-        Object::null()
+        todo!()
     }
 
-    /// Call getter for a named `member`
     fn get(&self, name: usize) -> Object {
-        Object::null()
+        todo!()
+    }
+
+    fn set(&self, name: usize, value: Object) -> Object {
+        todo!()
     }
 }
 

@@ -1,3 +1,7 @@
+//! # HashMap of `Object`s with `TObject` protocol
+//!
+//! This is a wrapper on `im-rs` HashMap<Object,Object> library
+
 // use intertrait::cast::*;
 use intertrait::*;
 
@@ -5,11 +9,9 @@ use crate::clojure;
 use clojure::rust::class::*;
 use clojure::rust::object::*;
 
-type SObjHashMap = im::hashmap::HashMap<Object, Object>;
+pub type SObjHashMap = im::hashmap::HashMap<Object, Object>;
 
 castable_to!(SObjHashMap => [sync] TObject, ObjHashMap);
-
-pub trait ObjHashMap {}
 
 impl TObject for SObjHashMap {
     fn get_class<'a>(&self) -> &'a SClass {
@@ -28,6 +30,8 @@ impl TObject for SObjHashMap {
         todo!()
     }
 }
+
+pub trait ObjHashMap: CastFromSync {}
 
 impl ObjHashMap for SObjHashMap {}
 

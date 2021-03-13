@@ -16,6 +16,7 @@ version    = "0.1.0"
 
 [lib]
 path = "./src/lib.rs"
+# proc-macro = true
 
 [badges]
 travis-ci = { repository = "ivanpierre/clojurust" }

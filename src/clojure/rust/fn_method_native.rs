@@ -1,4 +1,4 @@
-//! Anonymous Native (Rust) method with a defined arity
+//! # Anonymous Native (Rust) method with a defined arity
 //!
 //! This is a Method and so use an object as first argument.
 //! The method is linked with the `Object`'s `Class` say their protocols.
@@ -6,6 +6,8 @@
 //! Method can be with multi-arity according to SFunction.multiarity.
 //! If this value is Nil, no multi-arity, else the value is the arity
 //! of the multi-arity function, which should be the last one.
+
+use std::sync::Arc;
 
 // use intertrait::cast::*;
 use intertrait::*;
@@ -24,7 +26,7 @@ pub trait FnMethodNative {
 
 impl FnMethodNative {
     fn new(function: SFnMethodNative) -> Object {
-        Object::new::<SFnMethodNative>(function)
+        Object::new(Arc::new(function))
     }
 }
 

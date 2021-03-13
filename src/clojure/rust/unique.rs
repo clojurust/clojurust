@@ -1,7 +1,8 @@
 //! Unique name storage associated with unique id
-use std::{borrow::BorrowMut, sync::*};
+//!
+//!
 
-use im::*;
+use std::{borrow::BorrowMut, sync::*};
 
 // use lazy_static::{__Deref};
 use lazy_static::lazy_static;
@@ -9,8 +10,12 @@ use lazy_static::lazy_static;
 // use intertrait::cast::*;
 use intertrait::*;
 
-use super::class::*;
-use super::object::*;
+use crate::clojure;
+use clojure::rust::class::*;
+use clojure::rust::obj_hashmap::*;
+use clojure::rust::obj_vector::*;
+use clojure::rust::object::*;
+use clojure::rust::stri::*;
 
 /// A keyword storage structure
 ///
@@ -20,10 +25,9 @@ use super::object::*;
 /// as a `String` is added, it's index is added in the `map` `HashMap`.
 /// # Examples
 
-#[derive(Default, Debug)]
 pub struct SUnique {
-    pub map: SObjHashMap,
-    pub vect: SObjVector,
+    pub map: Object,  // SObjHashMap,
+    pub vect: Object, // SObjVector,
 }
 
 castable_to!(SUnique => [sync] TObject, Unique);
@@ -54,12 +58,18 @@ impl TObject for SUnique {
     }
 }
 
-impl SUnique {
-    pub fn new() -> SUnique {
+impl Default for SUnique {
+    fn default() -> Self {
         SUnique {
-            map: HashMap::<String, usize>::new(),
-            vect: Vector::<String>::new(),
+            map: Object::new(Arc::new(SObjHashMap::default())),
+            vect: Object::new(Arc::new(SObjVector::default())),
         }
+    }
+}
+
+impl SUnique {
+    pub fn new() -> Object {
+        Object::new(Arc::new(SUnique::default()))
     }
 
     pub fn get(self: &SUnique) -> &SUnique {
@@ -71,11 +81,12 @@ impl SUnique {
     }
 
     pub fn len(self: &SUnique) -> usize {
-        SUnique::get(self).vect.len()
+        SUnique::get(self).vect.inn::<SObjVector>().len()
     }
 
-    pub fn get_id(key: usize, keywords: &SUnique) -> String {
-        let v = &SUnique::get(keywords).vect;
+    pub fn get_id_obj(key: Object, keywords: Object) -> Object {
+        let v = &SObjVector::get(keywords.inn::<SObjVector>()).vect;
+        let v = SUnique::get(keyword).vect.inn::<SObjVector>();
         if v.len() < key + 1 {
             String::from("")
         } else {
@@ -83,13 +94,23 @@ impl SUnique {
         }
     }
 
-    pub fn get_key(key: &str, keywords: &SUnique) -> usize {
-        let i = SUnique::get(keywords).clone();
+    pub fn get_id(key: usize, keywords: Object) -> Object {
+        let v = Object::inn::<SObjVector>(keywords);
+        let a = v.get(key);
+        if v.len() < key + 1 {
+            String::from("")
+        } else {
+            v.get(key).unwrap().clone()
+        }
+    }
+
+    pub fn get_key(key: Object, keywords: Object) -> usize {
+        let unique = SUnique::get(keywords).clone();
         let mut m = i.map.clone();
         let mut v = i.vect.clone();
         let length = SUnique::len(keywords);
 
-        let k = key.to_string();
+        let k = Object::inn::<SStri>(key).to_string();
         match m.get(&k) {
             // found entry
             Some(idx) => *idx,
@@ -111,14 +132,12 @@ impl SUnique {
 
     pub fn test(key: String, keywords: &SUnique) -> bool {
         let i = SUnique::get(keywords).clone();
-        let a = i.as_ref();
+        let a = i;
         match a.map.get(&key) {
             Some(_) => true,
             None => false,
         }
     }
-
-    pub unsafe fn init() {}
 }
 
 impl Drop for SUnique {
@@ -127,23 +146,38 @@ impl Drop for SUnique {
     }
 }
 
-static INIT: bool = false;
-
-pub fn init_keywords() -> SUnique {
-    RwLock::new(Arc::new(Default::default()))
+pub fn init_keywords() -> RwLock<Arc<SUnique>> {
+    RwLock::new(Arc::new(SUnique::new()))
 }
+
+pub unsafe fn init() {
+    // only execute one time
+    if INIT {
+        return;
+    }
+
+    INIT = true;
+
+    println!("Unique::init");
+
+    // Insures all is initialized
+    clojure::rust::object::init();
+    clojure::rust::class::init();
+}
+
+static mut INIT: bool = false;
 
 lazy_static! {
     /// Private access to static `Keywords` struture.
     ///
     /// Here will be stored and retrived keywords data.
-    pub static ref KEYWORDS: RwLock<Arc<SUnique>> = init_keywords();
-    pub static ref CORE: RwLock<Arc<SUnique>> = init_keywords();
+    pub static mut KEYWORDS: Object = SUnique::default(),
+    pub static mut CORE: Object = SUnique::default(),
 }
 
 #[test]
 fn test_keywords() {
-    // Initial state
+    // Initial state7**************78/***************** */
     println!(
         "Init state len = {:?} state = {:?}",
         SUnique::len(&CORE),

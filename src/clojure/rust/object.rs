@@ -1,13 +1,9 @@
-//! # Defines Rust dynamic Objects.
+//! # Defines Rust dynamic `Object`s.
 //!
-//! Define immutable dynamic objects
-//!
+//! Define dynamic `Object`s as Option<Arc<TObject>>
 
 // use lazy_static::{__Deref, lazy_static};
-use std::{
-    borrow::{Borrow, BorrowMut},
-    clone::Clone,
-};
+use std::{borrow::BorrowMut, clone::Clone};
 // use std::{any::*, convert::*, result::*};
 use std::{fmt::*, hash::*, sync::*};
 
@@ -17,51 +13,114 @@ use intertrait::*;
 
 use crate::clojure;
 use clojure::rust::class::*;
+use clojure::rust::nil::*;
 
 pub trait Inner: TObject + Debug + Eq + Hash + CastFromSync {}
 
-/// Basic definition of object inner link to real structure
-// pub type Inner = IObject;
-
-/// Basic definition of a dynamic object
 pub struct Object {
-    pub inner: Option<Arc<TObject>>,
+    pub inner: Arc<TObject>,
 }
 
 castable_to!(Object => [sync] TObject);
 
 impl<'a> Object {
-    pub fn new<T: TObject>(obj: T) -> Object {
-        Object {
-            inner: Some(Arc::new(obj)),
-        }
+    pub fn new(obj: Arc<TObject>) -> Object {
+        Object { inner: obj }
     }
 
     pub fn null() -> Object {
-        Object { inner: None }
+        Nil::new()
     }
 
     pub fn is_null(&self) -> bool {
-        match self.inner {
-            None => true,
-            Some(_) => false,
+        self.isa::<Nil>()
+    }
+
+    pub fn count(&self) -> usize {
+        Arc::strong_count(&self.inner)
+    }
+
+    pub fn isa<T>(&self) -> bool
+    where
+        T: TObject + 'static,
+    {
+        self.inner.as_ref().impls::<T>()
+    }
+
+    pub fn inn<T>(&self) -> &T
+    where
+        T: TObject + ?Sized + 'static,
+    {
+        let a = self.clone().inner;
+        match a.cast::<T>() {
+            Ok(b) => b.clone().as_ref(),
+            _ => unreachable!(),
         }
     }
 
-    pub fn inn<T>(&'a mut self) -> &'a T
+    pub fn inn_mut<T>(&self) -> &mut T
     where
-        T: TObject,
+        T: TObject + ?Sized + 'static,
     {
-        let a = self.inner.borrow();
-        a.cast::<T>().expect("Unexpected error")
+        self.inn::<T>().borrow_mut()
     }
 
-    pub fn inn_mut<T>(&'a mut self) -> &'a mut T
-    where
-        T: TObject,
-    {
-        let a = self.inner.borrow_mut();
-        a.cast::<T>().expect("Unexpected error")
+    pub fn call_by_id(&self, name: usize, args: &[Object]) -> Object {
+        let a = self.clone().inner;
+        {
+            a.get_class().call(name, args).clone()
+        }
+    }
+
+    pub fn call_by_name(&self, name: &str, args: &[Object]) -> Object {
+        let a = self.clone().inner;
+        {
+            a.get_class().call(name, args).clone()
+        }
+    }
+
+    pub fn get_by_id(&self, name: usize) -> Object {
+        match self.clone().inner {
+            None => panic!("Getter on nil"),
+            Some(o) => {
+                let a = o.clone();
+                let b = a.get_class();
+                b.get_class().get(name).clone()
+            }
+        }
+    }
+
+    pub fn get_by_name(&self, name: &str) -> Object {
+        match self.clone().inner {
+            None => panic!("Getter on nil"),
+            Some(o) => {
+                let a = o.clone();
+                let b = a.get_class();
+                b.get_class().get(name).clone()
+            }
+        }
+    }
+
+    pub fn set_by_id(&self, name: usize, value: Object) -> Object {
+        match self.clone().inner {
+            None => panic!("Getter on nil"),
+            Some(o) => {
+                let a = o.clone();
+                let b = a.get_class();
+                b.get_class().set(name, value).clone()
+            }
+        }
+    }
+
+    pub fn set_by_name(&self, name: &str, value: Object) -> Object {
+        match self.clone().inner {
+            None => panic!("Getter on nil"),
+            Some(o) => {
+                let a = o.clone();
+                let b = a.get_class();
+                b.get_class().set(name, value).clone()
+            }
+        }
     }
 }
 
@@ -80,29 +139,6 @@ pub trait TObject: CastFromSync {
 }
 
 const NILSTRING: &str = "nil";
-
-impl Class for Object {
-    fn call(&self, name: usize, args: &[Object]) -> Object {
-        match self.clone().inner {
-            None => panic!("Call on nil"),
-            Some(o) => {
-                let a = o.clone();
-                o.get_class().call(name, args).clone()
-            }
-        }
-    }
-
-    fn get(&self, name: usize) -> Object {
-        match self.clone().inner {
-            None => panic!("Getter on nil"),
-            Some(o) => {
-                let a = o.clone();
-                let b = a.get_class();
-                b.get_class().get(name).clone()
-            }
-        }
-    }
-}
 
 /// SImplementation of protocol IObject for Object.
 ///

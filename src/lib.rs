@@ -35,13 +35,12 @@ pub mod clojure {
     pub mod rust {
         pub mod class;
         pub mod fn_method_native;
-        pub mod function;
-        pub mod globals;
-        pub mod macros;
+        // pub mod function;
+        // pub mod globals;
         pub mod member;
         pub mod nil;
         pub mod number;
-        pub mod obj_error;
+        // pub mod obj_error;
         pub mod obj_hashmap;
         pub mod obj_hashset;
         pub mod obj_vector;
@@ -50,6 +49,9 @@ pub mod clojure {
         pub mod prototype;
         pub mod stri;
         pub mod unique;
+        pub mod macros {
+            pub mod number;
+        }
     }
 }
 

@@ -1,4 +1,4 @@
-//! # Defines Rust dynamic Strings.
+//! # Defines library's dynamic Strings.
 //!
 
 // use lazy_static::{__Deref, lazy_static};
@@ -19,6 +19,8 @@ pub struct SStri {
 }
 
 pub trait Stri {}
+
+impl Stri {}
 
 impl Stri for SStri {}
 
@@ -80,3 +82,21 @@ impl TObject for SStri {
         todo!()
     }
 }
+
+pub unsafe fn init() {
+    // only execute one time
+    if INIT {
+        return;
+    }
+
+    INIT = true;
+
+    println!("Prototype::init");
+
+    // Insures all is initialized
+    clojure::rust::object::init();
+    clojure::rust::class::init();
+    clojure::rust::obj_hashset::init();
+}
+
+static mut INIT: bool = false;

@@ -1,3 +1,7 @@
+//! # HashSet of `Object`s with `TObject` protocol
+//!
+//! This is a wrapper on `im-rs` HashSet<Object> library
+
 // use lazy_static::__Deref;
 // use std::{any::*, result::*, sync::*};
 // use std::{fmt::*, hash::*};

@@ -1,4 +1,4 @@
-//! Anonymous Function with multi-arity
+//! # Anonymous Function with multi-arity
 //!
 //! This is a map of
 
@@ -18,7 +18,7 @@ use clojure::rust::object::*;
 
 pub struct SFunction {
     /// Mark optional arity of multi-arity function.
-    pub multiary: Object,
+    pub multiary: Option<usize>,
     /// Map of function keyed by arity
     pub func: Object,
 }
@@ -36,21 +36,18 @@ trait Function {
 }
 
 impl Function for SFunction {
-    fn get(&self, arity: usize) -> Object {
+    fn get(&self, arity: usize) -> &SFnMethodNative {
         let mut index = arity;
         match self.multiary {
             Some(max) => {
                 if arity > max {
                     index = max;
                 }
-                let implem = self.func.get(&index).clone();
+                let implem = Object.inn::<SFunction>(self.func).get(index);
                 match implem {
                     Some(o) => {
-                        let i = o.cast::<SFnMethodNative>();
-                        match i {
-                            Some(imp) => o.clone(),
-                            None => todo!(),
-                        }
+                        let a = Object::inn::<SFnMethodNative>(o);
+                        let b = Object::cast::<SFnMethodNative>(a);
                     }
                     None => todo!(),
                 }

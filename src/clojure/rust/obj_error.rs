@@ -1,4 +1,7 @@
-use std::error::*;
+//! # Standard `Error`s for the library
+//!
+//! A lot TODO
+
 use std::fmt;
 
 // use intertrait::cast::*;
@@ -20,23 +23,15 @@ impl ObjError {}
 
 impl ObjError for SObjError {}
 
-impl Error for SObjError {
-    fn source(&self) -> Option<&(dyn Error + 'static)> {
-        Some(self)
-    }
+impl ObjError for SObjError {}
 
-    fn cause(&self) -> Option<&dyn Error> {
-        self.source()
-    }
-}
-
-impl Display for SObjError {
+impl fmt::Display for SObjError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         todo!()
     }
 }
 
-impl Debug for SObjError {
+impl fmt::Debug for SObjError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         todo!()
     }
@@ -60,7 +55,7 @@ impl TObject for SObjError {
     }
 }
 
-pub fn error<T>(msg: &str) -> Result<&'static T, SCljError> {
+pub fn error<T>(msg: &str) -> Result<&'static T, SObjError> {
     Err(SObjError {
         msg: String::from(msg),
     })
