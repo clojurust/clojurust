@@ -15,7 +15,7 @@ use clojure::rust::class::*;
 use clojure::rust::object::*;
 
 pub struct SStri {
-    inner: String,
+    pub inner: String,
 }
 
 pub trait Stri {}

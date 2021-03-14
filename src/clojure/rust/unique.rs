@@ -8,10 +8,11 @@ use std::{borrow::BorrowMut, sync::*};
 use lazy_static::lazy_static;
 
 // use intertrait::cast::*;
-use intertrait::*;
+use intertrait::{self::*, cast::CastArc};
 
 use crate::clojure;
 use clojure::rust::class::*;
+use clojure::rust::number::*;
 use clojure::rust::obj_hashmap::*;
 use clojure::rust::obj_vector::*;
 use clojure::rust::object::*;
@@ -84,24 +85,17 @@ impl SUnique {
         SUnique::get(self).vect.inn::<SObjVector>().len()
     }
 
-    pub fn get_id_obj(key: Object, keywords: Object) -> Object {
-        let v = &SObjVector::get(keywords.inn::<SObjVector>()).vect;
-        let v = SUnique::get(keyword).vect.inn::<SObjVector>();
-        if v.len() < key + 1 {
-            String::from("")
-        } else {
-            v.get(key).unwrap().clone()
-        }
+    pub fn get_path_obj(&self, key: Object) -> Object {
+        let k = key.inner;
+        let ko = k.cast::<Usize>().unwrap_or(Arc::new(self.v));
+        self.get_path(*ko)
     }
 
-    pub fn get_id(key: usize, keywords: Object) -> Object {
-        let v = Object::inn::<SObjVector>(keywords);
-        let a = v.get(key);
-        if v.len() < key + 1 {
-            String::from("")
-        } else {
-            v.get(key).unwrap().clone()
-        }
+    pub fn get_path<'a>(&self, key: usize) -> &'a str {
+        let v = self.vect.inn::<SObjVector>();
+        let s = v.get(key).unwrap();
+        let r = s.inn::<SStri>().inner;
+        &r[..]
     }
 
     pub fn get_key(key: Object, keywords: Object) -> usize {

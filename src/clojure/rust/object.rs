@@ -80,47 +80,27 @@ impl<'a> Object {
     }
 
     pub fn get_by_id(&self, name: usize) -> Object {
-        match self.clone().inner {
-            None => panic!("Getter on nil"),
-            Some(o) => {
-                let a = o.clone();
-                let b = a.get_class();
-                b.get_class().get(name).clone()
-            }
-        }
+        let a = self.clone();
+        let b = a.get_class();
+        b.get_class().get(name).clone()
     }
 
     pub fn get_by_name(&self, name: &str) -> Object {
-        match self.clone().inner {
-            None => panic!("Getter on nil"),
-            Some(o) => {
-                let a = o.clone();
-                let b = a.get_class();
-                b.get_class().get(name).clone()
-            }
-        }
+        let a = self.clone();
+        let b = a.get_class();
+        b.get_class().get(name).clone()
     }
 
     pub fn set_by_id(&self, name: usize, value: Object) -> Object {
-        match self.clone().inner {
-            None => panic!("Getter on nil"),
-            Some(o) => {
-                let a = o.clone();
-                let b = a.get_class();
-                b.get_class().set(name, value).clone()
-            }
-        }
+        let a = self.clone();
+        let b = a.get_class();
+        b.get_class().set(name, value).clone()
     }
 
     pub fn set_by_name(&self, name: &str, value: Object) -> Object {
-        match self.clone().inner {
-            None => panic!("Getter on nil"),
-            Some(o) => {
-                let a = o.clone();
-                let b = a.get_class();
-                b.get_class().set(name, value).clone()
-            }
-        }
+        let a = self.clone();
+        let b = a.get_class();
+        b.get_class().set(name, value).clone()
     }
 }
 
@@ -146,35 +126,22 @@ const NILSTRING: &str = "nil";
 // #[cast_to([sync] IObject, Debug)];
 impl TObject for Object {
     fn get_class<'a>(&self) -> &'a SClass {
-        if let Some(o) = self.clone().inner {
-            o.clone().get_class()
-        } else {
-            panic!("Get class from nil")
-        }
+        self.clone().inner.get_class()
     }
 
     fn to_string(&self) -> &str {
-        match self.clone().inner {
-            None => NILSTRING,
-            Some(o) => {
-                let a = o.clone();
-                a.get_class().to_string()
-            }
-        }
+        let a = self.clone();
+        a.get_class().to_string()
     }
 
     fn get_hash(&self) -> usize {
-        match self.clone().inner {
-            None => 0,
-            Some(o) => {
-                let a = o.clone();
-                a.get_class().get_hash()
-            }
-        }
+        let a = self.clone();
+        a.get_class().get_hash()
     }
 
     fn equals(&self, other: &Object) -> bool {
-        todo!()
+        let a = self.clone();
+        a.get_class().equals(other)
     }
 }
 
@@ -192,15 +159,11 @@ impl Clone for Object {
 
     fn clone(&self) -> Self {
         let Object { inner } = self;
-        match inner {
-            None => Object { inner: None },
-            Some(o) => Object {
-                inner: Some(o.clone()),
-            },
+        Object {
+            inner: inner.clone(),
         }
     }
 }
-
 impl Eq for Object {}
 
 impl PartialEq for Object {
