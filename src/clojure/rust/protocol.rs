@@ -13,7 +13,7 @@ use clojure::rust::object::*;
 struct SProtocol {
     /// This is the template functions of the `Prototype`.
     /// TODO
-    template: Object, // SObjHashSet
+    template: Object, // SObjHashSet of Prototype
 }
 
 castable_to!(SProtocol => [sync] TObject, Protocol);

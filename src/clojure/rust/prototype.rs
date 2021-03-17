@@ -7,9 +7,7 @@ use crate::clojure;
 use clojure::rust::object::*;
 
 pub struct SPrototype {
-    start_arity: usize,
-    max_arity: usize,
-    multi_arity: bool,
+    multi_arity: Option<usize>,
 }
 
 castable_to!(SPrototype => [sync] TObject, Prototype);

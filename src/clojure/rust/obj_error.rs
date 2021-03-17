@@ -13,6 +13,7 @@ use clojure::rust::object::*;
 
 pub struct SObjError {
     msg: String,
+    previous: Object,
 }
 
 castable_to!(SObjError => [sync] TObject, ObjError);

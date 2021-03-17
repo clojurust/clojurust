@@ -2,21 +2,32 @@
 //!
 //! This is a map of
 
-use im::*;
 // use lazy_static::{__Deref, lazy_static};
-use std::clone::Clone;
-// use std::{any::*, fmt::*, hash::*, result::*, sync::*};
+use std::sync::*;
 
-// use std::fmt::*;
-// use intertrait::cast::*;
-use intertrait::*;
+use intertrait::cast::CastArc;
 
-use crate::clojure;
-use clojure::rust::class::*;
-use clojure::rust::fn_method_native::*;
-use clojure::rust::object::*;
+use crate::use_obj;
+
+use_obj! {
+    clojure::rust::class;
+    clojure::rust::fn_method_native;
+    clojure::rust::object;
+}
+
+castable_to!(SFnMethodNative => [sync] TObject, FnMethodNative);
+
+init_obj! {
+    Function {
+        clojure::rust::object::init();
+        clojure::rust::class::init();
+        clojure::rust::fn_method_native::init();
+    }
+}
 
 pub struct SFunction {
+    /// index of full name: ns + class/protocol + name
+    pub full_name: usize,
     /// Mark optional arity of multi-arity function.
     pub multiary: Option<usize>,
     /// Map of function keyed by arity
@@ -36,21 +47,17 @@ trait Function {
 }
 
 impl Function for SFunction {
-    fn get(&self, arity: usize) -> &SFnMethodNative {
+    fn get(&self, arity: usize) -> Object {
         let mut index = arity;
         match self.multiary {
             Some(max) => {
                 if arity > max {
                     index = max;
                 }
-                let implem = Object.inn::<SFunction>(self.func).get(index);
-                match implem {
-                    Some(o) => {
-                        let a = Object::inn::<SFnMethodNative>(o);
-                        let b = Object::cast::<SFnMethodNative>(a);
-                    }
-                    None => todo!(),
-                }
+                let implem = Object::inn::<SFunction>(&self.func).get(index);
+                let a = Object::inn::<SFnMethodNative>(&implem);
+                let fn_nat = Object::cast::<SFnMethodNative>(a).unwrap_or_default();
+                Object::new(fn_nat.clone())
             }
             // If no max => no implementation
             None => todo!(),
@@ -81,27 +88,13 @@ impl TObject for SFunction {
 }
 
 impl SFunction {
-    pub fn new() -> SFunction {
-        SFunction {
-            multiary: None,
-            func: HashMap::new(),
-        }
+    pub fn new(multiary: Option<usize>, func: Object) -> Object {
+        Object::new(Arc::new(SFunction { multiary, func }))
     }
 }
 
-pub unsafe fn init() {
-    // only execute one time
-    if INIT {
-        return;
+impl Default for SFunction {
+    fn default() -> Self {
+        todo!()
     }
-    INIT = true;
-
-    println!("Function::init");
-
-    // Insures all is initialized
-    clojure::rust::object::init();
-    clojure::rust::fn_method_native::init();
-    clojure::rust::class::init();
 }
-
-static mut INIT: bool = false;

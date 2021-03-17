@@ -5,8 +5,7 @@
 
 #[macro_export]
 macro_rules! number_def {
-    ($name:ident, $ident:expr, $def:ty) => {
-
+    ($name:ident, $def:ty) => {
         pub struct $name {
             value: $def,
         }
@@ -43,6 +42,7 @@ macro_rules! number_def {
             }
         }
 
+        /// Implementation of Number trait
         impl Number for $name {
             fn big_integer_value_o(&self) -> Object {
                 BigInteger::new(self.big_integer_value())
@@ -105,6 +105,15 @@ macro_rules! number_def {
 
             fn usize_value(&self) -> usize {
                 self.value as usize
+            }
+        }
+
+        /// default value of $name is default of $def
+        impl Default for $name {
+            fn default() -> Self {
+                $name {
+                    value: <$def>::default(),
+                }
             }
         }
     };

@@ -5,11 +5,28 @@
 
 use std::sync::*;
 
-use intertrait::*;
+use crate::use_obj;
 
-use crate::clojure;
-use clojure::rust::class::*;
-use clojure::rust::object::*;
+use_obj! {
+    clojure::rust::object;
+    clojure::rust::class;
+}
+
+castable_to!(BigInteger => [sync] TObject, Number);
+castable_to!(Long => [sync] TObject, Number);
+castable_to!(Integer => [sync] TObject, Number);
+castable_to!(Short => [sync] TObject, Number);
+castable_to!(Byte => [sync] TObject, Number);
+castable_to!(Double => [sync] TObject, Number);
+castable_to!(Float => [sync] TObject, Number);
+castable_to!(Usize => [sync] TObject, Number);
+
+init_obj! {
+    Member {
+        clojure::rust::object::init();
+        clojure::rust::class::init();
+    }
+}
 
 /// All numeric values have the `Number` trait.
 pub trait Number: CastFromSync {
@@ -50,19 +67,15 @@ pub trait Numeric {}
 
 pub trait Decimal {}
 
-#[macro_use]
 use crate::number_def;
-
-number_def!(BigInteger, BigInteger, i128);
-number_def!(Long, Long, i64);
-number_def!(Integer, Integer, i32);
-number_def!(Short, Short, i16);
-number_def!(Byte, Byte, i8);
-number_def!(Double, Double, f64);
-number_def!(Float, Float, f32);
-number_def!(Usize, Usize, usize);
-
-static mut INIT: bool = false;
+number_def!(BigInteger, i128);
+number_def!(Long, i64);
+number_def!(Integer, i32);
+number_def!(Short, i16);
+number_def!(Byte, i8);
+number_def!(Double, f64);
+number_def!(Float, f32);
+number_def!(Usize, usize);
 
 #[test]
 fn bidirectionnal_convert() {

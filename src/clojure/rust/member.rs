@@ -3,11 +3,22 @@
 //! This will be part of the `Class` store.
 
 // use intertrait::cast::*;
-use intertrait::*;
 
-use crate::clojure;
-use clojure::rust::class::*;
-use clojure::rust::object::*;
+use crate::use_obj;
+
+use_obj! {
+    clojure::rust::object;
+    clojure::rust::class;
+}
+
+castable_to!(SMember => [sync] TObject, Member);
+
+init_obj! {
+    Member {
+        clojure::rust::object::init();
+        clojure::rust::class::init();
+    }
+}
 
 pub struct SMember {
     name: usize,
@@ -20,8 +31,8 @@ impl SMember {
     pub fn new(
         name: usize,
         class: usize,
-        getter: Object, // fn_native ?
-        setter: Object, // fn_native ?
+        getter: Object, // function ?
+        setter: Object, // function ?
     ) -> SMember {
         SMember {
             name,
@@ -31,8 +42,6 @@ impl SMember {
         }
     }
 }
-
-castable_to!(SMember => [sync] TObject, Member);
 
 pub trait Member {}
 
@@ -57,19 +66,3 @@ impl TObject for SMember {
         todo!()
     }
 }
-
-pub unsafe fn init() {
-    // only execute one time
-    if INIT {
-        return;
-    }
-    INIT = true;
-
-    println!("Member::init");
-
-    // Insures all is initialized
-    clojure::rust::object::init();
-    clojure::rust::class::init();
-}
-
-static mut INIT: bool = false;

@@ -21,6 +21,8 @@
 #![allow(bare_trait_objects)]
 #![recursion_limit = "256"]
 // #![feature(fn_traits)]
+// #![feature(trace_macros)]
+// trace_macros!(true);
 
 /// Clojure Module
 ///
@@ -35,8 +37,9 @@ pub mod clojure {
     pub mod rust {
         pub mod class;
         pub mod fn_method_native;
-        // pub mod function;
-        // pub mod globals;
+        pub mod function;
+        pub mod globaldb;
+        pub mod globals;
         pub mod member;
         pub mod nil;
         pub mod number;
@@ -47,9 +50,12 @@ pub mod clojure {
         pub mod object;
         pub mod protocol;
         pub mod prototype;
+        pub mod str_hashmap;
+        pub mod str_vector;
         pub mod stri;
         pub mod unique;
         pub mod macros {
+            pub mod macros;
             pub mod number;
         }
     }

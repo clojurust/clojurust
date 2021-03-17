@@ -10,29 +10,40 @@
 use std::sync::Arc;
 
 // use intertrait::cast::*;
-use intertrait::*;
 
-use crate::clojure;
-use clojure::rust::class::*;
-use clojure::rust::object::*;
-
-pub type SFnMethodNative = fn(args: &Object) -> Object;
+/// include and init needed `Rust` `Objects` for `clojure::lang`
+use crate::use_obj;
+use_obj! {
+    clojure::rust::object;
+    clojure::rust::class;
+}
 
 castable_to!(SFnMethodNative => [sync] TObject, FnMethodNative);
 
-pub trait FnMethodNative {
-    fn call(&self, args: &Object) -> Object;
+init_obj! {
+    FnMethodNative {
+        clojure::rust::object::init();
+        clojure::rust::class::init();
+    }
 }
 
-impl FnMethodNative {
-    fn new(function: SFnMethodNative) -> Object {
-        Object::new(Arc::new(function))
+pub struct SFnMethodNative {
+    inner: fn(args: &[Object]) -> Object,
+}
+
+pub trait FnMethodNative {
+    fn call(&self, args: &[Object]) -> Object;
+}
+
+impl SFnMethodNative {
+    fn new(function: fn(args: &[Object]) -> Object) -> Object {
+        Object::new(Arc::new(SFnMethodNative { inner: function }))
     }
 }
 
 impl FnMethodNative for SFnMethodNative {
-    fn call(&self, args: &Object) -> Object {
-        let f = self;
+    fn call(&self, args: &[Object]) -> Object {
+        let f = self.inner;
         f(args)
     }
 }
@@ -54,20 +65,3 @@ impl TObject for SFnMethodNative {
         todo!()
     }
 }
-
-pub unsafe fn init() {
-    // only execute one time
-    if INIT {
-        return;
-    }
-    INIT = true;
-
-    println!("FnNative::init");
-
-    // Insures all is initialized
-    clojure::rust::object::init();
-    clojure::rust::class::init();
-    // let c = Keywords::get("clojure.rust.object/Objects");
-}
-
-static mut INIT: bool = false;

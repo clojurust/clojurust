@@ -3,8 +3,8 @@
 //! This is a wrapper on `im-rs` Vector<Object> library
 
 // use lazy_static::__Deref;
-// use std::{any::*, result::*, sync::*};
 // use std::{fmt::*, hash::*};
+use std::sync::*;
 
 // use intertrait::cast::*;
 use intertrait::*;
@@ -37,7 +37,11 @@ impl TObject for SObjVector {
 
 pub trait ObjVector: CastFromSync {}
 
-impl ObjVector {}
+impl ObjVector {
+    pub fn new() -> Object {
+        Object::new(Arc::new(SObjVector::default()))
+    }
+}
 
 impl ObjVector for SObjVector {}
 

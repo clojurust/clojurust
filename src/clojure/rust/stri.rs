@@ -1,11 +1,8 @@
 //! # Defines library's dynamic Strings.
 //!
 
-// use lazy_static::{__Deref, lazy_static};
-// use std::{any::*, fmt, hash::*, sync::*};
-// use std::{borrow::Borrow, clone::Clone};
-// use std::{result::*};
 use std::convert::*;
+use std::sync::*;
 
 // use intertrait::cast::*;
 use intertrait::*;
@@ -45,7 +42,7 @@ impl From<&str> for SStri {
 /// That's why we cannot use the reverse into function
 impl From<SStri> for Object {
     fn from(s: SStri) -> Self {
-        Object::new::<SStri>(s)
+        Object::new(Arc::new(s))
     }
 }
 

@@ -5,10 +5,21 @@
 use std::sync::*;
 
 // use intertrait::cast::*;
-use intertrait::*;
+// use intertrait::*;
 
-use crate::clojure;
-use clojure::rust::object::*;
+/// include and init needed `Rust` `Objects` for `clojure::lang`
+use crate::use_obj;
+use_obj! {
+    clojure::rust::object;
+}
+
+castable_to!(SClass => [sync] TObject, Class);
+
+init_obj! {
+    Class {
+        clojure::rust::object::init();
+    }
+}
 
 /// ## Clojure Class descriptor for Class :
 /// ``` clojure
@@ -21,9 +32,9 @@ use clojure::rust::object::*;
 pub struct SClass {
     /// Object usize: `usize` of the classname
     name: usize,
-    /// ObjHashSet of `usize` -> `Protocol`s
+    /// ObjHashMap of `usize` -> `Protocol`s
     protocols: Object,
-    /// ObjHashSet of `usize` -> `Member`s
+    /// ObjHashMap of `usize` -> `Member`s
     members: Object,
 }
 
@@ -96,20 +107,3 @@ impl TObject for SClass {
         todo!()
     }
 }
-
-pub unsafe fn init() {
-    // only execute one time
-    if INIT {
-        return;
-    }
-    INIT = true;
-
-    println!("Class::init");
-
-    // Insures all is initialized
-    clojure::rust::object::init();
-    clojure::rust::obj_hashset::init();
-    // let c = Keywords::get("clojure.rust.object/Objects");
-}
-
-static mut INIT: bool = false;

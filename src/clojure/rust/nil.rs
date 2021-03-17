@@ -5,21 +5,36 @@
 use std::sync::Arc;
 
 // use intertrait::cast::*;
-use intertrait::*;
 
-use crate::clojure;
-use clojure::rust::class::*;
-use clojure::rust::object::*;
+use crate::use_obj;
 
-pub struct Nil;
+use_obj! {
+    clojure::rust::object;
+    clojure::rust::class;
+}
+
+castable_to!(Nil => [sync] TObject, TNil);
+
+init_obj! {
+    Member {
+        clojure::rust::object::init();
+        clojure::rust::class::init();
+    }
+}
+
+pub struct Nil {}
+
+pub trait TNil {}
 
 castable_to!(Nil => [sync] TObject);
 
 impl Nil {
     pub fn new() -> Object {
-        Object::new(Arc::new(Nil))
+        Object::new(Arc::new(Nil {}))
     }
 }
+
+impl TNil for Nil {}
 
 impl TObject for Nil {
     fn get_class<'a>(&self) -> &'a SClass {
@@ -38,19 +53,3 @@ impl TObject for Nil {
         todo!()
     }
 }
-
-pub unsafe fn init() {
-    // only execute one time
-    if INIT {
-        return;
-    }
-    INIT = true;
-
-    println!("Nil::init");
-
-    // Insures all is initialized
-    clojure::rust::object::init();
-    clojure::rust::class::init();
-}
-
-static mut INIT: bool = false;

@@ -2,18 +2,24 @@
 //!
 //! Define dynamic `Object`s as Option<Arc<TObject>>
 
-// use lazy_static::{__Deref, lazy_static};
 use std::{borrow::BorrowMut, clone::Clone};
-// use std::{any::*, convert::*, result::*};
 use std::{fmt::*, hash::*, sync::*};
 
 // use std::fmt::*;
 use intertrait::cast::*;
-use intertrait::*;
 
-use crate::clojure;
-use clojure::rust::class::*;
-use clojure::rust::nil::*;
+/// include and init needed `Rust` `Objects` for `clojure::lang`
+use crate::use_obj;
+use_obj! {
+    clojure::rust::class;
+    clojure::rust::nil;
+}
+init_obj! {
+    {
+        clojure::rust::class::init();
+        clojure::rust::nil::init();
+    }
+}
 
 pub trait Inner: TObject + Debug + Eq + Hash + CastFromSync {}
 
@@ -192,19 +198,3 @@ impl Hash for TObject {
         state.write_usize(self.get_hash())
     }
 }
-
-pub unsafe fn init() {
-    // only execute one time
-    if INIT {
-        return;
-    }
-
-    INIT = true;
-
-    println!("Object::init");
-
-    // Insures all is initialized
-    clojure::rust::class::init();
-}
-
-static mut INIT: bool = false;
