@@ -44,6 +44,7 @@ pub mod clojure {
         pub mod nil;
         pub mod number;
         // pub mod obj_error;
+        pub mod obj_error;
         pub mod obj_hashmap;
         pub mod obj_hashset;
         pub mod obj_vector;
