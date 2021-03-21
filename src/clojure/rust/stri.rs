@@ -5,17 +5,28 @@ use std::convert::*;
 use std::sync::*;
 
 // use intertrait::cast::*;
-use intertrait::*;
 
-use crate::clojure;
-use clojure::rust::class::*;
-use clojure::rust::object::*;
+use crate::use_obj;
+
+use_obj! {
+    clojure::rust::object;
+    clojure::rust::class;
+}
+
+castable_to!(SStri => [sync] TObject, Stri);
+
+init_obj! {
+    Stri {
+        clojure::rust::object::init();
+        clojure::rust::class::init();
+    }
+}
 
 pub struct SStri {
     pub inner: String,
 }
 
-pub trait Stri {}
+pub trait Stri: CastFromSync {}
 
 impl Stri {}
 
@@ -79,21 +90,3 @@ impl TObject for SStri {
         todo!()
     }
 }
-
-pub unsafe fn init() {
-    // only execute one time
-    if INIT {
-        return;
-    }
-
-    INIT = true;
-
-    println!("Prototype::init");
-
-    // Insures all is initialized
-    clojure::rust::object::init();
-    clojure::rust::class::init();
-    clojure::rust::obj_hashset::init();
-}
-
-static mut INIT: bool = false;

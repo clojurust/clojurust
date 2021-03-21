@@ -4,11 +4,22 @@
 //! for the library usage.
 
 // use intertrait::cast::*;
-use intertrait::*;
 
-use crate::clojure;
-use clojure::rust::class::*;
-use clojure::rust::object::*;
+use crate::use_obj;
+
+use_obj! {
+    clojure::rust::object;
+    clojure::rust::class;
+}
+
+castable_to!(SProtocol => [sync] TObject, Protocol);
+
+init_obj! {
+    Protocols {
+        clojure::rust::object::init();
+        clojure::rust::class::init();
+    }
+}
 
 struct SProtocol {
     /// This is the template functions of the `Prototype`.
@@ -36,28 +47,10 @@ impl TObject for SProtocol {
     }
 }
 
-pub trait Protocol {}
+pub trait Protocol: CastFromSync {}
 
 impl Protocol {}
 
 impl Protocol for SProtocol {}
 
 impl SProtocol {}
-
-pub unsafe fn init() {
-    // only execute one time
-    if INIT {
-        return;
-    }
-
-    INIT = true;
-
-    println!("Protocol::init");
-
-    // Insures all is initialized
-    clojure::rust::object::init();
-    clojure::rust::class::init();
-    clojure::rust::obj_hashset::init();
-}
-
-static mut INIT: bool = false;

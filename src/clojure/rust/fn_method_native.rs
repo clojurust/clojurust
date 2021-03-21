@@ -31,7 +31,7 @@ pub struct SFnMethodNative {
     inner: fn(args: &[Object]) -> Object,
 }
 
-pub trait FnMethodNative {
+pub trait FnMethodNative: CastFromSync {
     fn call(&self, args: &[Object]) -> Object;
 }
 

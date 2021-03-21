@@ -7,15 +7,24 @@
 // use std::{fmt::*, hash::*};
 
 // use intertrait::cast::*;
-use intertrait::*;
 
-use crate::clojure;
-use clojure::rust::class::*;
-use clojure::rust::object::*;
+use crate::use_obj;
 
-pub type SObjHashSet = im::hashset::HashSet<Object>;
+use_obj! {
+    clojure::rust::object;
+    clojure::rust::class;
+}
 
 castable_to!(SObjHashSet => [sync] TObject, ObjHashSet);
+
+init_obj! {
+    ObjHashSet {
+        clojure::rust::object::init();
+        clojure::rust::class::init();
+    }
+}
+
+pub type SObjHashSet = im::hashset::HashSet<Object>;
 
 impl TObject for SObjHashSet {
     fn get_class<'a>(&self) -> &'a SClass {
@@ -40,19 +49,3 @@ pub trait ObjHashSet: CastFromSync {}
 impl ObjHashSet for SObjHashSet {}
 
 impl ObjHashSet {}
-
-pub unsafe fn init() {
-    // only execute one time
-    if INIT {
-        return;
-    }
-    INIT = true;
-
-    println!("ObjHashSet::init");
-
-    // Insures all is initialized
-    clojure::rust::object::init();
-    clojure::rust::class::init();
-}
-
-static mut INIT: bool = false;

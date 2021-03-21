@@ -1,17 +1,26 @@
-//! # HashMap of `Object`s with `TObject` protocol
+//! # `HashMap` of `String> -> `usize` mapping for `Unique` names
 //!
-//! This is a wrapper on `im-rs` HashMap<Object,Object> library
+//! This is a wrapper on `im-rs` HashMap<String,usize> library
 
 // use intertrait::cast::*;
-use intertrait::*;
 
-use crate::clojure;
-use clojure::rust::class::*;
-use clojure::rust::object::*;
+use crate::use_obj;
 
-pub type SStrHashMap = im::hashmap::HashMap<String, usize>;
+use_obj! {
+    clojure::rust::object;
+    clojure::rust::class;
+}
 
 castable_to!(SStrHashMap => [sync] TObject, StrHashMap);
+
+init_obj! {
+    StrHashMap {
+        clojure::rust::object::init();
+        clojure::rust::class::init();
+    }
+}
+
+pub type SStrHashMap = im::hashmap::HashMap<String, usize>;
 
 impl TObject for SStrHashMap {
     fn get_class<'a>(&self) -> &'a SClass {
@@ -36,19 +45,3 @@ pub trait StrHashMap: CastFromSync {}
 impl StrHashMap for SStrHashMap {}
 
 impl StrHashMap {}
-
-pub unsafe fn init() {
-    // only execute one time
-    if INIT {
-        return;
-    }
-    INIT = true;
-
-    println!("Nil::init");
-
-    // Insures all is initialized
-    clojure::rust::object::init();
-    clojure::rust::class::init();
-}
-
-static mut INIT: bool = false;

@@ -36,9 +36,7 @@ pub struct SGlobals {
     pub obj: Object, // SObjVector
 }
 
-castable_to!(SGlobals => [sync] TObject, Globals);
-
-pub trait Globals {
+pub trait Globals: CastFromSync {
     fn update_object(&mut self, index: usize, value: &Object) -> (usize, Object);
 
     fn get_obj_by_id(&self, index: usize) -> Object;

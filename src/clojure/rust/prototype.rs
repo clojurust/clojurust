@@ -1,25 +1,35 @@
-//! # Prototype defines the methods for `Protocol`s
+//! # `Prototype` defines the methods of `Protocol`s
 
 // use intertrait::cast::*;
-use intertrait::*;
 
-use crate::clojure;
-use clojure::rust::object::*;
+use crate::use_obj;
+
+use_obj! {
+    clojure::rust::object;
+    clojure::rust::class;
+}
+
+castable_to!(SPrototype => [sync] TObject, Prototype);
+
+init_obj! {
+    Prototype {
+        clojure::rust::object::init();
+        clojure::rust::class::init();
+    }
+}
 
 pub struct SPrototype {
     multi_arity: Option<usize>,
 }
 
-castable_to!(SPrototype => [sync] TObject, Prototype);
-
-pub trait Prototype {}
+pub trait Prototype: CastFromSync {}
 
 impl Prototype {}
 
 impl Prototype for SPrototype {}
 
 impl TObject for SPrototype {
-    fn get_class<'a>(&self) -> &'a super::class::SClass {
+    fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }
 
@@ -35,21 +45,3 @@ impl TObject for SPrototype {
         todo!()
     }
 }
-
-pub unsafe fn init() {
-    // only execute one time
-    if INIT {
-        return;
-    }
-
-    INIT = true;
-
-    println!("Prototype::init");
-
-    // Insures all is initialized
-    clojure::rust::object::init();
-    clojure::rust::class::init();
-    clojure::rust::obj_hashset::init();
-}
-
-static mut INIT: bool = false;

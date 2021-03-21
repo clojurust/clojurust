@@ -30,26 +30,27 @@ init_obj! {
 /// ```
 ///
 pub struct SClass {
-    /// Object usize: `usize` of the classname
+    /// `usize` -> classname
     name: usize,
-    /// ObjHashMap of `usize` -> `Protocol`s
+    /// `ObjHashMap` of `usize` -> `Protocol`s
     protocols: Object,
-    /// ObjHashMap of `usize` -> `Member`s
+    /// `ObjHashMap` of `usize` -> `Member`s
     members: Object,
+    /// `ObjHashMap` of `usize` -> `Member`s
+    methods: Object,
 }
 
 unsafe impl Send for SClass {}
 
 unsafe impl Sync for SClass {}
 
-castable_to!(SClass => TObject, Class);
-
 impl SClass {
-    pub fn new(name: usize, protocols: Object, members: Object) -> Object {
+    pub fn new(name: usize, protocols: Object, members: Object, methods: Object) -> Object {
         Object::new(Arc::new(SClass {
             name,
             protocols,
             members,
+            methods,
         }))
     }
 
@@ -62,7 +63,7 @@ impl SClass {
 /// `Class`: `Protocol` for `Object`s and `SClass`es
 ///
 ///
-pub trait Class {
+pub trait Class: CastFromSync {
     /// Call `method` by id with `Object`s arguments
     fn call(&self, name: usize, args: &[Object]) -> Object;
 

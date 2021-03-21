@@ -5,24 +5,31 @@
 use std::fmt;
 
 // use intertrait::cast::*;
-use intertrait::*;
 
-use crate::clojure;
-use clojure::rust::class::*;
-use clojure::rust::object::*;
+use crate::use_obj;
+
+use_obj! {
+    clojure::rust::object;
+    clojure::rust::class;
+}
+
+castable_to!(SObjError => [sync] TObject, ObjError);
+
+init_obj! {
+    ObjError {
+        clojure::rust::object::init();
+        clojure::rust::class::init();
+    }
+}
 
 pub struct SObjError {
     msg: String,
     previous: Object,
 }
 
-castable_to!(SObjError => [sync] TObject, ObjError);
-
-pub trait ObjError {}
+pub trait ObjError: CastFromSync {}
 
 impl ObjError {}
-
-impl ObjError for SObjError {}
 
 impl ObjError for SObjError {}
 
@@ -56,24 +63,9 @@ impl TObject for SObjError {
     }
 }
 
-pub fn error<T>(msg: &str) -> Result<&'static T, SObjError> {
+pub fn error<T>(msg: &str, previous: Object) -> Result<&'static T, SObjError> {
     Err(SObjError {
         msg: String::from(msg),
+        previous,
     })
 }
-
-pub unsafe fn init() {
-    // only execute one time
-    if INIT {
-        return;
-    }
-    INIT = true;
-
-    println!("Error::init");
-
-    // Insures all is initialized
-    clojure::rust::object::init();
-    clojure::rust::class::init();
-}
-
-static mut INIT: bool = false;

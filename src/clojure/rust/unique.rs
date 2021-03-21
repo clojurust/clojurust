@@ -1,36 +1,50 @@
-//! Unique name storage associated with unique id
+//! Unique name associated with unique id
 //!
 //!
 
 use std::{borrow::BorrowMut, sync::*};
 
 // use lazy_static::{__Deref};
-use lazy_static::lazy_static;
-
-// use intertrait::cast::*;
 use intertrait::cast::*;
-use intertrait::*;
 
-use crate::clojure;
-use clojure::rust::number::*;
-use clojure::rust::obj_vector::*;
-use clojure::rust::object::*;
-use clojure::rust::str_hashmap::*;
-use clojure::rust::str_vector::*;
-use clojure::rust::stri::*;
-use clojure::rust::{class::*, object::TObject};
+use crate::use_obj;
 
-/// A keyword storage structure
+use_obj! {
+    clojure::rust::number;
+    clojure::rust::object;
+    clojure::rust::str_hashmap;
+    clojure::rust::str_vector;
+    clojure::rust::stri;
+    clojure::rust::class;
+}
+
+castable_to!(SUnique => [sync] TObject, Unique);
+
+init_obj! {
+    Stri {
+        clojure::rust::obj_vector::init();
+        clojure::rust::object::init();
+        clojure::rust::str_hashmap::init();
+        clojure::rust::str_vector::init();
+        clojure::rust::stri::init();
+        clojure::rust::class::init();
+    }
+}
+
+/// # A keyword storage structure
 ///
 /// We will store all `String`s used as reference to objects as `usize`.
-/// `usize` values are unique and immutable for every `String`.
-/// `Strings` are added incrementally to the `vect` `Vector` and cannot be destroyed.
-/// as a `String` is added, it's index is added in the `map` `HashMap`.
+/// ** `usize` values are unique and immutable for every `String`.
+/// ** `Strings` are added incrementally to the `vect` `StrVector` and cannot
+/// be destroyed.
+///
+/// As a `String` is added, it's index is added in the `map` `StrHashMap`.
+///
 /// # Examples
 
 pub struct SUnique {
     pub map: Object,  // SStrHashMap,
-    pub vect: Object, // SObjVector,
+    pub vect: Object, // SStrVector,
 }
 
 castable_to!(SUnique => [sync] TObject, Unique);
@@ -39,7 +53,7 @@ unsafe impl Send for SUnique {}
 
 unsafe impl Sync for SUnique {}
 
-pub trait Unique {}
+pub trait Unique: CastFromSync {}
 
 impl Unique for SUnique {}
 
@@ -65,7 +79,7 @@ impl Default for SUnique {
     fn default() -> Self {
         SUnique {
             map: Object::new(Arc::new(SStrHashMap::default())),
-            vect: Object::new(Arc::new(SObjVector::default())),
+            vect: Object::new(Arc::new(SStrVector::default())),
         }
     }
 }
@@ -80,18 +94,18 @@ impl SUnique {
     }
 
     pub fn len(&self) -> usize {
-        self.vect.inn::<SObjVector>().len()
+        self.vect.inn::<SStrVector>().len()
     }
 
     pub fn get_path_o(&self, key: Object) -> Object {
-        let k = key.inner;
-        let ko = k.cast::<Usize>().unwrap_or_default();
-        let v = self.vect.inn::<SObjVector>();
+        let k = key.inner.as_ref();
+        let ko = k.cast::<Usize>();
+        let v = self.vect.inn::<SStrVector>();
         v.get(ko).unwrap().clone()
     }
 
     pub fn get_path<'a>(&self, key: usize) -> String {
-        let v = self.vect.inn::<SObjVector>();
+        let v = self.vect.inn::<SStrVector>();
         let s = v.get(key).unwrap();
         s.inn::<SStri>().inner
     }
@@ -139,26 +153,9 @@ pub fn init_keywords() -> RwLock<Object> {
     RwLock::new(SUnique::new())
 }
 
-pub unsafe fn init() {
-    // only execute one time
-    if INIT {
-        return;
-    }
-
-    INIT = true;
-
-    println!("Unique::init");
-
-    // Insures all is initialized
-    clojure::rust::object::init();
-    clojure::rust::class::init();
-}
-
-static mut INIT: bool = false;
-
 #[test]
 fn test_keywords() {
-    // // Initial state7**************78/***************** */
+    // // Initial state
     // println!(
     //     "Init state len = {:?} state = {:?}",
     //     SUnique::len(&CORE),

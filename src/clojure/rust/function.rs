@@ -5,8 +5,6 @@
 // use lazy_static::{__Deref, lazy_static};
 use std::sync::*;
 
-use intertrait::cast::CastArc;
-
 use crate::use_obj;
 
 use_obj! {
@@ -15,7 +13,7 @@ use_obj! {
     clojure::rust::object;
 }
 
-castable_to!(SFnMethodNative => [sync] TObject, FnMethodNative);
+castable_to!(SFunction => [sync] TObject, Function);
 
 init_obj! {
     Function {
@@ -30,17 +28,15 @@ pub struct SFunction {
     pub full_name: usize,
     /// Mark optional arity of multi-arity function.
     pub multiary: Option<usize>,
-    /// Map of function keyed by arity
+    /// ObjHashMap arity `usize` ->
     pub func: Object,
 }
-
-castable_to!(SFunction => [sync] TObject, Function);
 
 unsafe impl Send for SFunction {}
 
 unsafe impl Sync for SFunction {}
 
-trait Function {
+trait Function: CastFromSync {
     fn call(&self, args: &Object) -> Object;
 
     fn get(&self, arity: usize) -> Object;
@@ -56,8 +52,7 @@ impl Function for SFunction {
                 }
                 let implem = Object::inn::<SFunction>(&self.func).get(index);
                 let a = Object::inn::<SFnMethodNative>(&implem);
-                let fn_nat = Object::cast::<SFnMethodNative>(a).unwrap_or_default();
-                Object::new(fn_nat.clone())
+                let fn_nat = Object::cast::<SFnMethodNative>(a);
             }
             // If no max => no implementation
             None => todo!(),

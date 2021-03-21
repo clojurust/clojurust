@@ -22,7 +22,7 @@ castable_to!(Float => [sync] TObject, Number);
 castable_to!(Usize => [sync] TObject, Number);
 
 init_obj! {
-    Member {
+    Number {
         clojure::rust::object::init();
         clojure::rust::class::init();
     }
@@ -65,7 +65,11 @@ pub trait Number: CastFromSync {
 
 pub trait Numeric {}
 
+pub trait Floating {}
+
 pub trait Decimal {}
+
+pub trait Ratio {}
 
 use crate::number_def;
 number_def!(BigInteger, i128);
@@ -80,28 +84,43 @@ number_def!(Usize, usize);
 #[test]
 fn bidirectionnal_convert() {
     // Test object with primitive
-    let i: i128 = 1;
-    let o = BigInteger::new(i);
-    println!("count {:?}", o.count());
-    let o2 = o.clone();
-    println!("Object: {:?}", o);
+    use std::any::TypeId;
 
-    let t = Object::isa::<BigInteger>(&o);
-    let t2 = o.inner.type_id();
+    use crate::clojure;
+    use clojure::rust::nil::*;
+    use clojure::rust::number::*;
+    use clojure::rust::object::*;
 
-    // !! doesn't work cast to unimplemented trait TObject
-    // let r = Object::inn::<Number>(&mut o);
+    let nil: Object = Nil::new();
 
-    // doesn't work directly neither
-    // let s: &dyn Number = &o;
+    let number: Object = BigInteger::new(1);
+    println!("count at begining={:?}", number.count());
 
-    // println!("Equality test {:?} = {:?}", i, r.big_integer_value());
-    println!("count {:?} = {:?}", o.count(), o2.count());
+    let number2: Object = number.clone();
+    println!("count after clone={:?}", number.count());
 
-    // Test translation
-    // Object should be passed to a &mut... tbt
-    let r3 = Object::inn::<Integer>(&mut o);
+    println!("original Object: {:?}", &number);
+    println!("cloned Object: {:?}", &number2);
 
-    // assert_eq!(i, Object::new::<Number>(*r3));
-    // assert_ne!(i, *r3); // mismatched types
+    // cast Object BigInteger -> Protocol Number
+    if let Some(number_as_number) = number.cast::<&dyn Number>() {
+        print!("number_as_number = {}", number_as_number.double_value());
+    }
+
+    // cast Object Nil -> Protocol Number
+    if let Some(nil_as_number) = nil.cast::<&dyn Number>() {
+        print!(
+            "nil_as_number = {} is a number",
+            nil_as_number.double_value()
+        );
+    } else {
+        print!("nil_as_number = {} is not a number", nil.to_string());
+    }
+
+    // Cast Object Nil -> Boxed Nil struct
+    if let Some(nil_as_struct_nil) = nil.cast::<Nil>() {
+        print!("Boxed value if Nil Object: {:?}", nil_as_struct_nil);
+    }
+
+    let type_id: TypeId = number.inner.type_id();
 }

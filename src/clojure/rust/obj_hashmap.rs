@@ -3,15 +3,24 @@
 //! This is a wrapper on `im-rs` HashMap<Object,Object> library
 
 // use intertrait::cast::*;
-use intertrait::*;
 
-use crate::clojure;
-use clojure::rust::class::*;
-use clojure::rust::object::*;
+use crate::use_obj;
 
-pub type SObjHashMap = im::hashmap::HashMap<Object, Object>;
+use_obj! {
+    clojure::rust::object;
+    clojure::rust::class;
+}
 
 castable_to!(SObjHashMap => [sync] TObject, ObjHashMap);
+
+init_obj! {
+    ObjHashMap {
+        clojure::rust::object::init();
+        clojure::rust::class::init();
+    }
+}
+
+pub type SObjHashMap = im::hashmap::HashMap<Object, Object>;
 
 impl TObject for SObjHashMap {
     fn get_class<'a>(&self) -> &'a SClass {
@@ -36,19 +45,3 @@ pub trait ObjHashMap: CastFromSync {}
 impl ObjHashMap for SObjHashMap {}
 
 impl ObjHashMap {}
-
-pub unsafe fn init() {
-    // only execute one time
-    if INIT {
-        return;
-    }
-    INIT = true;
-
-    println!("Nil::init");
-
-    // Insures all is initialized
-    clojure::rust::object::init();
-    clojure::rust::class::init();
-}
-
-static mut INIT: bool = false;

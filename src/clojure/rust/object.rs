@@ -2,20 +2,23 @@
 //!
 //! Define dynamic `Object`s as Option<Arc<TObject>>
 
-use std::{borrow::BorrowMut, clone::Clone};
+use std::clone::Clone;
 use std::{fmt::*, hash::*, sync::*};
 
-// use std::fmt::*;
-use intertrait::cast::*;
+use intertrait::cast::CastArc;
 
-/// include and init needed `Rust` `Objects` for `clojure::lang`
+// use std::fmt::*;
 use crate::use_obj;
+
 use_obj! {
     clojure::rust::class;
     clojure::rust::nil;
 }
+
+castable_to!(Object => [sync] TObject, TObject);
+
 init_obj! {
-    {
+    Object {
         clojure::rust::class::init();
         clojure::rust::nil::init();
     }
@@ -29,7 +32,10 @@ pub struct Object {
 
 castable_to!(Object => [sync] TObject);
 
-impl<'a> Object {
+impl<'a> Object
+where
+    Object: TObject + 'a,
+{
     pub fn new(obj: Arc<TObject>) -> Object {
         Object { inner: obj }
     }
@@ -39,36 +45,40 @@ impl<'a> Object {
     }
 
     pub fn is_null(&self) -> bool {
-        self.isa::<Nil>()
+        ::isa::<TNil>(self)
+    }
+
+    pub fn isa<T>(&'static self) -> bool
+    where
+        T: 'static,
+    {
+        let b = self.clone();
+        let c = b.inner;
+        let a = CastArc::cast::<T>(c);
+        match a {
+            Ok(o) => true,
+            Err(oo) => false,
+        }
+    }
+
+    pub fn cast<T>(&'a self) -> Option<&'a T>
+    where
+        T: 'static,
+    {
+        let b = self.clone();
+        let c = b.inner;
+        let a = CastArc::cast::<T>(c);
+        match a {
+            Ok(o) => {
+                let t = Some(o.as_ref());
+                t
+            }
+            Err(oo) => None,
+        }
     }
 
     pub fn count(&self) -> usize {
         Arc::strong_count(&self.inner)
-    }
-
-    pub fn isa<T>(&self) -> bool
-    where
-        T: TObject + 'static,
-    {
-        self.inner.as_ref().impls::<T>()
-    }
-
-    pub fn inn<T>(&self) -> &T
-    where
-        T: TObject + ?Sized + 'static,
-    {
-        let a = self.clone().inner;
-        match a.cast::<T>() {
-            Ok(b) => b.clone().as_ref(),
-            _ => unreachable!(),
-        }
-    }
-
-    pub fn inn_mut<T>(&self) -> &mut T
-    where
-        T: TObject + ?Sized + 'static,
-    {
-        self.inn::<T>().borrow_mut()
     }
 
     pub fn call_by_id(&self, name: usize, args: &[Object]) -> Object {

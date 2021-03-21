@@ -16,17 +16,16 @@ use_obj! {
 castable_to!(Nil => [sync] TObject, TNil);
 
 init_obj! {
-    Member {
+    Nil {
         clojure::rust::object::init();
         clojure::rust::class::init();
     }
 }
 
+#[derive(Debug)]
 pub struct Nil {}
 
-pub trait TNil {}
-
-castable_to!(Nil => [sync] TObject);
+pub trait TNil: CastFromSync {}
 
 impl Nil {
     pub fn new() -> Object {

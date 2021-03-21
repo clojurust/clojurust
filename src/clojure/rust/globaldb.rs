@@ -23,7 +23,7 @@ pub struct SGlobalDB {
     names: SGlobals,
 }
 
-pub trait GlobalDB {}
+pub trait GlobalDB: CastFromSync {}
 
 impl GlobalDB {}
 
