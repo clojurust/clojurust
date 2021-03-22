@@ -2,7 +2,7 @@
 //!
 //! Define dynamic `Object`s as Option<Arc<TObject>>
 
-use std::clone::Clone;
+use std::{borrow::BorrowMut, clone::Clone};
 use std::{fmt::*, hash::*, sync::*};
 
 use intertrait::cast::CastArc;
@@ -45,19 +45,17 @@ where
     }
 
     pub fn is_null(&self) -> bool {
-        ::isa::<TNil>(self)
+        Object::isa::<Nil>(&self)
     }
 
-    pub fn isa<T>(&'static self) -> bool
+    pub fn isa<T>(&'a self) -> bool
     where
         T: 'static,
     {
-        let b = self.clone();
-        let c = b.inner;
-        let a = CastArc::cast::<T>(c);
+        let a = CastArc::cast::<T>(self.inner);
         match a {
-            Ok(o) => true,
-            Err(oo) => false,
+            Ok(_) => true,
+            _ => false,
         }
     }
 
@@ -65,26 +63,35 @@ where
     where
         T: 'static,
     {
-        let b = self.clone();
-        let c = b.inner;
-        let a = CastArc::cast::<T>(c);
+        let a = CastArc::cast::<T>(self.inner);
         match a {
             Ok(o) => {
                 let t = Some(o.as_ref());
                 t
             }
-            Err(oo) => None,
+            _ => None,
         }
     }
 
-    pub fn count(&self) -> usize {
+    pub fn cast_mut<T>(&'a self) -> Option<&'a mut T>
+    where
+        T: 'static,
+    {
+        let a = CastArc::cast::<T>(self.inner);
+        match a {
+            Ok(o) => Some((*o.as_ref()).borrow_mut()),
+            _ => None,
+        }
+    }
+
+    pub fn strong_count(&self) -> usize {
         Arc::strong_count(&self.inner)
     }
 
-    pub fn call_by_id(&self, name: usize, args: &[Object]) -> Object {
+    pub fn call_by_id(&self, id: usize, args: &[Object]) -> Object {
         let a = self.clone().inner;
         {
-            a.get_class().call(name, args).clone()
+            a.get_class().call(id, args).clone()
         }
     }
 
@@ -95,10 +102,10 @@ where
         }
     }
 
-    pub fn get_by_id(&self, name: usize) -> Object {
+    pub fn get_by_id(&self, id: usize) -> Object {
         let a = self.clone();
         let b = a.get_class();
-        b.get_class().get(name).clone()
+        b.get_class().get(id).clone()
     }
 
     pub fn get_by_name(&self, name: &str) -> Object {
@@ -107,10 +114,10 @@ where
         b.get_class().get(name).clone()
     }
 
-    pub fn set_by_id(&self, name: usize, value: Object) -> Object {
+    pub fn set_by_id(&self, id: usize, value: Object) -> Object {
         let a = self.clone();
         let b = a.get_class();
-        b.get_class().set(name, value).clone()
+        b.get_class().set(id, value).clone()
     }
 
     pub fn set_by_name(&self, name: &str, value: Object) -> Object {

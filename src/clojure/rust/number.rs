@@ -94,10 +94,10 @@ fn bidirectionnal_convert() {
     let nil: Object = Nil::new();
 
     let number: Object = BigInteger::new(1);
-    println!("count at begining={:?}", number.count());
+    println!("count at begining={:?}", number.strong_count());
 
     let number2: Object = number.clone();
-    println!("count after clone={:?}", number.count());
+    println!("count after clone={:?}", number.strong_count());
 
     println!("original Object: {:?}", &number);
     println!("cloned Object: {:?}", &number2);

@@ -31,7 +31,7 @@ init_obj! {
 ///
 pub struct SClass {
     /// `usize` -> classname
-    name: usize,
+    id: usize,
     /// `ObjHashMap` of `usize` -> `Protocol`s
     protocols: Object,
     /// `ObjHashMap` of `usize` -> `Member`s
@@ -45,9 +45,9 @@ unsafe impl Send for SClass {}
 unsafe impl Sync for SClass {}
 
 impl SClass {
-    pub fn new(name: usize, protocols: Object, members: Object, methods: Object) -> Object {
+    pub fn new(id: usize, protocols: Object, members: Object, methods: Object) -> Object {
         Object::new(Arc::new(SClass {
-            name,
+            id,
             protocols,
             members,
             methods,
@@ -65,26 +65,26 @@ impl SClass {
 ///
 pub trait Class: CastFromSync {
     /// Call `method` by id with `Object`s arguments
-    fn call(&self, name: usize, args: &[Object]) -> Object;
+    fn call(&self, id: usize, args: &[Object]) -> Object;
 
     /// Call getter by id
-    fn get(&self, name: usize) -> Object;
+    fn get(&self, id: usize) -> Object;
 
     /// Call setter by id
-    fn set(&self, name: usize, value: Object) -> Object;
+    fn set(&self, id: usize, value: Object) -> Object;
 }
 
 impl Class for SClass {
     /// Call named `method` with `Object`s arguments
-    fn call(&self, name: usize, args: &[Object]) -> Object {
+    fn call(&self, id: usize, args: &[Object]) -> Object {
         todo!()
     }
 
-    fn get(&self, name: usize) -> Object {
+    fn get(&self, id: usize) -> Object {
         todo!()
     }
 
-    fn set(&self, name: usize, value: Object) -> Object {
+    fn set(&self, id: usize, value: Object) -> Object {
         todo!()
     }
 }

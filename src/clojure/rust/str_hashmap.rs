@@ -3,8 +3,8 @@
 //! This is a wrapper on `im-rs` HashMap<String,usize> library
 
 // use intertrait::cast::*;
-
 use crate::use_obj;
+use std::sync::*;
 
 use_obj! {
     clojure::rust::object;
@@ -44,4 +44,8 @@ pub trait StrHashMap: CastFromSync {}
 
 impl StrHashMap for SStrHashMap {}
 
-impl StrHashMap {}
+impl StrHashMap {
+    pub fn new(m: &SStrHashMap) -> Object {
+        Object::new(Arc::new(*m))
+    }
+}

@@ -1,20 +1,15 @@
-//! Unique name associated with unique id
+//! `Unique` association of names with unique id
 //!
 //!
 
-use std::{borrow::BorrowMut, sync::*};
-
-// use lazy_static::{__Deref};
-use intertrait::cast::*;
+use std::sync::*;
 
 use crate::use_obj;
 
 use_obj! {
-    clojure::rust::number;
     clojure::rust::object;
     clojure::rust::str_hashmap;
     clojure::rust::str_vector;
-    clojure::rust::stri;
     clojure::rust::class;
 }
 
@@ -22,11 +17,9 @@ castable_to!(SUnique => [sync] TObject, Unique);
 
 init_obj! {
     Stri {
-        clojure::rust::obj_vector::init();
         clojure::rust::object::init();
         clojure::rust::str_hashmap::init();
         clojure::rust::str_vector::init();
-        clojure::rust::stri::init();
         clojure::rust::class::init();
     }
 }
@@ -41,21 +34,116 @@ init_obj! {
 /// As a `String` is added, it's index is added in the `map` `StrHashMap`.
 ///
 /// # Examples
-
 pub struct SUnique {
-    pub map: Object,  // SStrHashMap,
+    /// `SStrHashMap` of `name`: `String` -> `id`: `usize`
+    pub map: Object, // SStrHashMap,
+
+    /// `SStrVector` `index`: `usize` -> `value`: `String`
     pub vect: Object, // SStrVector,
 }
-
-castable_to!(SUnique => [sync] TObject, Unique);
 
 unsafe impl Send for SUnique {}
 
 unsafe impl Sync for SUnique {}
 
-pub trait Unique: CastFromSync {}
+/// Protocole `Unique`
+pub trait Unique: CastFromSync {
+    /// Size of SStrVector
+    fn len(&self) -> usize;
 
-impl Unique for SUnique {}
+    /// Gives name of index
+    ///
+    /// return None if doesn't exist
+    fn get_name<'a>(&self, index: usize) -> Option<&String>;
+
+    /// Gives index of name
+    ///
+    /// Create name and index is they doesn't exist
+    fn get_or_make_index(&mut self, index: &str) -> usize;
+
+    /// Gives index of name
+    ///
+    /// return None if doesn't exist
+    fn get_index(&mut self, name: &str) -> Option<usize>;
+
+    /// Tests if name exists
+    fn test(&self, key: &str) -> bool;
+}
+
+// `Implementation` of `Protocol` `Unique` for `SUnique`
+impl Unique for SUnique {
+    /// Size of SStrVector
+    fn len(&self) -> usize {
+        if let Some(v) = self.vect.cast::<SStrVector>() {
+            return v.len();
+        }
+        panic!("Severe: SUnique non initialized");
+    }
+
+    /// Gives name of index
+    ///
+    /// return None if doesn't exist
+    fn get_name(&self, key: usize) -> Option<&String> {
+        if let Some(v) = self.vect.cast::<SStrVector>() {
+            return v.get(key);
+        }
+        None
+    }
+
+    /// Gives index of name
+    ///
+    /// Create name and index is they doesn't exist
+    fn get_or_make_index(&mut self, name: &str) -> usize {
+        if let Some(m) = self.map.cast_mut::<SStrHashMap>() {
+            if let Some(v) = self.vect.cast_mut::<SStrVector>() {
+                if let Some(o) = m.get(name) {
+                    return *o;
+                } else {
+                    let length = self.len();
+                    v.push_back(String::from(name));
+                    *m = m.update(String::from(name), length);
+
+                    let k = SUnique {
+                        map: Object::new(Arc::new(*m)),
+                        vect: Object::new(Arc::new(*v)),
+                    };
+                    *self = k;
+
+                    // return new index that was the length of the vector
+                    return length;
+                }
+            }
+        }
+        panic!("Severe: SUnique non initialized");
+    }
+
+    /// Gives index of name
+    ///
+    /// return None if doesn't exist
+    fn get_index(&mut self, name: &str) -> Option<usize> {
+        if let Some(m) = self.map.cast_mut::<SStrHashMap>() {
+            if let Some(v) = self.vect.cast_mut::<SStrVector>() {
+                if let Some(o) = m.get(name) {
+                    return Some(*o);
+                } else {
+                    return None;
+                }
+            }
+        }
+        panic!("Severe: SUnique non initialized");
+    }
+
+    /// Tests if name exists
+    fn test(&self, name: &str) -> bool {
+        if let Some(m) = self.map.cast::<SStrHashMap>() {
+            match m.get(name) {
+                Some(_) => return true,
+                None => return false,
+            }
+        }
+        panic!("Severe: SUnique non initialized");
+    }
+}
 
 impl TObject for SUnique {
     fn get_class<'a>(&self) -> &'a SClass {
@@ -88,69 +176,12 @@ impl SUnique {
     pub fn new() -> Object {
         Object::new(Arc::new(SUnique::default()))
     }
-
-    pub fn get_mut<'a>(&'a self) -> &'a mut SUnique {
-        self.borrow_mut()
-    }
-
-    pub fn len(&self) -> usize {
-        self.vect.inn::<SStrVector>().len()
-    }
-
-    pub fn get_path_o(&self, key: Object) -> Object {
-        let k = key.inner.as_ref();
-        let ko = k.cast::<Usize>();
-        let v = self.vect.inn::<SStrVector>();
-        v.get(ko).unwrap().clone()
-    }
-
-    pub fn get_path<'a>(&self, key: usize) -> String {
-        let v = self.vect.inn::<SStrVector>();
-        let s = v.get(key).unwrap();
-        s.inn::<SStri>().inner
-    }
-
-    pub fn get_maybe_key(&mut self, key: &str) -> usize {
-        let m = self.map.clone().inn_mut::<SStrHashMap>();
-        let v = self.vect.clone().inn_mut::<SStrVector>();
-        let length = self.len();
-
-        match m.get(key) {
-            // found entry
-            Some(idx) => *idx,
-
-            // Not found: add entry in vect and map
-            None => {
-                v.push_back(String::from(key));
-                *m = m.update(String::from(key), length);
-
-                let k = SUnique { map: m, vect: v };
-                *self = k;
-
-                // return new index that was the length of the vector
-                length
-            }
-        }
-    }
-
-    pub fn test(key: String, keywords: &SUnique) -> bool {
-        let i = SUnique::get(keywords).clone();
-        let a = i;
-        match a.map.get(&key) {
-            Some(_) => true,
-            None => false,
-        }
-    }
 }
 
 impl Drop for SUnique {
     fn drop(&mut self) {
         println!("Dropping Keyword state! -> {:?}", self.to_string());
     }
-}
-
-pub fn init_keywords() -> RwLock<Object> {
-    RwLock::new(SUnique::new())
 }
 
 #[test]

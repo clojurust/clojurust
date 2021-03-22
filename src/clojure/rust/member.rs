@@ -65,28 +65,4 @@ impl TObject for SMember {
     fn equals(&self, other: &Object) -> bool {
         todo!()
     }
-
-    fn isa<T>(obj: &Object) -> bool
-    where
-        T: TObject + ?Sized + 'static,
-        Self: Sized,
-    {
-        todo!()
-    }
-
-    fn inn<T>(obj: &Object) -> &T
-    where
-        T: TObject + ?Sized + 'static,
-        Self: Sized,
-    {
-        todo!()
-    }
-
-    fn inn_mut<T>(obj: &Object) -> &mut T
-    where
-        T: TObject + ?Sized + 'static,
-        Self: Sized,
-    {
-        todo!()
-    }
 }
