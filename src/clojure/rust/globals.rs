@@ -32,39 +32,53 @@ init_obj! {
 }
 
 pub struct SGlobals {
-    pub id: Object,  // SUnique
-    pub obj: Object, // SObjVector
+    pub name: Object, // SUnique
+    pub obj: Object,  // SObjVector
 }
 
 pub trait Globals: CastFromSync {
-    fn update_object(&mut self, index: usize, value: &Object) -> (usize, Object);
+    fn update_object(&mut self, id: usize, value: &Object) -> Option<(usize, Object)>;
 
-    fn get_obj_by_id(&self, index: usize) -> Object;
+    fn add_object(&mut self, name: &str, value: &Object) -> usize;
 
-    fn get_obj_by_name(&self, index: &str) -> Object;
+    fn get_obj_by_id(&self, index: usize) -> Option<Object>;
+
+    fn get_obj_by_name(&self, name: &str) -> Option<Object>;
 }
 
 impl SGlobals {
     pub fn new() -> Object {
         Object::new(Arc::new(SGlobals {
-            id: SUnique::new(),
-            obj: SObjVector::new(),
+            name: Object::new(SUnique::default(),
+            obj: SObjVector::default(),
         }))
     }
 }
 
 impl Globals for SGlobals {
-    fn update_object(&mut self, index: String, value: &Object) -> (usize, Object) {
+    fn update_object(&mut self, index: &str, value: &Object) -> (usize, Object) {
         let v = self;
-        let b = v.id.clone().inn_mut::<SUnique>().get(index, value.clone());
+        let b = v
+            .name
+            .clone()
+            .cast_mut::<SUnique>()
+            .get(index, value.clone());
         Object::new(Arc::new(SGlobals {
-            id: self.id,
+            name: self.name,
             obj: v,
         }));
     }
 
+    fn add_object(&mut self, name: &str, value: &Object) -> usize {
+        todo!()
+    }
+
     fn get_obj_by_id(&self, index: usize) -> Object {
         self.obj.get(index).expect("TODO object not found").clone()
+    }
+
+    fn get_obj_by_name(&self, index: &str) -> Object {
+        todo!()
     }
 }
 
@@ -84,6 +98,14 @@ impl TObject for SGlobals {
     fn equals(&self, other: &Object) -> bool {
         todo!()
     }
+}
+
+impl Default for SGlobals {
+    fn default() -> Self {
+        SGlobals {
+            name: SUnique::new(),
+            obj: SObjVector::new(),
+        }
 }
 
 lazy_static! {

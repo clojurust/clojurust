@@ -43,12 +43,14 @@ impl TObject for SObjVector {
     }
 }
 
-pub trait ObjVector: CastFromSync {}
+pub trait ObjVector: CastFromSync {
+    fn new() -> Object
+    where
+        Self: Sized;
+}
 
-impl ObjVector {
-    pub fn new() -> Object {
+impl ObjVector for SObjVector {
+    fn new() -> Object {
         Object::new(Arc::new(SObjVector::default()))
     }
 }
-
-impl ObjVector for SObjVector {}

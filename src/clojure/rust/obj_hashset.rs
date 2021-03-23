@@ -3,8 +3,9 @@
 //! This is a wrapper on `im-rs` HashSet<Object> library
 
 // use lazy_static::__Deref;
-// use std::{any::*, result::*, sync::*};
 // use std::{fmt::*, hash::*};
+
+use std::sync::*;
 
 // use intertrait::cast::*;
 
@@ -44,8 +45,16 @@ impl TObject for SObjHashSet {
     }
 }
 
-pub trait ObjHashSet: CastFromSync {}
+pub trait ObjHashSet: CastFromSync {
+    fn new() -> Object
+    where
+        Self: Sized;
+}
 
-impl ObjHashSet for SObjHashSet {}
+impl ObjHashSet for SObjHashSet {
+    fn new() -> Object {
+        Object::new(Arc::new(SObjHashSet::default()))
+    }
+}
 
 impl ObjHashSet {}

@@ -2,6 +2,8 @@
 //!
 //! This is a wrapper on `im-rs` HashMap<Object,Object> library
 
+use std::sync::*;
+
 // use intertrait::cast::*;
 
 use crate::use_obj;
@@ -40,8 +42,16 @@ impl TObject for SObjHashMap {
     }
 }
 
-pub trait ObjHashMap: CastFromSync {}
+pub trait ObjHashMap: CastFromSync {
+    fn new() -> Object
+    where
+        Self: Sized;
+}
 
-impl ObjHashMap for SObjHashMap {}
+impl ObjHashMap for SObjHashMap {
+    fn new() -> Object {
+        Object::new(Arc::new(SObjHashMap::default()))
+    }
+}
 
 impl ObjHashMap {}

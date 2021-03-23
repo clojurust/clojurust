@@ -40,12 +40,14 @@ impl TObject for SStrHashMap {
     }
 }
 
-pub trait StrHashMap: CastFromSync {}
+pub trait StrHashMap: CastFromSync {
+    fn new() -> Object
+    where
+        Self: Sized;
+}
 
-impl StrHashMap for SStrHashMap {}
-
-impl StrHashMap {
-    pub fn new(m: &SStrHashMap) -> Object {
-        Object::new(Arc::new(*m))
+impl StrHashMap for SStrHashMap {
+    fn new() -> Object {
+        Object::new(Arc::new(SStrHashMap::default()))
     }
 }
