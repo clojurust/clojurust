@@ -76,3 +76,9 @@ macro_rules! use_obj {
         use_init_obj!($($tail)*);
     }
 }
+
+#[macro_export]
+macro_rules! new_obj (
+    ($exp:expr) => { Object::new(Some(Arc::new($exp))) };
+    (*$exp:expr) => { Object::new(Some(Arc::new(*$exp))) };
+);

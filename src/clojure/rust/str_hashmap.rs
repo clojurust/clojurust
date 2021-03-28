@@ -46,8 +46,10 @@ pub trait StrHashMap: CastFromSync {
         Self: Sized;
 }
 
+use crate::new_obj;
+
 impl StrHashMap for SStrHashMap {
     fn new() -> Object {
-        Object::new(Arc::new(SStrHashMap::default()))
+        new_obj!(SStrHashMap::default())
     }
 }

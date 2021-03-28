@@ -49,8 +49,10 @@ pub trait ObjVector: CastFromSync {
         Self: Sized;
 }
 
+use crate::new_obj;
+
 impl ObjVector for SObjVector {
     fn new() -> Object {
-        Object::new(Arc::new(SObjVector::default()))
+        new_obj!(SObjVector::default())
     }
 }

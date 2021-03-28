@@ -15,10 +15,12 @@ macro_rules! number_def {
         impl $name {
             pub fn new(value: $def) -> Object {
                 Object::new(
-                    Arc::new(
-                        $name {
-                            value: value,
-                        }
+                    Some(
+                        Arc::new(
+                            $name {
+                                value: value,
+                            }
+                        )
                     )
                 )
             }

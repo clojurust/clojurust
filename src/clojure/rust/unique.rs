@@ -4,6 +4,8 @@
 
 use std::sync::*;
 
+use lazy_static::lazy_static;
+
 use crate::use_obj;
 
 use_obj! {
@@ -70,6 +72,8 @@ pub trait Unique: CastFromSync {
     fn test(&self, key: &str) -> bool;
 }
 
+use crate::new_obj;
+
 // `Implementation` of `Protocol` `Unique` for `SUnique`
 impl Unique for SUnique {
     /// Size of SStrVector
@@ -104,8 +108,8 @@ impl Unique for SUnique {
                     *m = m.update(String::from(name), length);
 
                     let k = SUnique {
-                        map: Object::new(Arc::new(*m)),
-                        vect: Object::new(Arc::new(*v)),
+                        map: new_obj!(*m),
+                        vect: new_obj!(*v),
                     };
                     *self = k;
 
@@ -166,15 +170,15 @@ impl TObject for SUnique {
 impl Default for SUnique {
     fn default() -> Self {
         SUnique {
-            map: Object::new(Arc::new(SStrHashMap::default())),
-            vect: Object::new(Arc::new(SStrVector::default())),
+            map: new_obj!(SStrHashMap::default()),
+            vect: new_obj!(SStrVector::default()),
         }
     }
 }
 
 impl SUnique {
     pub fn new() -> Object {
-        Object::new(Arc::new(SUnique::default()))
+        new_obj!(SUnique::default())
     }
 }
 
@@ -182,6 +186,13 @@ impl Drop for SUnique {
     fn drop(&mut self) {
         println!("Dropping Keyword state! -> {:?}", self.to_string());
     }
+}
+
+lazy_static! {
+    /// Methods short names
+    static ref METHODS: Object = Object { inner: None };
+    /// Members short names
+    static ref MEMBERS: Object = Object { inner: None };
 }
 
 #[test]

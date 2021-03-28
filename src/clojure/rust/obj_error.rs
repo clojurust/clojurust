@@ -22,22 +22,30 @@ init_obj! {
     }
 }
 
+pub type Result<T> = std::result::Result<T, SObjError>;
+
+/// Standard error for the library
 pub struct SObjError {
+    /// Error message with format
     msg: String,
+    /// Objects to pass to the message string as an `ObjVector` 
+    args: Object,
+    /// Previous error if any else 'nil'
     previous: Object,
 }
 
+/// `Protocol` ObjError
 pub trait ObjError: CastFromSync {}
 
 impl ObjError {}
 
 impl ObjError for SObjError {}
 
-impl fmt::Display for SObjError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        todo!()
-    }
-}
+// impl fmt::Display for SObjError {
+//     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+//         todo!()
+//     }
+// }
 
 impl fmt::Debug for SObjError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -63,9 +71,10 @@ impl TObject for SObjError {
     }
 }
 
-pub fn error<T>(msg: &str, previous: Object) -> Result<&'static T, SObjError> {
+pub fn error<T>(msg: &str, args: Object, previous: Object) -> Result<&'static T> {
     Err(SObjError {
         msg: String::from(msg),
+        args,
         previous,
     })
 }

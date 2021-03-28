@@ -48,9 +48,11 @@ pub trait ObjHashMap: CastFromSync {
         Self: Sized;
 }
 
+use crate::new_obj;
+
 impl ObjHashMap for SObjHashMap {
     fn new() -> Object {
-        Object::new(Arc::new(SObjHashMap::default()))
+        new_obj!(SObjHashMap::default())
     }
 }
 

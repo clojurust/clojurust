@@ -84,7 +84,7 @@ number_def!(Usize, usize);
 #[test]
 fn bidirectionnal_convert() {
     // Test object with primitive
-    use std::any::TypeId;
+    // use std::any::TypeId;
 
     use crate::clojure;
     use clojure::rust::nil::*;
@@ -122,5 +122,5 @@ fn bidirectionnal_convert() {
         print!("Boxed value if Nil Object: {:?}", nil_as_struct_nil);
     }
 
-    let type_id: TypeId = number.inner.type_id();
+    // let type_id: TypeId = number.type_id();
 }

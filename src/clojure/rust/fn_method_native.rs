@@ -35,9 +35,11 @@ pub trait FnMethodNative: CastFromSync {
     fn call(&self, args: &[Object]) -> Object;
 }
 
+use crate::new_obj;
+
 impl SFnMethodNative {
     fn new(function: fn(args: &[Object]) -> Object) -> Object {
-        Object::new(Arc::new(SFnMethodNative { inner: function }))
+        new_obj!(SFnMethodNative { inner: function })
     }
 }
 

@@ -6,8 +6,9 @@
 //! * `Class`es and `Prototype`s' `Function`s.
 //! * `Object`s' `Member`s' getter and setters.
 
-use lazy_static::lazy_static;
 use std::sync::*;
+
+use lazy_static::lazy_static;
 
 // use intertrait::cast::*;
 
@@ -32,41 +33,40 @@ init_obj! {
 }
 
 pub struct SGlobals {
-    pub name: Object, // SUnique
-    pub obj: Object,  // SObjVector
+    pub unique_name: Object, // SUnique
+    pub obj_vect: Object,  // SObjVector
 }
 
 pub trait Globals: CastFromSync {
-    fn update_object(&mut self, id: usize, value: &Object) -> Option<(usize, Object)>;
+    fn update_object(&mut self, name: &str, value: &Object) -> Option<(usize, Object)>;
 
     fn add_object(&mut self, name: &str, value: &Object) -> usize;
 
-    fn get_obj_by_id(&self, index: usize) -> Option<Object>;
+    fn get_obj_by_id(&self, index: usize) -> Object;
 
-    fn get_obj_by_name(&self, name: &str) -> Option<Object>;
+    fn get_obj_by_name(&self, name: &str) -> Object;
 }
 
 impl SGlobals {
-    pub fn new() -> Object {
-        Object::new(Arc::new(SGlobals {
-            name: Object::new(SUnique::default(),
-            obj: SObjVector::default(),
-        }))
+    fn new() -> Object {
+        new_obj!(SGlobals::default())
     }
 }
 
+use crate::new_obj;
+
 impl Globals for SGlobals {
-    fn update_object(&mut self, index: &str, value: &Object) -> (usize, Object) {
+    fn update_object(&mut self, name: &str, value: &Object) -> Option<(usize, Object)> {
         let v = self;
         let b = v
-            .name
+            .unique_name
             .clone()
             .cast_mut::<SUnique>()
             .get(index, value.clone());
-        Object::new(Arc::new(SGlobals {
-            name: self.name,
-            obj: v,
-        }));
+        new_obj!(SGlobals {
+            unique_name: self.unique_name,
+            obj_vect: new_obj!(v),
+        });
     }
 
     fn add_object(&mut self, name: &str, value: &Object) -> usize {
@@ -74,7 +74,7 @@ impl Globals for SGlobals {
     }
 
     fn get_obj_by_id(&self, index: usize) -> Object {
-        self.obj.get(index).expect("TODO object not found").clone()
+        self.obj_vect.get(index).expect("TODO object not found").clone()
     }
 
     fn get_obj_by_name(&self, index: &str) -> Object {
@@ -103,14 +103,13 @@ impl TObject for SGlobals {
 impl Default for SGlobals {
     fn default() -> Self {
         SGlobals {
-            name: SUnique::new(),
-            obj: SObjVector::new(),
+            unique_name: new_obj!(SUnique::new()),
+            obj_vect: new_obj!(SObjVector::new()),
         }
+    }
 }
 
 lazy_static! {
-    pub static ref RUSTOBJ: SGlobals = SGlobals::new();
+    static ref CLASSES: Object = Object { inner: None };
+    static ref PROTOCOLS: Object = Object { inner: None };
 }
-
-#[test]
-fn test_rust_obj() {}

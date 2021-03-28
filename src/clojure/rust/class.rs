@@ -45,19 +45,6 @@ unsafe impl Send for SClass {}
 unsafe impl Sync for SClass {}
 
 impl SClass {
-    pub fn new(id: usize, protocols: Object, members: Object, methods: Object) -> Object {
-        Object::new(Arc::new(SClass {
-            id,
-            protocols,
-            members,
-            methods,
-        }))
-    }
-
-    // pub fn o_new_o(name: Object, protocols: Object, members: Object) -> Object {
-    //     let a = Object::inn::<Usize>(name);
-    //     Object::new::<SClass>(SClass::new(name, protocols, members))
-    // }
 }
 
 /// `Class`: `Protocol` for `Object`s and `SClass`es
@@ -72,7 +59,11 @@ pub trait Class: CastFromSync {
 
     /// Call setter by id
     fn set(&self, id: usize, value: Object) -> Object;
+
+    fn new(id: usize, protocols: Object, members: Object, methods: Object) -> Object;
 }
+
+use crate::new_obj;
 
 impl Class for SClass {
     /// Call named `method` with `Object`s arguments
@@ -87,6 +78,16 @@ impl Class for SClass {
     fn set(&self, id: usize, value: Object) -> Object {
         todo!()
     }
+
+    fn new(id: usize, protocols: Object, members: Object, methods: Object) -> Object {
+        new_obj!(SClass {
+            id,
+            protocols,
+            members,
+            methods,
+        })
+    }
+
 }
 
 impl TObject for SClass {

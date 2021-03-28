@@ -55,8 +55,10 @@ pub trait StrVector: CastFromSync {
 
 impl StrVector {}
 
+use crate::new_obj;
+
 impl StrVector for SStrVector {
     fn new() -> Object {
-        Object::new(Arc::new(SStrVector::default()))
+        new_obj!(SStrVector::default())
     }
 }

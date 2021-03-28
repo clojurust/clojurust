@@ -27,16 +27,14 @@ init_obj! {
 pub trait Inner: TObject + Debug + Eq + Hash + CastFromSync {}
 
 pub struct Object {
-    pub inner: Arc<TObject>,
+    pub inner: Option<Arc<TObject>>,
 }
-
-castable_to!(Object => [sync] TObject);
 
 impl<'a> Object
 where
     Object: TObject + 'a,
 {
-    pub fn new(obj: Arc<TObject>) -> Object {
+    pub fn new(obj: Option<Arc<TObject>>) -> Object {
         Object { inner: obj }
     }
 
@@ -52,10 +50,15 @@ where
     where
         T: 'static,
     {
-        let a = CastArc::cast::<T>(self.inner);
-        match a {
-            Ok(_) => true,
-            _ => false,
+        match self.inner {
+            None => false,
+            Some(o) => {
+                let a = CastArc::cast::<T>(self.inner);
+                match a {
+                    Ok(_) => true,
+                    _ => false,
+                }
+            }
         }
     }
 
@@ -63,13 +66,18 @@ where
     where
         T: 'static,
     {
-        let a = CastArc::cast::<T>(self.inner);
-        match a {
-            Ok(o) => {
-                let t = Some(o.as_ref());
-                t
-            }
-            _ => None,
+        match self.inner {
+            None => None,
+            Some(o) => {
+                let a = CastArc::cast::<T>(o.inner);
+                match a {
+                    Ok(o) => {
+                        let t = Some(o.as_ref());
+                        t
+                    },
+                    _ => None,
+                }
+            },
         }
     }
 
@@ -77,35 +85,46 @@ where
     where
         T: 'static,
     {
-        let a = CastArc::cast::<T>(self.inner);
-        match a {
-            Ok(o) => Some((*o.as_ref()).borrow_mut()),
-            _ => None,
+        match self.inner {
+            None => None,
+            Some(o) => {
+                let a = CastArc::cast::<T>(o);
+                match a {
+                    Ok(o) => Some((*o.as_ref()).borrow_mut()),
+                    _ => None,
+                }
+            },
         }
     }
 
     pub fn strong_count(&self) -> usize {
-        Arc::strong_count(&self.inner)
+        match self.inner {
+            None => 0,
+            Some(o) => {
+                Arc::<dyn TObject>::strong_count(&o)
+            },
+        }
     }
 
     pub fn call_by_id(&self, id: usize, args: &[Object]) -> Object {
-        let a = self.clone().inner;
-        {
-            a.get_class().call(id, args).clone()
+        match self.inner {
+            None => Object::new(None),
+            Some(o) => {
+                o.get_class().call(id, args).clone()
+            },
         }
     }
 
     pub fn call_by_name(&self, name: &str, args: &[Object]) -> Object {
-        let a = self.clone().inner;
-        {
-            a.get_class().call(name, args).clone()
-        }
+        let a = self.clone();
+        let b = a.get_class();
+        b.call(name, args).clone()
     }
 
     pub fn get_by_id(&self, id: usize) -> Object {
         let a = self.clone();
         let b = a.get_class();
-        b.get_class().get(id).clone()
+        b.get(id).clone()
     }
 
     pub fn get_by_name(&self, name: &str) -> Object {
@@ -148,8 +167,8 @@ const NILSTRING: &str = "nil";
 /// Functions are applied to the `content` of `Object`
 // #[cast_to([sync] IObject, Debug)];
 impl TObject for Object {
-    fn get_class<'a>(&self) -> &'a SClass {
-        self.clone().inner.get_class()
+    fn get_class<'a>(&self) -> Option<&'a SClass> {
+        Object::cast::<TObject>(self)
     }
 
     fn to_string(&self) -> &str {
@@ -177,7 +196,7 @@ impl Debug for Object {
 
 impl Clone for Object {
     fn clone_from(&mut self, source: &Self) {
-        *self = source.clone();
+        self = &mut source.clone();
     }
 
     fn clone(&self) -> Self {
@@ -187,6 +206,7 @@ impl Clone for Object {
         }
     }
 }
+
 impl Eq for Object {}
 
 impl PartialEq for Object {

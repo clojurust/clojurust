@@ -38,12 +38,10 @@ pub mod clojure {
         pub mod class;
         pub mod fn_method_native;
         pub mod function;
-        pub mod globaldb;
         pub mod globals;
         pub mod member;
         pub mod nil;
         pub mod number;
-        // pub mod obj_error;
         pub mod obj_error;
         pub mod obj_hashmap;
         pub mod obj_hashset;

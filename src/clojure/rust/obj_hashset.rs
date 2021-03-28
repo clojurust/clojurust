@@ -51,9 +51,11 @@ pub trait ObjHashSet: CastFromSync {
         Self: Sized;
 }
 
+use crate::new_obj;
+
 impl ObjHashSet for SObjHashSet {
     fn new() -> Object {
-        Object::new(Arc::new(SObjHashSet::default()))
+        new_obj!(SObjHashSet::default())
     }
 }
 

@@ -53,7 +53,7 @@ impl Function for SFunction {
                 let implem = Object::inn::<SFunction>(&self.func).get(index);
                 let a = Object::inn::<SFnMethodNative>(&implem);
                 let fn_nat = Object::cast::<SFnMethodNative>(a);
-            }
+            },
             // If no max => no implementation
             None => todo!(),
         }
@@ -82,9 +82,11 @@ impl TObject for SFunction {
     }
 }
 
+use crate::new_obj;
+
 impl SFunction {
-    pub fn new(multiary: Option<usize>, func: Object) -> Object {
-        Object::new(Arc::new(SFunction { multiary, func }))
+    pub fn new(full_name: usize, multiary: Option<usize>, func: Object) -> Object {
+        new_obj!(SFunction { full_name, multiary, func })
     }
 }
 

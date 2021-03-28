@@ -2,8 +2,6 @@
 //!
 //! This wil enable to add `Protocol`s for Nil
 
-use std::sync::Arc;
-
 // use intertrait::cast::*;
 
 use crate::use_obj;
@@ -29,7 +27,7 @@ pub trait TNil: CastFromSync {}
 
 impl Nil {
     pub fn new() -> Object {
-        Object::new(Arc::new(Nil {}))
+        Object::new(None)
     }
 }
 

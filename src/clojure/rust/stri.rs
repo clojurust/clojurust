@@ -48,12 +48,14 @@ impl From<&str> for SStri {
     }
 }
 
+use crate::new_obj;
+
 /// SStr -> Object
 /// We call new() because a new object is created.
 /// That's why we cannot use the reverse into function
 impl From<SStri> for Object {
     fn from(s: SStri) -> Self {
-        Object::new(Arc::new(s))
+        new_obj!(s)
     }
 }
 
