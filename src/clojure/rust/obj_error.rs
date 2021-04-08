@@ -28,10 +28,6 @@ pub type Result<T> = std::result::Result<T, SObjError>;
 pub struct SObjError {
     /// Error message with format
     msg: String,
-    /// Objects to pass to the message string as an `ObjVector` 
-    args: Object,
-    /// Previous error if any else 'nil'
-    previous: Object,
 }
 
 /// `Protocol` ObjError
@@ -71,10 +67,8 @@ impl TObject for SObjError {
     }
 }
 
-pub fn error<T>(msg: &str, args: Object, previous: Object) -> Result<&'static T> {
+pub fn error<T>(msg: &str) -> Result<T> {
     Err(SObjError {
         msg: String::from(msg),
-        args,
-        previous,
     })
 }

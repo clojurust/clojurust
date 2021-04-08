@@ -2,8 +2,6 @@
 //!
 //! This is a wrapper on `im-rs` HashMap<Object,Object> library
 
-use std::sync::*;
-
 // use intertrait::cast::*;
 
 use crate::use_obj;

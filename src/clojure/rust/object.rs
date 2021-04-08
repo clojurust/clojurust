@@ -53,7 +53,7 @@ where
         match self.inner {
             None => false,
             Some(o) => {
-                let a = CastArc::cast::<T>(self.inner);
+                let a = CastArc::cast::<T>(o);
                 match a {
                     Ok(_) => true,
                     _ => false,
@@ -69,7 +69,7 @@ where
         match self.inner {
             None => None,
             Some(o) => {
-                let a = CastArc::cast::<T>(o.inner);
+                let a = CastArc::cast::<T>(o);
                 match a {
                     Ok(o) => {
                         let t = Some(o.as_ref());
@@ -130,19 +130,19 @@ where
     pub fn get_by_name(&self, name: &str) -> Object {
         let a = self.clone();
         let b = a.get_class();
-        b.get_class().get(name).clone()
+        b.get(name).clone()
     }
 
     pub fn set_by_id(&self, id: usize, value: Object) -> Object {
         let a = self.clone();
         let b = a.get_class();
-        b.get_class().set(id, value).clone()
+        b.set(id, value).clone()
     }
 
     pub fn set_by_name(&self, name: &str, value: Object) -> Object {
         let a = self.clone();
         let b = a.get_class();
-        b.get_class().set(name, value).clone()
+        b.set(name, value).clone()
     }
 }
 
@@ -167,8 +167,11 @@ const NILSTRING: &str = "nil";
 /// Functions are applied to the `content` of `Object`
 // #[cast_to([sync] IObject, Debug)];
 impl TObject for Object {
-    fn get_class<'a>(&self) -> Option<&'a SClass> {
-        Object::cast::<TObject>(self)
+    fn get_class<'a>(&self) -> &'a SClass {
+        match self.inner {
+            None => todo!(),
+            Some(o) => {o.get_class()},
+        }
     }
 
     fn to_string(&self) -> &str {

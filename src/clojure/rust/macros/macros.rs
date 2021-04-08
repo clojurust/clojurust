@@ -79,6 +79,6 @@ macro_rules! use_obj {
 
 #[macro_export]
 macro_rules! new_obj (
-    ($exp:expr) => { Object::new(Some(Arc::new($exp))) };
     (*$exp:expr) => { Object::new(Some(Arc::new(*$exp))) };
+    ($exp:expr) => { Object::new(Some(Arc::new($exp))) };
 );

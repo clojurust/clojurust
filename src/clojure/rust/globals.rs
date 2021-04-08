@@ -103,7 +103,7 @@ impl TObject for SGlobals {
 impl Default for SGlobals {
     fn default() -> Self {
         SGlobals {
-            unique_name: new_obj!(SUnique::new()),
+            unique_name: SUnique::new(),
             obj_vect: new_obj!(SObjVector::new()),
         }
     }

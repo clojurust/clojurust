@@ -18,7 +18,7 @@ use_obj! {
 castable_to!(SUnique => [sync] TObject, Unique);
 
 init_obj! {
-    Stri {
+    SUnique {
         clojure::rust::object::init();
         clojure::rust::str_hashmap::init();
         clojure::rust::str_vector::init();

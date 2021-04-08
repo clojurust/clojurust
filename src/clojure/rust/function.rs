@@ -50,9 +50,11 @@ impl Function for SFunction {
                 if arity > max {
                     index = max;
                 }
-                let implem = Object::inn::<SFunction>(&self.func).get(index);
-                let a = Object::inn::<SFnMethodNative>(&implem);
+                let implem = Object::cast::<SFunction>(&self.func);
+                let funcs = implem.get(index);
+                let a = Object::cast::<SFnMethodNative>(&implem);
                 let fn_nat = Object::cast::<SFnMethodNative>(a);
+                Object::null()
             },
             // If no max => no implementation
             None => todo!(),
@@ -77,7 +79,7 @@ impl TObject for SFunction {
         todo!()
     }
 
-    fn equals(&self, other: &Object) -> bool {
+    fn equals(&self, other: &Object) -> bool {behaviour
         todo!()
     }
 }

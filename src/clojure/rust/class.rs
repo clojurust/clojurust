@@ -45,6 +45,14 @@ unsafe impl Send for SClass {}
 unsafe impl Sync for SClass {}
 
 impl SClass {
+    fn new(id: usize, protocols: Object, members: Object, methods: Object) -> Object {
+        new_obj!(SClass {
+            id,
+            protocols,
+            members,
+            methods,
+        })
+    }
 }
 
 /// `Class`: `Protocol` for `Object`s and `SClass`es
@@ -59,8 +67,6 @@ pub trait Class: CastFromSync {
 
     /// Call setter by id
     fn set(&self, id: usize, value: Object) -> Object;
-
-    fn new(id: usize, protocols: Object, members: Object, methods: Object) -> Object;
 }
 
 use crate::new_obj;
@@ -78,16 +84,6 @@ impl Class for SClass {
     fn set(&self, id: usize, value: Object) -> Object {
         todo!()
     }
-
-    fn new(id: usize, protocols: Object, members: Object, methods: Object) -> Object {
-        new_obj!(SClass {
-            id,
-            protocols,
-            members,
-            methods,
-        })
-    }
-
 }
 
 impl TObject for SClass {
