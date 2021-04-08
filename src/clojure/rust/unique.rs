@@ -108,8 +108,8 @@ impl Unique for SUnique {
                     *m = m.update(String::from(name), length);
 
                     let k = SUnique {
-                        map: new_obj!(*m),
-                        vect: new_obj!(*v),
+                        map: new_obj!(m.clone()),
+                        vect: new_obj!(v.clone()),
                     };
                     *self = k;
 

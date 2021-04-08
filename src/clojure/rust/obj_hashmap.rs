@@ -5,6 +5,7 @@
 // use intertrait::cast::*;
 
 use crate::use_obj;
+use std::sync::*;
 
 use_obj! {
     clojure::rust::object;

@@ -9,18 +9,18 @@ use crate::use_obj;
 
 use_obj! {
     clojure::rust::class;
-    clojure::rust::fn_method_native;
     clojure::rust::object;
+//    clojure::rust::fn_method_native;
 }
 
 castable_to!(SFunction => [sync] TObject, Function);
 
 init_obj! {
     Function {
-        clojure::rust::object::init();
         clojure::rust::class::init();
-        clojure::rust::fn_method_native::init();
-    }
+        clojure::rust::object::init();
+//        clojure::rust::fn_method_native::init();
+}
 }
 
 pub struct SFunction {
@@ -44,21 +44,22 @@ trait Function: CastFromSync {
 
 impl Function for SFunction {
     fn get(&self, arity: usize) -> Object {
-        let mut index = arity;
-        match self.multiary {
-            Some(max) => {
-                if arity > max {
-                    index = max;
-                }
-                let implem = Object::cast::<SFunction>(&self.func);
-                let funcs = implem.get(index);
-                let a = Object::cast::<SFnMethodNative>(&implem);
-                let fn_nat = Object::cast::<SFnMethodNative>(a);
-                Object::null()
-            },
-            // If no max => no implementation
-            None => todo!(),
-        }
+        // let mut index = arity;
+        // match self.multiary {
+        //     Some(max) => {
+        //         if arity > max {
+        //             index = max;
+        //         }
+        //         let implem = Object::cast::<SFunction>(&self.func);
+        //         let funcs = implem.get(index);
+        //         let a = Object::cast::<SFnMethodNative>(&implem);
+        //         let fn_nat = Object::cast::<SFnMethodNative>(a);
+        //         Object::null()
+        //     },
+        //     // If no max => no implementation
+        //     None => todo!(),
+        // }
+        todo!()
     }
 
     fn call(&self, args: &Object) -> Object {
@@ -79,7 +80,7 @@ impl TObject for SFunction {
         todo!()
     }
 
-    fn equals(&self, other: &Object) -> bool {behaviour
+    fn equals(&self, other: &Object) -> bool {
         todo!()
     }
 }

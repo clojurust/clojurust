@@ -2,7 +2,7 @@
 //!
 //! Define dynamic `Object`s as Option<Arc<TObject>>
 
-use std::{borrow::BorrowMut, clone::Clone};
+use std::{clone::Clone};
 use std::{fmt::*, hash::*, sync::*};
 
 use intertrait::cast::CastArc;
@@ -50,7 +50,8 @@ where
     where
         T: 'static,
     {
-        match self.inner {
+        let o = self.clone();
+        match o.inner {
             None => false,
             Some(o) => {
                 let a = CastArc::cast::<T>(o);
@@ -66,14 +67,15 @@ where
     where
         T: 'static,
     {
-        match self.inner {
+        let o = self.clone();
+        match o.inner {
             None => None,
             Some(o) => {
-                let a = CastArc::cast::<T>(o);
+                let a = CastArc::cast::<&T>(o);
                 match a {
                     Ok(o) => {
-                        let t = Some(o.as_ref());
-                        t
+                        let t = *o.as_ref();
+                        Some(t)
                     },
                     _ => None,
                 }
@@ -85,20 +87,23 @@ where
     where
         T: 'static,
     {
-        match self.inner {
-            None => None,
-            Some(o) => {
-                let a = CastArc::cast::<T>(o);
-                match a {
-                    Ok(o) => Some((*o.as_ref()).borrow_mut()),
-                    _ => None,
-                }
-            },
-        }
+        // let o = self.clone();
+        // match o.inner {
+        //     None => None,
+        //     Some(o) => {
+        //         let a = CastArc::cast::<T>(o);
+        //         match a {
+        //             Ok(o) => Some((*o.as_ref()).borrow_mut()),
+        //             _ => None,
+        //         }
+        //     },
+        // }
+        todo!()
     }
 
     pub fn strong_count(&self) -> usize {
-        match self.inner {
+        let o = self.clone();
+        match o.inner {
             None => 0,
             Some(o) => {
                 Arc::<dyn TObject>::strong_count(&o)
@@ -107,7 +112,8 @@ where
     }
 
     pub fn call_by_id(&self, id: usize, args: &[Object]) -> Object {
-        match self.inner {
+        let o = self.clone();
+        match o.inner {
             None => Object::new(None),
             Some(o) => {
                 o.get_class().call(id, args).clone()
@@ -115,11 +121,11 @@ where
         }
     }
 
-    pub fn call_by_name(&self, name: &str, args: &[Object]) -> Object {
-        let a = self.clone();
-        let b = a.get_class();
-        b.call(name, args).clone()
-    }
+    // pub fn call_by_name(&self, name: &str, args: &[Object]) -> Object {
+    //     let a = self.clone();
+    //     let b = a.get_class();
+    //     b.call(name, args).clone()
+    // }
 
     pub fn get_by_id(&self, id: usize) -> Object {
         let a = self.clone();
@@ -127,11 +133,11 @@ where
         b.get(id).clone()
     }
 
-    pub fn get_by_name(&self, name: &str) -> Object {
-        let a = self.clone();
-        let b = a.get_class();
-        b.get(name).clone()
-    }
+    // pub fn get_by_name(&self, name: &str) -> Object {
+    //     let a = self.clone();
+    //     let b = a.get_class();
+    //     b.get(name).clone()
+    // }
 
     pub fn set_by_id(&self, id: usize, value: Object) -> Object {
         let a = self.clone();
@@ -139,11 +145,11 @@ where
         b.set(id, value).clone()
     }
 
-    pub fn set_by_name(&self, name: &str, value: Object) -> Object {
-        let a = self.clone();
-        let b = a.get_class();
-        b.set(name, value).clone()
-    }
+    // pub fn set_by_name(&self, name: &str, value: Object) -> Object {
+    //     let a = self.clone();
+    //     let b = a.get_class();
+    //     b.set(name, value).clone()
+    // }
 }
 
 /// `Object` `Protocol` for all defined `Object`s
@@ -168,7 +174,8 @@ const NILSTRING: &str = "nil";
 // #[cast_to([sync] IObject, Debug)];
 impl TObject for Object {
     fn get_class<'a>(&self) -> &'a SClass {
-        match self.inner {
+        let a = self.clone();
+        match a.inner {
             None => todo!(),
             Some(o) => {o.get_class()},
         }
@@ -198,10 +205,6 @@ impl Debug for Object {
 }
 
 impl Clone for Object {
-    fn clone_from(&mut self, source: &Self) {
-        self = &mut source.clone();
-    }
-
     fn clone(&self) -> Self {
         let Object { inner } = self;
         Object {
