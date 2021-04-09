@@ -13,6 +13,7 @@ use std::sync::Arc;
 
 /// include and init needed `Rust` `Objects` for `clojure::lang`
 use crate::use_obj;
+
 use_obj! {
     clojure::rust::object;
     clojure::rust::class;
@@ -50,12 +51,15 @@ impl FnMethodNative for SFnMethodNative {
     }
 }
 
+impl ToString for SFnMethodNative {
+    /// Return string representation of
+    fn to_string(&self) -> String {
+        format!("Function native")
+    }
+}
+
 impl TObject for SFnMethodNative {
     fn get_class<'a>(&self) -> &'a SClass {
-        todo!()
-    }
-
-    fn to_string(&self) -> &str {
         todo!()
     }
 

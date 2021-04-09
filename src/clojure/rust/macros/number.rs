@@ -31,10 +31,6 @@ macro_rules! number_def {
                 todo!()
             }
 
-            fn to_string(&self) -> &str {
-                todo!()
-            }
-
             fn get_hash(&self) -> usize {
                 todo!()
             }

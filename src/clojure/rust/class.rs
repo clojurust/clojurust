@@ -86,15 +86,17 @@ impl Class for SClass {
     }
 }
 
+impl ToString for SClass {
+    /// Return string representation of
+    fn to_string(&self) -> String {
+        format!("Class")
+    }
+}
+
 impl TObject for SClass {
     /// Return `Class` of `Object`
     fn get_class<'a>(&self) -> &'a SClass {
         todo!()
-    }
-
-    /// Return string representation of
-    fn to_string(&self) -> &str {
-        "Class"
     }
 
     fn get_hash(&self) -> usize {

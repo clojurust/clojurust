@@ -91,7 +91,7 @@ fn bidirectionnal_convert() {
     use clojure::rust::number::*;
     use clojure::rust::object::*;
 
-    let nil: Object = Nil::new();
+    let nil: Object = Object::null();
 
     let number: Object = BigInteger::new(1);
     println!("count at begining={:?}", number.strong_count());

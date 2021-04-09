@@ -79,12 +79,15 @@ impl Globals for SGlobals {
     }
 }
 
+impl ToString for SGlobals {
+    /// Return string representation of
+    fn to_string(&self) -> String {
+        format!("Globals")
+    }
+}
+
 impl TObject for SGlobals {
     fn get_class<'a>(&self) -> &'a SClass {
-        todo!()
-    }
-
-    fn to_string(&self) -> &str {
         todo!()
     }
 

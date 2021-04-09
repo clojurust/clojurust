@@ -67,12 +67,15 @@ impl Function for SFunction {
     }
 }
 
+impl ToString for SFunction {
+    /// Return string representation of
+    fn to_string(&self) -> String {
+        format!("function {}", self.full_name)
+    }
+}
+
 impl TObject for SFunction {
     fn get_class<'a>(&self) -> &'a SClass {
-        todo!()
-    }
-
-    fn to_string(&self) -> &str {
         todo!()
     }
 

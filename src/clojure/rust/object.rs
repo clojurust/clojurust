@@ -12,19 +12,17 @@ use crate::use_obj;
 
 use_obj! {
     clojure::rust::class;
-    clojure::rust::nil;
 }
 
-castable_to!(Object => [sync] TObject, TObject);
+castable_to!(Object => [sync] TObject);
 
 init_obj! {
     Object {
         clojure::rust::class::init();
-        clojure::rust::nil::init();
     }
 }
 
-pub trait Inner: TObject + Debug + Eq + Hash + CastFromSync {}
+pub trait Inner: TObject + Debug + Display + Eq + Hash + CastFromSync {}
 
 pub struct Object {
     pub inner: Option<Arc<TObject>>,
@@ -39,11 +37,14 @@ where
     }
 
     pub fn null() -> Object {
-        Nil::new()
+        Object { inner: None }
     }
 
     pub fn is_null(&self) -> bool {
-        Object::isa::<Nil>(&self)
+        match self.inner {
+            Some(_) => {false}
+            None => {true}
+        }
     }
 
     pub fn isa<T>(&'a self) -> bool
@@ -159,14 +160,31 @@ pub trait TObject: CastFromSync {
     /// Return `Class` of `Object`
     fn get_class<'a>(&self) -> &'a SClass;
 
-    fn to_string(&self) -> &str;
-
     fn get_hash(&self) -> usize;
 
     fn equals(&self, other: &Object) -> bool;
 }
 
 const NILSTRING: &str = "nil";
+
+// impl ToString for Object {
+//     /// Return string representation of
+//     fn to_string(&self) -> String {
+//         format!("{:?}", self.inner.as_ref())
+//     }
+// }
+
+impl Display for Object {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        write!(f, "{}", self.to_string())
+    }
+}
+
+impl Debug for Object {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.to_string())
+    }
+}
 
 /// SImplementation of protocol IObject for Object.
 ///
@@ -181,11 +199,6 @@ impl TObject for Object {
         }
     }
 
-    fn to_string(&self) -> &str {
-        let a = self.clone();
-        a.get_class().to_string()
-    }
-
     fn get_hash(&self) -> usize {
         let a = self.clone();
         a.get_class().get_hash()
@@ -194,13 +207,6 @@ impl TObject for Object {
     fn equals(&self, other: &Object) -> bool {
         let a = self.clone();
         a.get_class().equals(other)
-    }
-}
-
-impl Debug for Object {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let a = self.clone();
-        f.write_str(a.to_string())
     }
 }
 

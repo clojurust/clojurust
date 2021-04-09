@@ -49,12 +49,15 @@ impl Member {}
 
 impl Member for SMember {}
 
+impl ToString for SMember {
+    /// Return string representation of
+    fn to_string(&self) -> String {
+        format!("Member {}", self.name)
+    }
+}
+
 impl TObject for SMember {
     fn get_class<'a>(&self) -> &'a SClass {
-        todo!()
-    }
-
-    fn to_string(&self) -> &str {
         todo!()
     }
 

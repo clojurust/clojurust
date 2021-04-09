@@ -40,7 +40,6 @@ pub mod clojure {
         pub mod function;
         pub mod globals;
         pub mod member;
-        pub mod nil;
         pub mod number;
         pub mod obj_error;
         pub mod obj_hashmap;

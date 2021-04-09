@@ -22,7 +22,7 @@ init_obj! {
     }
 }
 
-pub type Result<T> = std::result::Result<T, SObjError>;
+pub type ObjResult<T> = std::result::Result<T, SObjError>;
 
 /// Standard error for the library
 pub struct SObjError {
@@ -37,24 +37,20 @@ impl ObjError {}
 
 impl ObjError for SObjError {}
 
-// impl fmt::Display for SObjError {
-//     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-//         todo!()
-//     }
-// }
+impl fmt::Display for SObjError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", self.to_string())
+    }
+}
 
 impl fmt::Debug for SObjError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        todo!()
+        write!(f, "{}", self.to_string())
     }
 }
 
 impl TObject for SObjError {
     fn get_class<'a>(&self) -> &'a SClass {
-        todo!()
-    }
-
-    fn to_string(&self) -> &str {
         todo!()
     }
 
@@ -67,8 +63,21 @@ impl TObject for SObjError {
     }
 }
 
-pub fn error<T>(msg: &str) -> Result<T> {
+pub fn error<T>(msg: &str) -> ObjResult<T> {
     Err(SObjError {
         msg: String::from(msg),
     })
+}
+
+#[test]
+fn error_test() {
+    let a = error::<String>("test error");
+    match a {
+        Ok(b) => {
+            println!("{}", b);
+        },
+        Err(c) => {
+            println!("Error: {:?}", c);
+        }
+    }
 }
