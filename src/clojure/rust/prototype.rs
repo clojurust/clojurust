@@ -2,6 +2,8 @@
 
 // use intertrait::cast::*;
 
+use std::fmt::*;
+
 use crate::use_obj;
 
 use_obj! {
@@ -18,6 +20,7 @@ init_obj! {
     }
 }
 
+#[derive(Debug)]
 pub struct SPrototype {
     multi_arity: Option<usize>,
 }
@@ -28,12 +31,14 @@ impl Prototype {}
 
 impl Prototype for SPrototype {}
 
+impl Display for SPrototype {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        write!(f, "^Prototype {:?}", self.multi_arity)
+    }
+}
+
 impl TObject for SPrototype {
     fn get_class<'a>(&self) -> &'a SClass {
-        todo!()
-    }
-
-    fn to_string(&self) -> &str {
         todo!()
     }
 

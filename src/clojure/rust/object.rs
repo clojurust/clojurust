@@ -7,7 +7,6 @@ use std::{fmt::*, hash::*, sync::*};
 
 use intertrait::cast::CastArc;
 
-// use std::fmt::*;
 use crate::use_obj;
 
 use_obj! {
@@ -22,10 +21,21 @@ init_obj! {
     }
 }
 
-pub trait Inner: TObject + Debug + Display + Eq + Hash + CastFromSync {}
-
+#[derive(Debug)]
 pub struct Object {
     pub inner: Option<Arc<TObject>>,
+}
+
+/// `Object` `Protocol` for all defined `Object`s
+///
+///
+pub trait TObject: Debug + Display + CastFromSync  {
+    /// Return `Class` of `Object`
+    fn get_class<'a>(&self) -> &'a SClass;
+
+    fn get_hash(&self) -> usize;
+
+    fn equals(&self, other: &Object) -> bool;
 }
 
 impl<'a> Object
@@ -153,36 +163,12 @@ where
     // }
 }
 
-/// `Object` `Protocol` for all defined `Object`s
-///
-///
-pub trait TObject: CastFromSync {
-    /// Return `Class` of `Object`
-    fn get_class<'a>(&self) -> &'a SClass;
-
-    fn get_hash(&self) -> usize;
-
-    fn equals(&self, other: &Object) -> bool;
-}
-
-const NILSTRING: &str = "nil";
-
-// impl ToString for Object {
-//     /// Return string representation of
-//     fn to_string(&self) -> String {
-//         format!("{:?}", self.inner.as_ref())
-//     }
-// }
-
 impl Display for Object {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "{}", self.to_string())
-    }
-}
-
-impl Debug for Object {
-    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.to_string())
+        match self.inner {
+            Some(inner) => {write!(f, "{:?}", inner)}
+            None => {write!(f, "nil")}
+        }
     }
 }
 

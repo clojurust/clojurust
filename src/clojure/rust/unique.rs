@@ -2,7 +2,7 @@
 //!
 //!
 
-use std::sync::*;
+use std::{fmt::*, sync::*};
 
 use lazy_static::lazy_static;
 
@@ -36,6 +36,7 @@ init_obj! {
 /// As a `String` is added, it's index is added in the `map` `StrHashMap`.
 ///
 /// # Examples
+#[derive(Debug)]
 pub struct SUnique {
     /// `SStrHashMap` of `name`: `String` -> `id`: `usize`
     pub map: Object, // SStrHashMap,
@@ -154,10 +155,6 @@ impl TObject for SUnique {
         todo!()
     }
 
-    fn to_string(&self) -> &str {
-        todo!()
-    }
-
     fn get_hash(&self) -> usize {
         todo!()
     }
@@ -173,6 +170,12 @@ impl Default for SUnique {
             map: new_obj!(SStrHashMap::default()),
             vect: new_obj!(SStrVector::default()),
         }
+    }
+}
+
+impl Display for SUnique {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        write!(f, "SUnique")
     }
 }
 

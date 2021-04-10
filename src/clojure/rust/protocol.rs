@@ -5,6 +5,8 @@
 
 // use intertrait::cast::*;
 
+use std::fmt::*;
+
 use crate::use_obj;
 
 use_obj! {
@@ -21,6 +23,7 @@ init_obj! {
     }
 }
 
+#[derive(Debug)]
 struct SProtocol {
     /// This is the template functions of the `Prototype`.
     /// TODO
@@ -29,12 +32,14 @@ struct SProtocol {
 
 castable_to!(SProtocol => [sync] TObject, Protocol);
 
+impl Display for SProtocol {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        write!(f, "^Protocol {:?}", self.template)
+    }
+}
+
 impl TObject for SProtocol {
     fn get_class<'a>(&self) -> &'a SClass {
-        todo!()
-    }
-
-    fn to_string(&self) -> &str {
         todo!()
     }
 

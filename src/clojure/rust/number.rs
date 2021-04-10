@@ -72,6 +72,7 @@ pub trait Decimal {}
 pub trait Ratio {}
 
 use crate::number_def;
+use std::fmt::*;
 number_def!(BigInteger, i128);
 number_def!(Long, i64);
 number_def!(Integer, i32);
@@ -87,7 +88,6 @@ fn bidirectionnal_convert() {
     // use std::any::TypeId;
 
     use crate::clojure;
-    use clojure::rust::nil::*;
     use clojure::rust::number::*;
     use clojure::rust::object::*;
 
@@ -118,9 +118,9 @@ fn bidirectionnal_convert() {
     }
 
     // Cast Object Nil -> Boxed Nil struct
-    if let Some(nil_as_struct_nil) = nil.cast::<Nil>() {
-        print!("Boxed value if Nil Object: {:?}", nil_as_struct_nil);
-    }
+    // if let Some(nil_as_struct_nil) = nil.cast::<Nil>() {
+    //     print!("Boxed value if Nil Object: {:?}", nil_as_struct_nil);
+    // }
 
     // let type_id: TypeId = number.type_id();
 }

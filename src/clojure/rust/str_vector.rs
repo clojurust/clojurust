@@ -5,7 +5,7 @@
 // use lazy_static::__Deref;
 // use std::{fmt::*, hash::*};
 
-use std::sync::*;
+use std::{fmt::*, sync::*};
 
 // use intertrait::cast::*;
 
@@ -25,16 +25,15 @@ init_obj! {
     }
 }
 
-pub type SStrVector = im::vector::Vector<String>;
+#[derive(Debug)]
+pub struct SStrVector { 
+    inner: im::vector::Vector<String>
+}
 
 castable_to!(SStrVector => [sync] TObject, StrVector);
 
 impl TObject for SStrVector {
     fn get_class<'a>(&self) -> &'a SClass {
-        todo!()
-    }
-
-    fn to_string(&self) -> &str {
         todo!()
     }
 
@@ -56,6 +55,12 @@ pub trait StrVector: CastFromSync {
 impl StrVector {}
 
 use crate::new_obj;
+
+impl Display for SStrVector {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        write!(f, "^SStrVector {:?}", self.inner)
+    }
+}
 
 impl StrVector for SStrVector {
     fn new() -> Object {

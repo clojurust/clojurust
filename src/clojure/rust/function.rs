@@ -3,7 +3,7 @@
 //! This is a map of
 
 // use lazy_static::{__Deref, lazy_static};
-use std::sync::*;
+use std::{fmt::*, sync::*};
 
 use crate::use_obj;
 
@@ -23,6 +23,7 @@ init_obj! {
 }
 }
 
+#[derive(Debug)]
 pub struct SFunction {
     /// index of full name: ns + class/protocol + name
     pub full_name: usize,
@@ -67,10 +68,10 @@ impl Function for SFunction {
     }
 }
 
-impl ToString for SFunction {
+impl Display for SFunction {
     /// Return string representation of
-    fn to_string(&self) -> String {
-        format!("function {}", self.full_name)
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        write!(f, "function {}", self.full_name)
     }
 }
 

@@ -6,6 +6,7 @@
 
 use crate::use_obj;
 use std::sync::*;
+use std::fmt::*;
 
 use_obj! {
     clojure::rust::object;
@@ -21,14 +22,13 @@ init_obj! {
     }
 }
 
-pub type SObjHashMap = im::hashmap::HashMap<Object, Object>;
+#[derive(Debug)]
+pub struct SObjHashMap {
+    inner: im::hashmap::HashMap<Object, Object>
+}
 
 impl TObject for SObjHashMap {
     fn get_class<'a>(&self) -> &'a SClass {
-        todo!()
-    }
-
-    fn to_string(&self) -> &str {
         todo!()
     }
 
@@ -38,6 +38,13 @@ impl TObject for SObjHashMap {
 
     fn equals(&self, other: &Object) -> bool {
         todo!()
+    }
+}
+
+impl Display for SObjHashMap {
+    /// Return string representation of
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        write!(f, "SObjHashMap {}", self.inner)
     }
 }
 

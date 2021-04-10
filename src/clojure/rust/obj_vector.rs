@@ -4,7 +4,7 @@
 
 // use lazy_static::__Deref;
 // use std::{fmt::*, hash::*};
-use std::sync::*;
+use std::{fmt::*, sync::*};
 
 // use intertrait::cast::*;
 use crate::use_obj;
@@ -23,14 +23,13 @@ init_obj! {
     }
 }
 
-pub type SObjVector = im::vector::Vector<Object>;
+#[derive(Debug)]
+pub struct SObjVector {
+    inner: im::vector::Vector<Object>
+}
 
 impl TObject for SObjVector {
     fn get_class<'a>(&self) -> &'a SClass {
-        todo!()
-    }
-
-    fn to_string(&self) -> &str {
         todo!()
     }
 
@@ -40,6 +39,13 @@ impl TObject for SObjVector {
 
     fn equals(&self, other: &Object) -> bool {
         todo!()
+    }
+}
+
+impl Display for SObjVector {
+    /// Return string representation of
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        write!(f, "SObjVector {}", self.inner)
     }
 }
 

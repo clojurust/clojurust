@@ -6,7 +6,7 @@
 //! * `Class`es and `Prototype`s' `Function`s.
 //! * `Object`s' `Member`s' getter and setters.
 
-use std::sync::*;
+use std::{fmt::*, sync::*};
 
 use lazy_static::lazy_static;
 
@@ -32,6 +32,7 @@ init_obj! {
     }
 }
 
+#[derive(Debug)]
 pub struct SGlobals {
     pub unique_name: Object, // SUnique
     pub obj_vect: Object,  // SObjVector
@@ -79,10 +80,10 @@ impl Globals for SGlobals {
     }
 }
 
-impl ToString for SGlobals {
+impl Display for SGlobals {
     /// Return string representation of
-    fn to_string(&self) -> String {
-        format!("Globals")
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        write!(f, "Globals")
     }
 }
 

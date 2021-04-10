@@ -5,7 +5,7 @@
 // use lazy_static::__Deref;
 // use std::{fmt::*, hash::*};
 
-use std::sync::*;
+use std::{fmt::*, sync::*};
 
 // use intertrait::cast::*;
 
@@ -25,14 +25,13 @@ init_obj! {
     }
 }
 
-pub type SObjHashSet = im::hashset::HashSet<Object>;
+#[derive(Debug)]
+pub struct SObjHashSet {
+    inner: im::hashset::HashSet<Object>
+}
 
 impl TObject for SObjHashSet {
     fn get_class<'a>(&self) -> &'a SClass {
-        todo!()
-    }
-
-    fn to_string(&self) -> &str {
         todo!()
     }
 
@@ -42,6 +41,13 @@ impl TObject for SObjHashSet {
 
     fn equals(&self, other: &Object) -> bool {
         todo!()
+    }
+}
+
+impl Display for SObjHashSet {
+    /// Return string representation of
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        write!(f, "SObjHashSet {}", self.inner)
     }
 }
 

@@ -6,6 +6,7 @@
 #[macro_export]
 macro_rules! number_def {
     ($name:ident, $def:ty) => {
+        #[derive(Debug)]
         pub struct $name {
             value: $def,
         }
@@ -37,6 +38,12 @@ macro_rules! number_def {
 
             fn equals(&self, other: &Object) -> bool {
                 todo!()
+            }
+        }
+
+        impl Display for $name {
+            fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+                write!(f, "$Name {:?}", self.value)
             }
         }
 

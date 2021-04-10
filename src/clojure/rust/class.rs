@@ -2,7 +2,7 @@
 //!
 //! This defines the `Class` name of the object and its `Protocol`s
 
-use std::sync::*;
+use std::{fmt::Display, sync::*};
 
 // use intertrait::cast::*;
 // use intertrait::*;
@@ -29,6 +29,7 @@ init_obj! {
 /// }
 /// ```
 ///
+#[derive(Debug)]
 pub struct SClass {
     /// `usize` -> classname
     id: usize,
@@ -86,10 +87,10 @@ impl Class for SClass {
     }
 }
 
-impl ToString for SClass {
+impl Display for SClass {
     /// Return string representation of
-    fn to_string(&self) -> String {
-        format!("Class")
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "Class")
     }
 }
 

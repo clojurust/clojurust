@@ -4,7 +4,7 @@
 
 // use intertrait::cast::*;
 use crate::use_obj;
-use std::sync::*;
+use std::{fmt::*, sync::*};
 
 use_obj! {
     clojure::rust::object;
@@ -20,14 +20,13 @@ init_obj! {
     }
 }
 
-pub type SStrHashMap = im::hashmap::HashMap<String, usize>;
+#[derive(Debug)]
+pub struct SStrHashMap {
+    inner: im::hashmap::HashMap<String, usize>
+}
 
 impl TObject for SStrHashMap {
     fn get_class<'a>(&self) -> &'a SClass {
-        todo!()
-    }
-
-    fn to_string(&self) -> &str {
         todo!()
     }
 
@@ -47,6 +46,12 @@ pub trait StrHashMap: CastFromSync {
 }
 
 use crate::new_obj;
+
+impl Display for SStrHashMap {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        write!(f, "^SStrHashMap {:?}", self.inner)
+    }
+}
 
 impl StrHashMap for SStrHashMap {
     fn new() -> Object {

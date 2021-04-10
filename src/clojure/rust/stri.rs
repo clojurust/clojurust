@@ -1,7 +1,7 @@
 //! # Defines library's dynamic Strings.
 //!
 
-use std::convert::*;
+use std::{convert::*, fmt::*};
 use std::sync::*;
 
 // use intertrait::cast::*;
@@ -22,6 +22,7 @@ init_obj! {
     }
 }
 
+#[derive(Debug)]
 pub struct SStri {
     pub inner: String,
 }
@@ -75,12 +76,14 @@ impl From<&str> for Object {
 
 castable_to!(SStri => [sync] TObject, Stri);
 
+impl Display for SStri {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        write!(f, "\"{:?}\"", self.inner)
+    }
+}
+
 impl TObject for SStri {
     fn get_class<'a>(&self) -> &'a SClass {
-        todo!()
-    }
-
-    fn to_string(&self) -> &str {
         todo!()
     }
 

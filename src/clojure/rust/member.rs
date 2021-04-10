@@ -4,6 +4,8 @@
 
 // use intertrait::cast::*;
 
+use std::fmt::*;
+
 use crate::use_obj;
 
 use_obj! {
@@ -20,6 +22,7 @@ init_obj! {
     }
 }
 
+#[derive(Debug)]
 pub struct SMember {
     name: usize,
     class: usize,
@@ -49,10 +52,10 @@ impl Member {}
 
 impl Member for SMember {}
 
-impl ToString for SMember {
+impl Display for SMember {
     /// Return string representation of
-    fn to_string(&self) -> String {
-        format!("Member {}", self.name)
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        write!(f, "Member {}", self.name)
     }
 }
 
