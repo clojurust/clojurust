@@ -6,6 +6,8 @@
 // use std::{fmt::*, hash::*};
 use std::{fmt::*, sync::*};
 
+use im::vector;
+
 // use intertrait::cast::*;
 use crate::use_obj;
 
@@ -14,7 +16,7 @@ use_obj! {
     clojure::rust::class;
 }
 
-castable_to!(SObjVector => [sync] TObject, ObjVector);
+castable_to!(SAPersistentVector => [sync] TObject, APersistentVector);
 
 init_obj! {
     ObjVector {
@@ -24,11 +26,11 @@ init_obj! {
 }
 
 #[derive(Debug)]
-pub struct SObjVector {
+pub struct SAPersistentVector {
     inner: im::vector::Vector<Object>
 }
 
-impl TObject for SObjVector {
+impl TObject for SAPersistentVector {
     fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }
@@ -42,14 +44,22 @@ impl TObject for SObjVector {
     }
 }
 
-impl Display for SObjVector {
-    /// Return string representation of
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "SObjVector {}", self.inner)
+impl Default for SAPersistentVector {
+    fn default() -> Self {
+        SAPersistentVector {
+            inner: vector::Vector::<Object>::default()
+        }
     }
 }
 
-pub trait ObjVector: CastFromSync {
+impl Display for SAPersistentVector {
+    /// Return string representation of
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        write!(f, "^SObjVector {:?}", self.inner)
+    }
+}
+
+pub trait APersistentVector: TObject {
     fn new() -> Object
     where
         Self: Sized;
@@ -57,8 +67,8 @@ pub trait ObjVector: CastFromSync {
 
 use crate::new_obj;
 
-impl ObjVector for SObjVector {
+impl APersistentVector for SAPersistentVector {
     fn new() -> Object {
-        new_obj!(SObjVector::default())
+        new_obj!(SAPersistentVector::default())
     }
 }

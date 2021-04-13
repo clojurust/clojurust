@@ -4,30 +4,31 @@
 
 // use intertrait::cast::*;
 
-use crate::use_obj;
-use std::sync::*;
 use std::fmt::*;
+use im::hashmap;
+
+use crate::use_obj;
 
 use_obj! {
     clojure::rust::object;
     clojure::rust::class;
 }
 
-castable_to!(SObjHashMap => [sync] TObject, ObjHashMap);
+castable_to!(SPersistentMap => [sync] TObject, PersistentMap);
 
 init_obj! {
-    ObjHashMap {
+    SPersistentMap {
         clojure::rust::object::init();
         clojure::rust::class::init();
     }
 }
 
 #[derive(Debug)]
-pub struct SObjHashMap {
-    inner: im::hashmap::HashMap<Object, Object>
+pub struct SPersistentMap {
+    inner: hashmap::HashMap<Object, Object>
 }
 
-impl TObject for SObjHashMap {
+impl TObject for SPersistentMap {
     fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }
@@ -41,25 +42,26 @@ impl TObject for SObjHashMap {
     }
 }
 
-impl Display for SObjHashMap {
+impl Default for SPersistentMap {
+    fn default() -> Self {
+        SPersistentMap {
+            inner: hashmap::HashMap::<Object, Object>::default()
+        }
+    
+    }
+}
+
+impl Display for SPersistentMap {
     /// Return string representation of
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "SObjHashMap {}", self.inner)
+        write!(f, "SPersistentMap {:?}", self.inner)
     }
 }
 
-pub trait ObjHashMap: CastFromSync {
-    fn new() -> Object
-    where
-        Self: Sized;
+pub trait PersistentMap: TObject {
 }
 
-use crate::new_obj;
-
-impl ObjHashMap for SObjHashMap {
-    fn new() -> Object {
-        new_obj!(SObjHashMap::default())
-    }
+impl PersistentMap for SPersistentMap {
 }
 
-impl ObjHashMap {}
+impl PersistentMap {}

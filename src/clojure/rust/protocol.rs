@@ -30,8 +30,6 @@ struct SProtocol {
     template: Object, // SObjHashSet of Prototype
 }
 
-castable_to!(SProtocol => [sync] TObject, Protocol);
-
 impl Display for SProtocol {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
         write!(f, "^Protocol {:?}", self.template)

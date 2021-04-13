@@ -31,7 +31,14 @@ pub mod clojure {
     /// Clojure language module
     ///
     /// description de lang
-    pub mod lang {}
+    pub mod lang {
+        pub mod a_persistent_vector;
+        pub mod a_persistent_set;
+        pub mod a_persistent_map;
+        pub mod persistent_vector;
+        pub mod persistent_set;
+        pub mod persistent_map;
+    }
 
     /// Rust host Module
     pub mod rust {
@@ -42,14 +49,9 @@ pub mod clojure {
         pub mod member;
         pub mod number;
         pub mod obj_error;
-        pub mod obj_hashmap;
-        pub mod obj_hashset;
-        pub mod obj_vector;
         pub mod object;
         pub mod protocol;
         pub mod prototype;
-        pub mod str_hashmap;
-        pub mod str_vector;
         pub mod stri;
         pub mod unique;
         pub mod macros {

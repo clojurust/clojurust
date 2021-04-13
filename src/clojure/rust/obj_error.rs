@@ -24,10 +24,19 @@ init_obj! {
 
 pub type ObjResult<T> = std::result::Result<T, SObjError>;
 
+#[derive(Debug)]
+pub enum ErrorType {
+    BadCast{from: Object, to: Object},
+    NotFound{what: Object, into: Object},
+    Error
+}
+
+#[derive(Debug)]
 /// Standard error for the library
 pub struct SObjError {
     /// Error message with format
     msg: String,
+    err: ErrorType
 }
 
 /// `Protocol` ObjError
@@ -39,13 +48,7 @@ impl ObjError for SObjError {}
 
 impl fmt::Display for SObjError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self.to_string())
-    }
-}
-
-impl fmt::Debug for SObjError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", self.to_string())
+        write!(f, "^ObjError {:?}", self)
     }
 }
 
@@ -63,21 +66,22 @@ impl TObject for SObjError {
     }
 }
 
-pub fn error<T>(msg: &str) -> ObjResult<T> {
+pub fn error<T>(msg: &str, err: ErrorType) -> ObjResult<T> {
     Err(SObjError {
         msg: String::from(msg),
+        err
     })
 }
 
 #[test]
 fn error_test() {
-    let a = error::<String>("test error");
+    let a = error::<String>("test error", ErrorType::Error);
     match a {
         Ok(b) => {
-            println!("{}", b);
+            println!("{:?}", b);
         },
         Err(c) => {
-            println!("Error: {:?}", c);
+            println!("{:?}", c);
         }
     }
 }

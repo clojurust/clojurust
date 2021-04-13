@@ -7,6 +7,8 @@
 
 use std::{fmt::*, sync::*};
 
+use im::hashset;
+
 // use intertrait::cast::*;
 
 use crate::use_obj;
@@ -16,7 +18,7 @@ use_obj! {
     clojure::rust::class;
 }
 
-castable_to!(SObjHashSet => [sync] TObject, ObjHashSet);
+castable_to!(SAPersistentSet => [sync] TObject, PersistentSet);
 
 init_obj! {
     ObjHashSet {
@@ -26,11 +28,11 @@ init_obj! {
 }
 
 #[derive(Debug)]
-pub struct SObjHashSet {
-    inner: im::hashset::HashSet<Object>
+pub struct SAPersistentSet {
+    inner: hashset::HashSet<Object>
 }
 
-impl TObject for SObjHashSet {
+impl TObject for SAPersistentSet {
     fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }
@@ -44,14 +46,23 @@ impl TObject for SObjHashSet {
     }
 }
 
-impl Display for SObjHashSet {
-    /// Return string representation of
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "SObjHashSet {}", self.inner)
+impl Default for SAPersistentSet {
+    fn default() -> Self {
+        SAPersistentSet {
+            inner: hashset::HashSet::<Object>::default()
+        }
+    
     }
 }
 
-pub trait ObjHashSet: CastFromSync {
+impl Display for SAPersistentSet {
+    /// Return string representation of
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        write!(f, "SObjHashSet {:?}", self.inner)
+    }
+}
+
+pub trait PersistentSet: CastFromSync {
     fn new() -> Object
     where
         Self: Sized;
@@ -59,10 +70,10 @@ pub trait ObjHashSet: CastFromSync {
 
 use crate::new_obj;
 
-impl ObjHashSet for SObjHashSet {
+impl PersistentSet for SAPersistentSet {
     fn new() -> Object {
-        new_obj!(SObjHashSet::default())
+        new_obj!(SAPersistentSet::default())
     }
 }
 
-impl ObjHashSet {}
+impl PersistentSet {}

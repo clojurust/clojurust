@@ -7,7 +7,7 @@
 //! If this value is Nil, no multi-arity, else the value is the arity
 //! of the multi-arity function, which should be the last one.
 
-use std::{fmt::*, sync::Arc};
+use std::{fmt::*};
 
 // use intertrait::cast::*;
 
@@ -28,21 +28,18 @@ init_obj! {
     }
 }
 
-#[derive(Debug)]
 pub struct SFnMethodNative {
-    inner: fn(args: &[Object]) -> Object,
+    inner: fn(&[Object]) -> Object
 }
 
-pub trait FnMethodNative: CastFromSync {
-    fn call(&self, args: &[Object]) -> Object;
-}
-
-use crate::new_obj;
-
-impl SFnMethodNative {
-    fn new(function: fn(args: &[Object]) -> Object) -> Object {
-        new_obj!(SFnMethodNative { inner: function })
+impl Debug for SFnMethodNative {
+    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
+        write!(f, "Method native")
     }
+}
+
+pub trait FnMethodNative {
+    fn call(&self, args: &[Object]) -> Object;
 }
 
 impl FnMethodNative for SFnMethodNative {
@@ -55,7 +52,7 @@ impl FnMethodNative for SFnMethodNative {
 impl Display for SFnMethodNative {
     /// Return string representation of
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "Function native")
+        write!(f, "Method native")
     }
 }
 

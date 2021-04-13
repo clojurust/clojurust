@@ -10,9 +10,9 @@ use crate::use_obj;
 
 use_obj! {
     clojure::rust::object;
-    clojure::rust::str_hashmap;
-    clojure::rust::str_vector;
     clojure::rust::class;
+    clojure::rust::obj_hashmap;
+    clojure::lang::a_persistent_vector;
 }
 
 castable_to!(SUnique => [sync] TObject, Unique);
@@ -20,29 +20,29 @@ castable_to!(SUnique => [sync] TObject, Unique);
 init_obj! {
     SUnique {
         clojure::rust::object::init();
-        clojure::rust::str_hashmap::init();
-        clojure::rust::str_vector::init();
         clojure::rust::class::init();
-    }
+        clojure::rust::obj_hashmap::init();
+        clojure::lang::a_persistent_vector::init();
+        }
 }
 
 /// # A keyword storage structure
 ///
 /// We will store all `String`s used as reference to objects as `usize`.
-/// ** `usize` values are unique and immutable for every `String`.
-/// ** `Strings` are added incrementally to the `vect` `StrVector` and cannot
+/// * `usize` values are unique and immutable for every `String`.
+/// * `Strings` are added incrementally to the `vect` `ObjVector` and cannot
 /// be destroyed.
 ///
-/// As a `String` is added, it's index is added in the `map` `StrHashMap`.
+/// As a `String` is added, it's index is added in the `map` `ObjHashMap`.
 ///
 /// # Examples
 #[derive(Debug)]
 pub struct SUnique {
-    /// `SStrHashMap` of `name`: `String` -> `id`: `usize`
-    pub map: Object, // SStrHashMap,
+    /// `SObjHashMap` of `name`: `String` -> `id`: `usize`
+    pub map: Object,
 
-    /// `SStrVector` `index`: `usize` -> `value`: `String`
-    pub vect: Object, // SStrVector,
+    /// `SObjVector` `index`: `usize` -> `value`: `String`
+    pub vect: Object,
 }
 
 unsafe impl Send for SUnique {}
@@ -79,7 +79,7 @@ use crate::new_obj;
 impl Unique for SUnique {
     /// Size of SStrVector
     fn len(&self) -> usize {
-        if let Some(v) = self.vect.cast::<SStrVector>() {
+        if let Some(v) = self.vect.cast::<APersistentVector>() {
             return v.len();
         }
         panic!("Severe: SUnique non initialized");
@@ -89,18 +89,18 @@ impl Unique for SUnique {
     ///
     /// return None if doesn't exist
     fn get_name(&self, key: usize) -> Option<&String> {
-        if let Some(v) = self.vect.cast::<SStrVector>() {
+        if let Some(v) = self.vect.cast::<APersistentVector>() {
             return v.get(key);
         }
-        None
+        panic!("Severe: SUnique non initialized");
     }
 
     /// Gives index of name
     ///
     /// Create name and index is they doesn't exist
     fn get_or_make_index(&mut self, name: &str) -> usize {
-        if let Some(m) = self.map.cast_mut::<SStrHashMap>() {
-            if let Some(v) = self.vect.cast_mut::<SStrVector>() {
+        if let Some(m) = self.map.cast_mut::<SObjHashMap>() {
+            if let Some(v) = self.vect.cast_mut::<APersistentVector>() {
                 if let Some(o) = m.get(name) {
                     return *o;
                 } else {
@@ -109,8 +109,8 @@ impl Unique for SUnique {
                     *m = m.update(String::from(name), length);
 
                     let k = SUnique {
-                        map: new_obj!(m.clone()),
-                        vect: new_obj!(v.clone()),
+                        map: new_obj!(*m),
+                        vect: new_obj!(*v),
                     };
                     *self = k;
 
@@ -126,8 +126,8 @@ impl Unique for SUnique {
     ///
     /// return None if doesn't exist
     fn get_index(&mut self, name: &str) -> Option<usize> {
-        if let Some(m) = self.map.cast_mut::<SStrHashMap>() {
-            if let Some(v) = self.vect.cast_mut::<SStrVector>() {
+        if let Some(m) = self.map.cast_mut::<SObjHashMap>() {
+            if let Some(v) = self.vect.cast_mut::<APersistentVector>() {
                 if let Some(o) = m.get(name) {
                     return Some(*o);
                 } else {
@@ -140,7 +140,7 @@ impl Unique for SUnique {
 
     /// Tests if name exists
     fn test(&self, name: &str) -> bool {
-        if let Some(m) = self.map.cast::<SStrHashMap>() {
+        if let Some(m) = self.map.cast::<SObjHashMap>() {
             match m.get(name) {
                 Some(_) => return true,
                 None => return false,
@@ -167,8 +167,8 @@ impl TObject for SUnique {
 impl Default for SUnique {
     fn default() -> Self {
         SUnique {
-            map: new_obj!(SStrHashMap::default()),
-            vect: new_obj!(SStrVector::default()),
+            map: new_obj!(SObjHashMap::default()),
+            vect: new_obj!(APersistentVector::default()),
         }
     }
 }
