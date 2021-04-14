@@ -17,7 +17,7 @@ use crate::use_obj;
 use_obj! {
     clojure::rust::object;
     clojure::rust::class;
-    clojure::lang::a_persistent_vector;
+    clojure::lang::persistent_vector;
     clojure::rust::unique;
 }
 
@@ -27,7 +27,7 @@ init_obj! {
     Globals {
         clojure::rust::object::init();
         clojure::rust::class::init();
-        clojure::lang::a_persistent_vector::init();
+        clojure::lang::persistent_vector::init();
         clojure::rust::unique::init();
     }
 }
@@ -105,7 +105,7 @@ impl Default for SGlobals {
     fn default() -> Self {
         SGlobals {
             unique_name: SUnique::new(),
-            obj_vect: new_obj!(SAPersistentVector::default()),
+            obj_vect: new_obj!(SPersistentVector::default()),
         }
     }
 }

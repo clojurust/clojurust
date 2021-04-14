@@ -43,6 +43,8 @@ pub mod clojure {
     /// Rust host Module
     pub mod rust {
         pub mod class;
+        pub mod counted;
+        pub mod indexed;
         pub mod fn_method_native;
         pub mod function;
         pub mod globals;

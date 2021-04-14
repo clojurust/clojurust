@@ -4,7 +4,7 @@
 
 // use lazy_static::__Deref;
 // use std::{fmt::*, hash::*};
-use std::{fmt::*, sync::*};
+use std::{fmt::*};
 
 use im::vector;
 
@@ -14,9 +14,10 @@ use crate::use_obj;
 use_obj! {
     clojure::rust::object;
     clojure::rust::class;
+    clojure::lang::a_persistent_vector;
 }
 
-castable_to!(SAPersistentVector => [sync] TObject, APersistentVector);
+castable_to!(SPersistentVector => [sync] TObject, PersistentVector, APersistentVector);
 
 init_obj! {
     ObjVector {
@@ -25,12 +26,27 @@ init_obj! {
     }
 }
 
+/////////////////////////////////
+// Objects
 #[derive(Debug)]
-pub struct SAPersistentVector {
+pub struct SPersistentVector {
     inner: im::vector::Vector<Object>
 }
 
-impl TObject for SAPersistentVector {
+//////////////////////////////////
+// Protocols
+pub trait PersistentVector: TObject + APersistentVector {
+}
+
+//////////////////////////////////
+// Implementations
+impl PersistentVector for SPersistentVector {
+}
+
+impl APersistentVector for SPersistentVector {
+}
+
+impl TObject for SPersistentVector {
     fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }
@@ -44,31 +60,18 @@ impl TObject for SAPersistentVector {
     }
 }
 
-impl Default for SAPersistentVector {
+impl Default for SPersistentVector {
     fn default() -> Self {
-        SAPersistentVector {
+        SPersistentVector {
             inner: vector::Vector::<Object>::default()
         }
     }
 }
 
-impl Display for SAPersistentVector {
-    /// Return string representation of
+impl Display for SPersistentVector {
+    /// Return string representation of vector
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
         write!(f, "^SObjVector {:?}", self.inner)
     }
 }
 
-pub trait APersistentVector: TObject {
-    fn new() -> Object
-    where
-        Self: Sized;
-}
-
-use crate::new_obj;
-
-impl APersistentVector for SAPersistentVector {
-    fn new() -> Object {
-        new_obj!(SAPersistentVector::default())
-    }
-}
