@@ -6,7 +6,7 @@ keywords   = ["clojure", "rust", "interpreter", "compiler", "repl"]
 license    = "MPL-2.0+"
 name       = "clojurust"
 readme     = "./README.md"
-repository = "https://github.com/ivanpierre/clojurust"
+repository = "https://github.com/clojurust/clojurust"
 version    = "0.1.0"
 
 
@@ -19,7 +19,7 @@ path = "./src/lib.rs"
 # proc-macro = true
 
 [badges]
-travis-ci = { repository = "ivanpierre/clojurust" }
+# travis-ci = { repository = "ivanpierre/clojurust" }
 
 [dependencies]
 bigint      = "4.4.3"
@@ -36,7 +36,7 @@ rc          = "0.1.1"
 [package.metadata.docs.rs]
 # document all features
 all-features = true
-# defines the configuration attribute `docsrs`
+# defines the configuration attribute
 rustdoc-args = [
     "--lib",
     "--bins",

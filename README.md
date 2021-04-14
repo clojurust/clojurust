@@ -1,9 +1,6 @@
 # ClojuRust
 A proof of concept version of Clojure in Rust.
 
-This is main branch Version2. You can find old versions here:
-*  [Version1](https://github.com/ivanpierre/clojurust/tree/version1).
-
 ## Current state
 WIP in an analysis and test state, and so a working version is out of sight for now.
 
@@ -13,13 +10,7 @@ For now, in the creation of the clojure::rust modules, say the Rust host environ
 
 The idea, is not to have an optimized structure as first draft, but a working concepts framework, easy to refactor as experiments are tested.
 
-This part would likely to be put in an individual crate for other projects to use it, for his dynamic abilities.
-
 Meanwhile, the first Core Clojure classes can be developed in parallel, for testing purposes, but a strong separation shall be preserved.
-
-##  Opiniated way to proceed, a wishfull thinking
-* Begining with documentation changes before testing or implementing code, so to be up-to-date.
-* integrating TTD into modules, easing the link between tests and code.
 
 ## Goals
 * Define an internal object model.
@@ -30,14 +21,14 @@ Meanwhile, the first Core Clojure classes can be developed in parallel, for test
 * Test a way to create Rust code to compile Clojure code.
 
 ## Documentation
-The whole documentation is located in the [wiki](https://github.com/ivanpierre/clojurust/wiki)
+The whole documentation will be located in a .io page (WIP)
 
 ## Copyrights
 ### ClojuRust
 
     Copyright (c) 2020 Ivan Pierre, kilroySoft, <Ivan Pierre, ivan@kilroysoft.ch>, under MPL 2.0.
 
-* Code is on GitHub: https://github.com/ivanpierre/clojurust
+* Code is on GitHub: https://github.com/clojurust/clojurust
 
 ### Clojure
 As clojure::lang::* is a translation of original code of Java Clojure core, reference is due to Rich Hickey:
