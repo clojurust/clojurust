@@ -26,11 +26,27 @@ pub type ObjResult<T> = std::result::Result<T, SObjError>;
 
 #[derive(Debug)]
 pub enum ErrorType {
-    BadCast{from: Object, to: Object},
-    NotFound{what: Object, into: Object},
-    Arity{nr: usize},
-    Compiler{data: Object, err_column: usize, err_line: usize, err_ns: String, err_phase:  },
-    EdnReader{},
+    BadCast{
+        from: Object, 
+        to: Object
+    },
+    NotFound{
+        what: Object, 
+        into: Object
+    },
+    Arity{
+        nr: usize
+    },
+    Compiler{
+        data: Object, 
+        err_column: usize, 
+        err_line: usize, 
+        err_ns: String, 
+        err_phase: Object
+    },
+    EdnReader{
+        
+    },
     Error
 }
 
