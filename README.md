@@ -1,10 +1,23 @@
 # ClojuRust
 A proof of concept version of Clojure in Rust.
 
+<!-- TOC -->
+
+- [ClojuRust](#clojurust)
+    - [Current state](#current-state)
+    - [Goals](#goals)
+    - [Documentation](#documentation)
+    - [Licence](#licence)
+        - [Persistent data structures licence](#persistent-data-structures-licence)
+        - [Original Clojure licence](#original-clojure-licence)
+        - [clojure.core original code](#clojurecore-original-code)
+
+<!-- /TOC -->
+
 ## Current state
 WIP in an analysis and test state, and so a working version is out of sight for now.
 
-As I'm a newbie in Rust, I hit all the bads of borrowing, referencing, Arcs, automatic derefs, timeline problems... But it begin to enter in my fingers... ;)
+As I'm a newbie in Rust, I hit all the bads of borrowing, referencing, Arcs, automatic derefs, timeline problems... But it begin to enter in my fingers... :wink:
 
 For now, in the creation of the clojure::rust modules, say the Rust host environment, as Clojure is an hosted language. Rust, as a bare-metal language, has no dynamic abilities per se, and is even opposed to such an approach as all is verified at compile time. So a lot of information should be statically stored for the library to function.
 
@@ -23,14 +36,24 @@ Meanwhile, the first Core Clojure classes can be developed in parallel, for test
 ## Documentation
 The whole documentation will be located in a .io page (WIP)
 
-## Copyrights
-### ClojuRust
+## Licence
+This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. 
+
+If a copy of the MPL was not distributed within this file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
 
     Copyright (c) 2020 Ivan Pierre, kilroySoft, <Ivan Pierre, ivan@kilroysoft.ch>, under MPL 2.0.
 
 * Code is on GitHub: https://github.com/clojurust/clojurust
 
-### Clojure
+### Persistent data structures licence
+
+    Copyright 2017 Bodil Stokke, under MPL 2.0.
+
+* Crate doc is here: https://crates.io/crates/im
+* Code is on GitHub: https://github.com/bodil/im-rs
+
+### Original Clojure licence
 As clojure::lang::* is a translation of original code of Java Clojure core, reference is due to Rich Hickey:
 
     Copyright (c) Rich Hickey. All rights reserved. Under EPL 1.0.
@@ -39,19 +62,6 @@ As clojure::lang::* is a translation of original code of Java Clojure core, refe
 
 But the project is not in this stage for now.
 
-### Crate for the persistent data structures
-
-    Copyright 2017 Bodil Stokke, under MPL 2.0.
-
-* Crate doc is here: https://crates.io/crates/im
-* Code is on GitHub: https://github.com/bodil/im-rs
-
-## Licence
-This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. 
-
-If a copy of the MPL was not distributed within this file, You can obtain one at http://mozilla.org/MPL/2.0/.
-
-### Original Clojure licence
 As clojure::lang is on Eclipse Public License 1.0 (http://opensource.org/licenses/eclipse-1.0.php), there could be some problem of double licence problem.
 
 As is, I put this advice of the original project licence:

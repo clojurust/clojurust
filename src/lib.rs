@@ -35,21 +35,25 @@ pub mod clojure {
         pub mod a_persistent_vector;
         pub mod a_persistent_set;
         pub mod a_persistent_map;
+        pub mod a_map_entry;
         pub mod persistent_vector;
         pub mod persistent_set;
         pub mod persistent_map;
+        pub mod i_map_entry;
     }
 
     /// Rust host Module
     pub mod rust {
         pub mod class;
         pub mod counted;
+        pub mod associative;
         pub mod indexed;
         pub mod fn_method_native;
         pub mod function;
         pub mod globals;
         pub mod member;
         pub mod number;
+        pub mod map;
         pub mod obj_error;
         pub mod object;
         pub mod protocol;
