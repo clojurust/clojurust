@@ -4,6 +4,7 @@ use crate::clojure;
 use clojure::rust::object::*;
 use clojure::rust::obj_error::*;
 use clojure::lang::a_persistent_vector::*;
+use clojure::lang::i_persistent_vector::*;
 use clojure::lang::i_persistent_stack::*;
 use clojure::lang::i_persistent_collection::*;
 use clojure::lang::i_seq::*;

@@ -39,7 +39,18 @@ pub mod clojure {
         pub mod persistent_vector;
         pub mod persistent_set;
         pub mod persistent_map;
+        pub mod i_fn;
+        pub mod i_obj;
+        pub mod i_meta;
         pub mod i_map_entry;
+        pub mod i_persistent_vector;
+        pub mod i_persistent_stack;
+        pub mod i_persistent_map;
+        pub mod i_persistent_collection;
+        pub mod i_editable_collection;
+        pub mod i_seq;
+        pub mod i_hash_eq;
+        pub mod sequable;
     }
 
     /// Rust host Module
@@ -48,6 +59,7 @@ pub mod clojure {
         pub mod counted;
         pub mod associative;
         pub mod indexed;
+        pub mod reversible;
         pub mod fn_method_native;
         pub mod function;
         pub mod globals;

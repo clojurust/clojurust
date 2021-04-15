@@ -15,6 +15,8 @@ use_obj! {
     clojure::rust::object;
     clojure::rust::class;
     clojure::lang::a_persistent_vector;
+    clojure::lang::i_obj;
+    
 }
 
 castable_to!(SPersistentVector => [sync] TObject, PersistentVector, APersistentVector);
@@ -35,7 +37,8 @@ pub struct SPersistentVector {
 
 //////////////////////////////////
 // Protocols
-pub trait PersistentVector: TObject + APersistentVector {
+pub trait PersistentVector: TObject + APersistentVector 
+                    + IObj + IEditableCollection + IKVReduce {
 }
 
 //////////////////////////////////
