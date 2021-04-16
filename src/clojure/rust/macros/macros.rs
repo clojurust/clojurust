@@ -68,9 +68,9 @@ macro_rules! use_obj {
 
         use intertrait::*;
 
-        use crate::init_init_obj;
-        use crate::use_init_obj;
-        use crate::init_obj;
+        // use crate::*;
+        // use crate::use_init_obj;
+        // use crate::init_obj;
 
         use crate::clojure;
         use_init_obj!($($tail)*);
