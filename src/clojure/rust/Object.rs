@@ -9,6 +9,8 @@ use intertrait::cast::CastArc;
 
 use crate::*;
 
+use clojure::rust::Stri;
+
 use_obj! {
     clojure::rust::Class;
     clojure::rust::ObjError;
@@ -78,7 +80,9 @@ where
     pub fn cast<T>(&'a self) -> ObjResult<&'static T>
     {
         match self.inner {
-            None => None,
+            None => error("", 
+                            ErrorType::BadCast {from: self, 
+                                                    to:Stri::String::new()},),
             Some(o) => {
                 let a = CastArc::cast::<T>(o).as_deref();
                 match a {
@@ -120,12 +124,12 @@ where
         }
     }
 
-    pub fn call_by_id(&self, id: usize, args: &[Object]) -> ObjError<Object> {
+    pub fn call_by_id(&self, id: usize, args: &[Object]) -> ObjResult<Object> {
         let o = self.clone();
         match o.inner {
-            None => Object::new(None),
+            None => Ok(Object::new(None)),
             Some(o) => {
-                o.get_class().call(id, args).clone()
+                Ok(o.get_class().call(id, args).clone())
             },
         }
     }
@@ -136,28 +140,16 @@ where
     //     b.call(name, args).clone()
     // }
 
-    pub fn get_by_id(&self, id: usize) -> ObjError<Object> {
+    pub fn get_by_id(&self, id: usize) -> ObjResult<Object> {
         let a = self.clone();
         let b = a.get_class();
-        b.get(id).clone()
+        Ok(b.get(id).clone())
     }
 
     // pub fn get_by_name(&self, name: &str) -> ObjError<Object> {
     //     let a = self.clone();
     //     let b = a.get_class();
     //     b.get(name).clone()
-    // }
-
-    pub fn set_by_id(&self, id: usize, value: Object) -> ObjError<Object> {
-        let a = self.clone();
-        let b = a.get_class();
-        b.set(id, value).clone()
-    }
-
-    // pub fn set_by_name(&self, name: &str, value: Object) -> ObjError<Object> {
-    //     let a = self.clone();
-    //     let b = a.get_class();
-    //     b.set(name, value).clone()
     // }
 }
 

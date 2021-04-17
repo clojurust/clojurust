@@ -15,15 +15,7 @@ macro_rules! number_def {
 
         impl $name {
             pub fn new(value: $def) -> Object {
-                Object::new(
-                    Some(
-                        Arc::new(
-                            $name {
-                                value: value,
-                            }
-                        )
-                    )
-                )
+                Object::new(Some(Arc::new($name {value})))
             }
         }
 

@@ -81,7 +81,7 @@ pub mod clojure {
         pub mod Object;
         pub mod Protocol;
         pub mod Prototype;
-        pub mod String;
+        pub mod Stri;
         pub mod Unique;
         pub mod macros {
             pub mod macros;

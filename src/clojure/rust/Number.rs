@@ -71,7 +71,6 @@ pub trait Decimal {}
 
 pub trait Ratio {}
 
-use crate::number_def;
 use std::fmt::*;
 number_def!(BigInteger, i128);
 number_def!(Long, i64);
@@ -84,43 +83,4 @@ number_def!(Usize, usize);
 
 #[test]
 fn bidirectionnal_convert() {
-    // Test object with primitive
-    // use std::any::TypeId;
-
-    use crate::clojure;
-    use clojure::rust::Number::*;
-    // use clojure::rust::Object::*;
-
-    let nil: Object = Object::null();
-
-    let number: Object = BigInteger::new(1);
-    println!("count at begining={:?}", number.strong_count());
-
-    let number2: Object = number.clone();
-    println!("count after clone={:?}", number.strong_count());
-
-    println!("original Object: {:?}", &number);
-    println!("cloned Object: {:?}", &number2);
-
-    // cast Object BigInteger -> Protocol Number
-    if let Some(number_as_number) = number.cast::<&dyn Number>() {
-        print!("number_as_number = {}", number_as_number.double_value());
-    }
-
-    // cast Object Nil -> Protocol Number
-    if let Some(nil_as_number) = nil.cast::<&dyn Number>() {
-        print!(
-            "nil_as_number = {} is a number",
-            nil_as_number.double_value()
-        );
-    } else {
-        print!("nil_as_number = {} is not a number", nil.to_string());
-    }
-
-    // Cast Object Nil -> Boxed Nil struct
-    // if let Some(nil_as_struct_nil) = nil.cast::<Nil>() {
-    //     print!("Boxed value if Nil Object: {:?}", nil_as_struct_nil);
-    // }
-
-    // let type_id: TypeId = number.type_id();
 }

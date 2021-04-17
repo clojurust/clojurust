@@ -11,6 +11,7 @@ use crate::*;
 use_obj! {
     clojure::rust::Object;
     clojure::rust::Class;
+    clojure::rust::Stri;
 }
 
 castable_to!(SObjError => [sync] TObject, ObjError);
@@ -92,15 +93,12 @@ pub fn error<T>(msg: &str, err: ErrorType) -> ObjResult<T> {
     })
 }
 
+pub fn gaga() -> ObjResult<String> {
+    let a = error::<String>("test error", ErrorType::Error);
+    a
+}
+
 #[test]
 fn error_test() {
-    let a = error::<String>("test error", ErrorType::Error);
-    match a {
-        Ok(b) => {
-            println!("{:?}", b);
-        },
-        Err(c) => {
-            println!("{:?}", c);
-        }
-    }
+    gaga();
 }
