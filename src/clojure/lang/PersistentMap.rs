@@ -11,10 +11,16 @@ use crate::*;
 
 use_obj! {
     clojure::rust::Object;
+    clojure::rust::ObjError;
     clojure::rust::Class;
+    clojure::lang::IPersistentMap;
+    clojure::rust::Counted;
+    clojure::rust::Iterable;
+    clojure::rust::Associative;
 }
 
-castable_to!(SPersistentMap => [sync] TObject, PersistentMap);
+castable_to!(SPersistentMap => [sync] TObject, PersistentMap, Counted, 
+                                Iterable, Associative);
 
 init_obj! {
     SPersistentMap {
@@ -28,6 +34,46 @@ pub struct SPersistentMap {
     inner: hashmap::HashMap<Object, Object>
 }
 
+impl IPersistentMap for SPersistentMap {
+    fn assoc(&self, key: Object, val: Object) -> ObjResult<&'_ IPersistentMap> {
+        todo!()
+    }
+
+    #[allow(non_snake_case)]
+    fn assocEx(&self, key: Object, val: Object) -> ObjResult<&'_ IPersistentMap> {
+        todo!()
+    }
+
+    fn without(&self, key: Object) -> ObjResult<&'_ IPersistentMap> {
+        todo!()
+    }
+}
+
+impl Counted for SPersistentMap {
+    fn count(&self) -> ObjResult<usize> {
+        todo!()
+    }
+}
+    
+impl Iterable for SPersistentMap {
+}
+    
+impl Associative for SPersistentMap {
+    fn assoc(&self, key: &Object, value: &Object) -> ObjResult<&Associative> {
+        todo!()
+    }
+
+    #[allow(non_snake_case)]
+    fn containsKey(&self, key: &Object) -> ObjResult<bool> {
+        todo!()
+    }
+
+    #[allow(non_snake_case)]
+    fn entryAt(&self, key: &Object) -> ObjResult<&super::IMapEntry::IMapEntry> {
+        todo!()
+    }
+}
+    
 impl TObject for SPersistentMap {
     fn get_class<'a>(&self) -> &'a SClass {
         todo!()

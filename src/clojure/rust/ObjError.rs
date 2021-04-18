@@ -3,6 +3,7 @@
 //! A lot TODO
 
 use std::fmt;
+use std::io;
 
 // use intertrait::cast::*;
 
@@ -11,7 +12,6 @@ use crate::*;
 use_obj! {
     clojure::rust::Object;
     clojure::rust::Class;
-    clojure::rust::Stri;
 }
 
 castable_to!(SObjError => [sync] TObject, ObjError);
@@ -27,27 +27,9 @@ pub type ObjResult<T> = std::result::Result<T, SObjError>;
 
 #[derive(Debug)]
 pub enum ErrorType {
-    BadCast{
-        from: Object, 
-        to: Object
-    },
-    NotFound{
-        what: Object, 
-        into: Object
-    },
-    Arity{
-        nr: usize
-    },
-    Compiler{
-        data: Object, 
-        err_column: usize, 
-        err_line: usize, 
-        err_ns: String, 
-        err_phase: Object
-    },
-    EdnReader{
-
-    },
+    BadCast,
+    NotFound,
+    Arity,
     Error
 }
 
@@ -65,6 +47,16 @@ pub trait ObjError: CastFromSync {}
 impl ObjError {}
 
 impl ObjError for SObjError {}
+
+impl From<io::Error> for SObjError {
+    fn from(_: io::Error) -> Self {
+        SObjError {
+            msg: String::from("Error"),
+            err: ErrorType::Error,
+            
+        }
+    }
+}
 
 impl fmt::Display for SObjError {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -86,19 +78,34 @@ impl TObject for SObjError {
     }
 }
 
-pub fn error<T>(msg: &str, err: ErrorType) -> ObjResult<T> {
+pub fn err<T>(msg: &str) -> ObjResult<T> {
     Err(SObjError {
         msg: String::from(msg),
-        err
+        err: ErrorType::Error
     })
 }
 
-pub fn gaga() -> ObjResult<String> {
-    let a = error::<String>("test error", ErrorType::Error);
-    a
+pub fn err_cast<T>(from: &Object, to: &str) -> ObjResult<T> {
+    Err(SObjError {
+        msg: format!("Cannot cast {:?} to {:?}", from, to),
+        err: ErrorType::BadCast
+    })
+}
+
+pub fn err_not_found<T>(what: &Object, into: &Object) -> ObjResult<T> {
+    Err(SObjError {
+        msg: format!("Not found {:?} in {:?}", what, into),
+        err: ErrorType::NotFound
+    })
+}
+
+pub fn err_arity<T>(arity: usize, obj: &Object) -> ObjResult<T> {
+    Err(SObjError {
+        msg: format!("Bad Arity {:?} on {:?}", arity, obj),
+        err: ErrorType::Arity
+    })
 }
 
 #[test]
 fn error_test() {
-    gaga();
 }

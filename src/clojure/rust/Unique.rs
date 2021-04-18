@@ -4,7 +4,7 @@
 
 use std::{fmt::*, sync::*};
 
-use cast::CastArc;
+use intertrait::cast::{CastArc, CastRef};
 use lazy_static::lazy_static;
 
 use crate::*;
@@ -14,11 +14,13 @@ use_obj! {
     clojure::rust::ObjError;
     clojure::rust::Class;
     clojure::rust::Counted;
+    clojure::rust::Indexed;
+    clojure::rust::Stri;
     clojure::lang::PersistentMap;
     clojure::lang::PersistentVector;
 }
 
-// castable_to!(SUnique => [sync] TObject, Unique);
+castable_to!(SUnique => [sync] TObject, Unique);
 
 init_obj! {
     SUnique {
@@ -55,7 +57,7 @@ unsafe impl Sync for SUnique {}
 /// Protocole `Unique`
 pub trait Unique: CastFromSync {
     /// Size of SStrVector
-    fn len(&self) -> usize;
+    fn len(&self) -> ObjResult<usize>;
 
     /// Gives name of index
     ///
@@ -78,77 +80,65 @@ pub trait Unique: CastFromSync {
 
 use crate::new_obj;
 
+
+
 // `Implementation` of `Protocol` `Unique` for `SUnique`
 impl Unique for SUnique {
     /// Size of SStrVector
-    fn len(&self) -> usize {
-        match self.vect.inner {
-            Some(v) => {
-                match v.cast::<Counted>() {
-                    Ok(i) => {
-                        match i.as_ref().count() {
-                            Ok(s) => s,
-                            _ => panic!("Severe: SUnique non initialized"),
-                        }
-                    },
-                    _ => panic!("Severe: SUnique non initialized"),
-                }
-            },
-            _ => panic!("Severe: SUnique non initialized"),
-        }
+    fn len(&self) -> ObjResult<usize> {
+        let v = match self.get_vect() {
+            Ok(v) => {v},
+            Err(e) => return Err(e)
+        };
+
+        v.count()
     }
 
     /// Gives name of index
     ///
     /// return None if doesn't exist
     fn get_name(&self, key: usize) -> ObjResult<String> {
-        if let Some(v) = self.vect.cast::<SPersistentVector>() {
-            return v.get(key);
-        }
-        panic!("Severe: SUnique non initialized");
+        let v = self.cast::<Indexed>().unwrap();
+        let res = v.nth_1(key).unwrap();
+        Ok(res.to_string())
     }
 
     /// Gives index of name
     ///
     /// Create name and index is they doesn't exist
     fn get_or_make_index(&mut self, name: &str) -> ObjResult<usize> {
-        if let Some(m) = self.map.cast_mut::<SPersistentMap>() {
-            if let Some(v) = self.vect.cast_mut::<SPersistentVector>() {
-                if let Some(o) = m.get(name) {
-                    return *o;
-                } else {
-                    let length = self.len();
-                    v.push_back(String::from(name));
-                    *m = m.update(String::from(name), length);
+        let m = self.map.cast::<SPersistentMap>().unwrap();
+        let v = self.vect.cast::<SPersistentVector>().unwrap();
 
-                    let k = SUnique {
-                        map: new_obj!(*m),
-                        vect: new_obj!(*v),
-                    };
-                    *self = k;
+        if let Some(o) = m.get(name) {
+            return *o;
+        } else {
+            let length = self.len();
+            v.push_back(String::from(name));
+            *m = m.update(String::from(name), length);
 
-                    // return new index that was the length of the vector
-                    return length;
-                }
-            }
+            let k = SUnique {
+                map: new_obj!(*m),
+                vect: new_obj!(*v),
+            };
+            *self = k;
+
+            // return new index that was the length of the vector
+            return length;
         }
-        panic!("Severe: SUnique non initialized");
     }
 
     /// Gives index of name
     ///
-    /// return None if doesn't exist
+    /// return Error if doesn't exist
     fn get_index(&mut self, name: &str) -> ObjResult<usize> {
-        if let Some(m) = self.map.cast_mut::<SPersistentMap>() {
-            if let Some(v) = self.vect.cast_mut::<SPersistentVector>() {
-                if let Some(o) = m.get(name) {
-                    return Ok(*o);
-                } else {
-                    return None;
-                }
-            }
+        let m = self.map.cast::<SPersistentMap>().unwrap();
+        let v = self.vect.cast::<SPersistentVector>().unwrap();
+        if let Some(o) = m.get(name) {
+            o
+        } else {
+            return err_not_found(&new_obj!(SStri::from(name)), &self.map);
         }
-        panic!("Severe: SUnique non initialized");
     }
 
     /// Tests if name exists
@@ -156,10 +146,9 @@ impl Unique for SUnique {
         if let Some(m) = self.map.cast::<SPersistentMap>() {
             match m.get(name) {
                 Some(_) => return true,
-                None => return false,
+                None => return false
             }
         }
-        panic!("Severe: SUnique non initialized");
     }
 }
 
@@ -174,6 +163,24 @@ impl TObject for SUnique {
 
     fn equals(&self, other: &Object) -> bool {
         todo!()
+    }
+}
+
+impl SUnique {
+    fn get_vect(&self) -> ObjResult<&SPersistentVector> {
+        let v = match self.vect.inner {
+            Some(v) => {v},
+            _ => {
+                return err::<&SPersistentVector>("SUnique.vect not initialized")
+            }
+        };
+
+        match v.cast::<SPersistentVector>() {
+            Ok(c) => 
+                Ok(c.as_ref()),
+            Err(e) => 
+                err_cast(&self.vect, "<&SPersistentVector>"),
+        }       
     }
 }
 

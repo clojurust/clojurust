@@ -12,6 +12,7 @@ use crate::*;
 
 use_obj! {
     clojure::rust::Object;
+    clojure::rust::ObjError;
 }
 
 castable_to!(SClass => [sync] TObject, Class);
@@ -62,19 +63,19 @@ impl SClass {
 ///
 pub trait Class: CastFromSync {
     /// Call `method` by id with `Object`s arguments
-    fn call(&self, obj: Object, id: usize, args: &[Object]) -> Object;
+    fn call(&self, obj: Object, id: usize, args: &[Object]) -> ObjResult<Object>;
 
     /// Call getter by id
-    fn get(&self, obj: Object, id: usize) -> Object;
+    fn get(&self, obj: Object, id: usize) -> ObjResult<Object>;
 }
 
 impl Class for SClass {
     /// Call named `method` with `Object`s arguments
-    fn call(&self, obj: Object, id: usize, args: &[Object]) -> Object {
+    fn call(&self, obj: Object, id: usize, args: &[Object]) -> ObjResult<Object> {
         todo!()
     }
 
-    fn get(&self, obj: Object, id: usize) -> Object {
+    fn get(&self, obj: Object, id: usize) -> ObjResult<Object> {
         todo!()
     }
 }

@@ -19,6 +19,7 @@
 #![allow(missing_docs)]
 // #![allow(unused_imports)]
 #![allow(bare_trait_objects)]
+#![allow(non_snake_case)]
 #![recursion_limit = "256"]
 // #![feature(fn_traits)]
 // #![feature(trace_macros)]

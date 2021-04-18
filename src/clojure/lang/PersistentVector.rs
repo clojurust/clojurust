@@ -28,6 +28,7 @@ use_obj! {
     clojure::lang::IPersistentVector;
     clojure::lang::IPersistentStack;
     clojure::lang::IPersistentCollection;
+    clojure::lang::ITransientCollection;
     clojure::lang::IObj;
     clojure::lang::IMeta;
     clojure::lang::IHashEq;
@@ -37,7 +38,7 @@ use_obj! {
 }
 
 castable_to!(SPersistentVector => [sync] TObject, PersistentVector, APersistentVector, 
-                                        IObj, IEditableCollection, IKVReduce);
+                                        IObj, Counted, Indexed, IEditableCollection, IKVReduce);
 
 init_obj! {
     PersistentVector {
@@ -84,7 +85,8 @@ impl Serializable for SPersistentVector {
 }
 
 impl Comparable for SPersistentVector {
-    fn compareTo(&self, o: Object) -> ObjResult<i8> {
+    #[allow(non_snake_case)]
+    fn compareTo(&self, o: &Object) -> ObjResult<i8> {
         todo!()
     }
 }
@@ -93,12 +95,14 @@ impl RandomAccess for SPersistentVector {
 }
 
 impl IEditableCollection for SPersistentVector {
+    #[allow(non_snake_case)]
     fn asTransient(&self) -> ObjResult<&'_ super::ITransientCollection::ITransientCollection> {
         todo!()
     }
 }
 
 impl IObj for SPersistentVector {
+    #[allow(non_snake_case)]
     fn withMeta(&self, meta: &Object) -> ObjResult<&'_ IObj> {
         todo!()
     }
@@ -114,6 +118,7 @@ impl List for SPersistentVector {
 }
 
 impl IPersistentVector for SPersistentVector {
+    #[allow(non_snake_case)]
     fn assocN(&self, i: usize, val: &Object) -> ObjResult<&'_ IPersistentVector> {
         todo!()
     }
@@ -188,10 +193,12 @@ impl Associative for SPersistentVector {
         todo!()
     }
 
+    #[allow(non_snake_case)]
     fn containsKey(&self, key: &Object) -> ObjResult<bool> {
         todo!()
     }
 
+    #[allow(non_snake_case)]
     fn entryAt(&self, key: &Object) -> ObjResult<&super::IMapEntry::IMapEntry> {
         todo!()
     }

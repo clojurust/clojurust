@@ -12,5 +12,6 @@ pub trait Comparable: TObject {
     /// result 0 0 iff self = o
     /// throw NullPointerException iff o = nil
     /// throw ClassCastException iff o and self are not comparable
-    fn compareTo(&self, o: Object) -> ObjResult<i8>;
+    #[allow(non_snake_case)]
+    fn compareTo(&self, o: &Object) -> ObjResult<i8>;
 }

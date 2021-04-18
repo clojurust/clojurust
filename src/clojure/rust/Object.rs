@@ -9,8 +9,6 @@ use intertrait::cast::CastArc;
 
 use crate::*;
 
-use clojure::rust::Stri;
-
 use_obj! {
     clojure::rust::Class;
     clojure::rust::ObjError;
@@ -80,38 +78,17 @@ where
     pub fn cast<T>(&'a self) -> ObjResult<&'static T>
     {
         match self.inner {
-            None => error("", 
-                            ErrorType::BadCast {from: self, 
-                                                    to:Stri::String::new()},),
+            None => err_cast(self,"?"),
             Some(o) => {
                 let a = CastArc::cast::<T>(o).as_deref();
                 match a {
                     Ok(o) => {
                         Ok(o)
                     },
-                    
-                    Err(_) => {}
+                    Err(_) => err_cast(self,"?")
                 }
             },
         }
-    }
-
-    pub fn cast_mut<T>(&'a self) -> ObjResult<&'a mut T>
-    where
-        T: 'static,
-    {
-        // let o = self.clone();
-        // match o.inner {
-        //     None => None,
-        //     Some(o) => {
-        //         let a = CastArc::cast::<T>(o);
-        //         match a {
-        //             Ok(o) => Some((*o.as_ref()).borrow_mut()),
-        //             _ => None,
-        //         }
-        //     },
-        // }
-        todo!()
     }
 
     pub fn strong_count(&self) -> usize {
@@ -127,9 +104,9 @@ where
     pub fn call_by_id(&self, id: usize, args: &[Object]) -> ObjResult<Object> {
         let o = self.clone();
         match o.inner {
-            None => Ok(Object::new(None)),
+            None => err("Cannot call function on nil"),
             Some(o) => {
-                Ok(o.get_class().call(id, args).clone())
+                o.get_class().call(self.clone(), id, args)
             },
         }
     }
@@ -143,7 +120,7 @@ where
     pub fn get_by_id(&self, id: usize) -> ObjResult<Object> {
         let a = self.clone();
         let b = a.get_class();
-        Ok(b.get(id).clone())
+        b.get(self.clone(), id)
     }
 
     // pub fn get_by_name(&self, name: &str) -> ObjError<Object> {
@@ -176,14 +153,23 @@ impl TObject for Object {
     }
 
     fn get_hash(&self) -> usize {
-        let a = self.clone();
-        a.get_class().get_hash(a)
+        match self.inner {
+            Some(o) => {o.get_hash()}
+            None => {0}
+        }
     }
 
     fn equals(&self, other: &Object) -> bool {
-        let a = self.clone();
-        a.get_class().equals(other)
-    }
+        match self.inner {
+            Some(o) => {o.equals(other)}
+            None => {
+                match other.inner {
+                    Some(_) => {false}
+                    None => {true}
+                }
+            }
+        }
+     }
 }
 
 impl Clone for Object {
@@ -215,11 +201,5 @@ impl Hash for Object {
         for piece in data {
             piece.hash(state);
         }
-    }
-}
-
-impl Hash for TObject {
-    fn hash<H: Hasher>(&self, state: &mut H) {
-        state.write_usize(self.get_hash())
     }
 }
