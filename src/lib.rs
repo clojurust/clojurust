@@ -33,55 +33,62 @@ pub mod clojure {
     ///
     /// description de lang
     pub mod lang {
-        pub mod APersistentVector;
-        pub mod APersistentSet;
-        pub mod APersistentMap;
+        pub mod AFn;
+        pub mod AFunction;
         pub mod AMapEntry;
+        pub mod APersistentMap;
+        pub mod APersistentSet;
+        pub mod APersistentVector;
         pub mod ASeq;
-        pub mod PersistentVector;
-        pub mod PersistentSet;
-        pub mod PersistentMap;
-        pub mod MapEquivalence;
-        pub mod IFn;
-        pub mod IObj;
-        pub mod IMeta;
-        pub mod IMapEntry;
-        pub mod IKVReduce;
-        pub mod IPersistentVector;
-        pub mod IPersistentStack;
-        pub mod IPersistentMap;
-        pub mod IPersistentCollection;
-        pub mod ITransientCollection;
+        pub mod Fn;
         pub mod IEditableCollection;
-        pub mod IndexedSeq;
-        pub mod ISeq;
+        pub mod IFn;
         pub mod IHashEq;
+        pub mod IKVReduce;
+        pub mod IMapEntry;
+        pub mod IMeta;
+        pub mod IndexedSeq;
+        pub mod IObj;
+        pub mod IPersistentCollection;
+        pub mod IPersistentMap;
+        pub mod IPersistentStack;
+        pub mod IPersistentVector;
+        pub mod ISeq;
+        pub mod ITransientCollection;
+        pub mod MapEquivalence;
+        pub mod PersistentMap;
+        pub mod PersistentSet;
+        pub mod PersistentVector;
+        pub mod RT;
         pub mod Sequable;
         pub mod Sequential;
     }
 
     /// Rust host Module
     pub mod rust {
-        pub mod Class;
-        pub mod Counted;
-        pub mod Comparable;
-        pub mod Iterable;
         pub mod Associative;
-        pub mod Serializable;
-        pub mod Indexed;
-        pub mod Reversible;
+        pub mod Callable;
+        pub mod Class;
+        pub mod Comparable;
+        pub mod Comparator;
+        pub mod Counted;
         pub mod FnMethodNative;
         pub mod Function;
         pub mod Globals;
+        pub mod Indexed;
+        pub mod Iterable;
+        pub mod List;
+        pub mod Map;
         pub mod Member;
         pub mod Number;
-        pub mod Map;
-        pub mod List;
-        pub mod RandomAccess;
-        pub mod ObjError;
         pub mod Object;
+        pub mod ObjError;
         pub mod Protocol;
         pub mod Prototype;
+        pub mod RandomAccess;
+        pub mod Reversible;
+        pub mod Runnable;
+        pub mod Serializable;
         pub mod Stri;
         pub mod Unique;
         pub mod macros {
