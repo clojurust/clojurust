@@ -1,10 +1,19 @@
 //! Protocol IMeta
 
-use crate::clojure;
-use clojure::rust::Object::*;
-use clojure::rust::ObjError::*;
-use clojure::lang::IPersistentMap::*;
+use crate::*;
+
+use_obj! {
+    clojure::rust::Object;
+    clojure::rust::ObjError;
+}
+
+init_obj! {
+    Runnable {
+        clojure::rust::Object::init();
+        clojure::rust::ObjError::init();
+    }
+}
 
 pub trait IMeta: TObject {
-    fn meta(&self) -> ObjResult<&'_ IPersistentMap>;
+    fn meta(&self) -> ObjResult<Object>;
 }

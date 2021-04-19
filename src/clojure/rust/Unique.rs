@@ -16,7 +16,7 @@ use_obj! {
     clojure::rust::Counted;
     clojure::rust::Indexed;
     clojure::rust::Stri;
-    clojure::lang::PersistentMap;
+    clojure::lang::PersistentHashMap;
     clojure::lang::PersistentVector;
 }
 
@@ -26,7 +26,7 @@ init_obj! {
     SUnique {
         clojure::rust::Object::init();
         clojure::rust::Class::init();
-        clojure::lang::PersistentMap::init();
+        clojure::lang::PersistentHashMap::init();
         clojure::lang::PersistentVector::init();
         }
 }
@@ -107,7 +107,7 @@ impl Unique for SUnique {
     ///
     /// Create name and index is they doesn't exist
     fn get_or_make_index(&mut self, name: &str) -> ObjResult<usize> {
-        let m = self.map.cast::<SPersistentMap>().unwrap();
+        let m = self.map.cast::<SPersistentHashMap>().unwrap();
         let v = self.vect.cast::<SPersistentVector>().unwrap();
 
         if let Some(o) = m.get(name) {
@@ -132,7 +132,7 @@ impl Unique for SUnique {
     ///
     /// return Error if doesn't exist
     fn get_index(&mut self, name: &str) -> ObjResult<usize> {
-        let m = self.map.cast::<SPersistentMap>().unwrap();
+        let m = self.map.cast::<SPersistentHashMap>().unwrap();
         let v = self.vect.cast::<SPersistentVector>().unwrap();
         if let Some(o) = m.get(name) {
             o
@@ -143,7 +143,7 @@ impl Unique for SUnique {
 
     /// Tests if name exists
     fn test(&self, name: &str) -> ObjResult<bool> {
-        if let Some(m) = self.map.cast::<SPersistentMap>() {
+        if let Some(m) = self.map.cast::<SPersistentHashMap>() {
             match m.get(name) {
                 Some(_) => return true,
                 None => return false
@@ -187,7 +187,7 @@ impl SUnique {
 impl Default for SUnique {
     fn default() -> Self {
         SUnique {
-            map: new_obj!(SPersistentMap::default()),
+            map: new_obj!(SPersistentHashMap::default()),
             vect: new_obj!(SPersistentVector::default()),
         }
     }
