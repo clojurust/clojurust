@@ -9,8 +9,6 @@
 
 use std::{fmt::*};
 
-// use intertrait::cast::*;
-
 /// include and init needed `Rust` `Objects` for `clojure::lang`
 use crate::*;
 

@@ -8,7 +8,7 @@ use_obj! {
 }
 
 init_obj! {
-    Runnable {
+    Comparable {
         clojure::rust::Object::init();
         clojure::rust::ObjError::init();
     }

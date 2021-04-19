@@ -1,12 +1,26 @@
 //! Protocol Associative
 
-use crate::clojure;
-use clojure::rust::Object::*;
-use clojure::rust::ObjError::*;
-use clojure::lang::IMapEntry::*;
+use crate::*;
+
+use_obj! {
+    clojure::rust::Object;
+    clojure::rust::ObjError;
+}
+
+init_obj! {
+    Associative {
+        clojure::rust::Object::init();
+        clojure::rust::ObjError::init();
+    }
+}
 
 pub trait Associative {
-    fn assoc(&self, key: &Object, value: &Object) -> ObjResult<&Associative>;
+    /// Associative -> Object -> Object -> Associative
+    fn assoc(&self, key: &Object, value: &Object) -> ObjResult<Object>;
+    
+    /// Associative -> Object -> bool
     fn containsKey(&self, key: &Object) -> ObjResult<bool>;
-    fn entryAt(&self, key: &Object) -> ObjResult<&IMapEntry>;
+
+    /// Associative -> Object -> IMapEntry
+    fn entryAt(&self, key: &Object) -> ObjResult<Object>;
 }

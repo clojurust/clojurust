@@ -4,9 +4,6 @@
 
 use std::{fmt::Display, sync::*};
 
-// use intertrait::cast::*;
-// use intertrait::*;
-
 /// include and init needed `Rust` `Objects` for `clojure::lang`
 use crate::*;
 
@@ -20,6 +17,7 @@ castable_to!(SClass => [sync] TObject, Class);
 init_obj! {
     Class {
         clojure::rust::Object::init();
+        clojure::rust::ObjError::init();
     }
 }
 
@@ -35,10 +33,13 @@ init_obj! {
 pub struct SClass {
     /// `usize` -> classname
     id: usize,
+
     /// `ObjHashMap` of `usize` -> `Protocol`s
     protocols: Object,
+    
     /// `ObjHashMap` of `usize` -> `Member`s
     members: Object,
+    
     /// `ObjHashMap` of `usize` -> `Member`s
     methods: Object,
 }
