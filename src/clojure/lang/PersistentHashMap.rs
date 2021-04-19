@@ -16,25 +16,29 @@ use_obj! {
     clojure::lang::IPersistentMap;
     clojure::rust::Counted;
     clojure::rust::Iterable;
+    clojure::lang::IMeta;
     clojure::rust::Associative;
 }
 
-castable_to!(SPersistentMap => [sync] TObject, PersistentMap, Counted, 
-                                Iterable, Associative);
+castable_to!(SPersistentHashMap => [sync] TObject, PersistentHashMap, Counted, 
+                                Iterable, IMeta, Associative);
 
 init_obj! {
-    SPersistentMap {
+    SPersistentHashMap {
         clojure::rust::Object::init();
         clojure::rust::Class::init();
     }
 }
 
 #[derive(Debug)]
-pub struct SPersistentMap {
+pub struct SPersistentHashMap {
     inner: hashmap::HashMap<Object, Object>
 }
 
-impl IPersistentMap for SPersistentMap {
+pub trait PersistentHashMap: TObject {
+}
+
+impl IPersistentMap for SPersistentHashMap {
     fn assoc(&self, key: Object, val: Object) -> ObjResult<&'_ IPersistentMap> {
         todo!()
     }
@@ -49,16 +53,22 @@ impl IPersistentMap for SPersistentMap {
     }
 }
 
-impl Counted for SPersistentMap {
+impl Counted for SPersistentHashMap {
     fn count(&self) -> ObjResult<usize> {
         todo!()
     }
 }
     
-impl Iterable for SPersistentMap {
+impl IMeta for SPersistentHashMap {
+    fn meta(&self) -> ObjResult<Object> {
+        todo!()
+    }
 }
     
-impl Associative for SPersistentMap {
+impl Iterable for SPersistentHashMap {
+}
+    
+impl Associative for SPersistentHashMap {
     fn assoc(&self, key: &Object, value: &Object) -> ObjResult<&Associative> {
         todo!()
     }
@@ -74,7 +84,7 @@ impl Associative for SPersistentMap {
     }
 }
     
-impl TObject for SPersistentMap {
+impl TObject for SPersistentHashMap {
     fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }
@@ -88,26 +98,23 @@ impl TObject for SPersistentMap {
     }
 }
 
-impl Default for SPersistentMap {
+impl Default for SPersistentHashMap {
     fn default() -> Self {
-        SPersistentMap {
+        SPersistentHashMap {
             inner: hashmap::HashMap::<Object, Object>::default()
         }
     
     }
 }
 
-impl Display for SPersistentMap {
+impl Display for SPersistentHashMap {
     /// Return string representation of
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
         write!(f, "SPersistentMap {:?}", self.inner)
     }
 }
 
-pub trait PersistentMap: TObject {
+impl PersistentHashMap for SPersistentHashMap {
 }
 
-impl PersistentMap for SPersistentMap {
-}
-
-impl PersistentMap {}
+impl PersistentHashMap {}

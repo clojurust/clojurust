@@ -1,8 +1,18 @@
 //! Protocol Comparable
 
-use crate::clojure;
-use clojure::rust::Object::*;
-use clojure::rust::ObjError::*;
+use crate::*;
+
+use_obj! {
+    clojure::rust::Object;
+    clojure::rust::ObjError;
+}
+
+init_obj! {
+    Runnable {
+        clojure::rust::Object::init();
+        clojure::rust::ObjError::init();
+    }
+}
 
 pub trait Comparable: TObject {
     /// Compare with object

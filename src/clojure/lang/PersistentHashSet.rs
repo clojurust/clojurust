@@ -19,10 +19,10 @@ use_obj! {
     clojure::lang::APersistentSet;
 }
 
-castable_to!(SPersistentSet => [sync] TObject, PersistentSet);
+castable_to!(SPersistentHashSet => [sync] TObject, PersistentHashSet);
 
 init_obj! {
-    ObjHashSet {
+    PersistentHashSet {
         clojure::rust::Object::init();
         clojure::rust::Class::init();
         // clojure::lang::a_persistent_set::init();
@@ -30,11 +30,11 @@ init_obj! {
 }
 
 #[derive(Debug)]
-pub struct SPersistentSet {
+pub struct SPersistentHashSet {
     inner: hashset::HashSet<Object>
 }
 
-impl TObject for SPersistentSet {
+impl TObject for SPersistentHashSet {
     fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }
@@ -48,27 +48,27 @@ impl TObject for SPersistentSet {
     }
 }
 
-impl Default for SPersistentSet {
+impl Default for SPersistentHashSet {
     fn default() -> Self {
-        SPersistentSet {
+        SPersistentHashSet {
             inner: hashset::HashSet::<Object>::default()
         }
     
     }
 }
 
-impl Display for SPersistentSet {
+impl Display for SPersistentHashSet {
     /// Return string representation of
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
         write!(f, "PersistentSet {:?}", self.inner)
     }
 }
 
-pub trait PersistentSet: TObject + APersistentSet {
+pub trait PersistentHashSet: TObject + APersistentSet {
 }
 
-impl PersistentSet for SPersistentSet {
+impl PersistentHashSet for SPersistentHashSet {
 }
 
-impl APersistentSet for SPersistentSet {
+impl APersistentSet for SPersistentHashSet {
 }

@@ -56,8 +56,8 @@ pub mod clojure {
         pub mod ISeq;
         pub mod ITransientCollection;
         pub mod MapEquivalence;
-        pub mod PersistentMap;
-        pub mod PersistentSet;
+        pub mod PersistentHashMap;
+        pub mod PersistentHashSet;
         pub mod PersistentVector;
         pub mod RT;
         pub mod Sequable;

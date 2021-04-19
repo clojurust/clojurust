@@ -67,6 +67,13 @@ impl PersistentVector for SPersistentVector {
 }
 
 impl APersistentVector for SPersistentVector {
+    fn _hash(&self) -> usize {
+        todo!()
+    }
+
+    fn _hash_eq(&self) -> usize {
+        todo!()
+    }
 }
 
 impl IKVReduce for SPersistentVector {
@@ -109,8 +116,8 @@ impl IObj for SPersistentVector {
 }
 
 impl IMeta for SPersistentVector {
-    fn meta(&self) -> ObjResult<&'_ super::IPersistentMap::IPersistentMap> {
-        todo!()
+    fn meta(&self) -> ObjResult<Object> {
+        Ok(self.meta)
     }
 }
 

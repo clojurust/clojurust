@@ -3,15 +3,16 @@
 use crate::*;
 
 use_obj! {
-    //    clojure::rust::Object;
-    //    clojure::rust::Class;
+    clojure::rust::Object;
     clojure::rust::ObjError;
     clojure::lang::IFn;
 }
 
 init_obj! {
     AFn {
-        clojure::rust::IFn::init();
+        clojure::rust::Object::init();
+        clojure::rust::ObjError::init();
+        clojure::lang::IFn::init();
     }
 }
 
