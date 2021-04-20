@@ -3,20 +3,22 @@
 use crate::*;
 
 use_obj! {
+    clojure::rust::Object;
+    clojure::rust::IObject;
+    clojure::rust::ObjResult;
     clojure::rust::Counted;
     clojure::rust::Iterable;
     clojure::rust::Associative;
-    clojure::rust::Object;
-    clojure::rust::ObjResult;
 }
 
 init_obj! {
-    Runnable {
+    IPersistentMap {
+        clojure::rust::Object::init();
+        clojure::rust::IObject::init();
+        clojure::rust::ObjResult::init();
         clojure::rust::Counted::init();
         clojure::rust::Iterable::init();
         clojure::rust::Associative::init();
-        clojure::rust::Object::init();
-        clojure::rust::ObjResult::init();
     }
 }
 

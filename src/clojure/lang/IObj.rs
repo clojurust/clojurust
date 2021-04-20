@@ -5,13 +5,15 @@ use crate::*;
 use_obj! {
     clojure::lang::IMeta;
     clojure::rust::Object;
+    clojure::rust::IObject;
     clojure::rust::ObjResult;
 }
 
 init_obj! {
-    Runnable {
+    IObj {
         clojure::lang::IMeta::init();
         clojure::rust::Object::init();
+        clojure::rust::IObject::init();
         clojure::rust::ObjResult::init();
     }
 }

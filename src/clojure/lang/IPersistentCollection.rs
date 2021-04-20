@@ -1,22 +1,20 @@
 //! Protocol IPersistentCollection
 
-use crate::clojure;
-use clojure::rust::Object::*;
-use clojure::rust::ObjResult::*;
-use clojure::lang::Sequable::*;
 use crate::*;
 
 use_obj! {
-    clojure::lang::Sequable;
     clojure::rust::Object;
+    clojure::rust::IObject;
     clojure::rust::ObjResult;
+    clojure::lang::Sequable;
 }
 
 init_obj! {
     IPersistentCollection {
-        clojure::lang::Sequable::init();
         clojure::rust::Object::init();
+        clojure::rust::IObject::init();
         clojure::rust::ObjResult::init();
+        clojure::lang::Sequable::init();
     }
 }
 

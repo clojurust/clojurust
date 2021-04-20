@@ -11,6 +11,7 @@ use crate::*;
 
 use_obj! {
     clojure::rust::Object;
+    clojure::rust::IObject;
     clojure::rust::ObjResult;
     clojure::rust::Class;
     clojure::lang::IPersistentMap;
@@ -24,10 +25,17 @@ castable_to!(SPersistentHashMap => [sync] IObject, PersistentHashMap, Counted,
                                 Iterable, IMeta, Associative);
 
 init_obj! {
-    SPersistentHashMap {
+    PersistentHashMap {
         clojure::rust::Object::init();
+        clojure::rust::IObject::init();
+        clojure::rust::ObjResult::init();
         clojure::rust::Class::init();
-    }
+        clojure::lang::IPersistentMap::init();
+        clojure::rust::Counted::init();
+        clojure::rust::Iterable::init();
+        clojure::lang::IMeta::init();
+        clojure::rust::Associative::init();
+        }
 }
 
 #[derive(Debug)]
