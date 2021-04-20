@@ -4,7 +4,7 @@ use crate::*;
 
 use_obj! {
     clojure::rust::Object;
-    clojure::rust::ObjError;
+    clojure::rust::ObjResult;
     clojure::lang::APersistentVector;
     clojure::lang::IPersistentVector;
     clojure::lang::IPersistentStack;
@@ -16,7 +16,7 @@ use_obj! {
 init_obj! {
     AMapEntry {
         clojure::rust::Object::init();
-        clojure::rust::ObjError::init();
+        clojure::rust::ObjResult::init();
         clojure::lang::APersistentVector::init();
         clojure::lang::IPersistentVector::init();
         clojure::lang::IPersistentStack::init();
@@ -26,7 +26,7 @@ init_obj! {
     }
 }
 
-pub trait AMapEntry : TObject + APersistentVector + IMapEntry {
+pub trait AMapEntry : IObject + APersistentVector + IMapEntry {
     fn assocN(&self, i: usize, val: &Object) -> ObjResult<&'_ IPersistentVector>; 
     fn cons(&self, o: &Object) -> ObjResult<&'_ IPersistentVector>;
     fn count(&self) -> ObjResult<usize>;

@@ -1,4 +1,4 @@
-//! # HashMap of `Object`s with `TObject` protocol
+//! # HashMap of `Object`s with `IObject` protocol
 //!
 //! This is a wrapper on `im-rs` HashMap<Object,Object> library
 
@@ -11,7 +11,7 @@ use crate::*;
 
 use_obj! {
     clojure::rust::Object;
-    clojure::rust::ObjError;
+    clojure::rust::ObjResult;
     clojure::rust::Class;
     clojure::lang::IPersistentMap;
     clojure::rust::Counted;
@@ -20,7 +20,7 @@ use_obj! {
     clojure::rust::Associative;
 }
 
-castable_to!(SPersistentHashMap => [sync] TObject, PersistentHashMap, Counted, 
+castable_to!(SPersistentHashMap => [sync] IObject, PersistentHashMap, Counted, 
                                 Iterable, IMeta, Associative);
 
 init_obj! {
@@ -35,7 +35,7 @@ pub struct SPersistentHashMap {
     inner: hashmap::HashMap<Object, Object>
 }
 
-pub trait PersistentHashMap: TObject {
+pub trait PersistentHashMap: IObject {
 }
 
 impl IPersistentMap for SPersistentHashMap {
@@ -84,7 +84,7 @@ impl Associative for SPersistentHashMap {
     }
 }
     
-impl TObject for SPersistentHashMap {
+impl IObject for SPersistentHashMap {
     fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }

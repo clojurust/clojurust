@@ -4,13 +4,13 @@ use crate::*;
 
 use_obj! {
     clojure::rust::Object;
-    clojure::rust::ObjError;
+    clojure::rust::ObjResult;
 }
 
 init_obj! {
     Associative {
         clojure::rust::Object::init();
-        clojure::rust::ObjError::init();
+        clojure::rust::ObjResult::init();
     }
 }
 

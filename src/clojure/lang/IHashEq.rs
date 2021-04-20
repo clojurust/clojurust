@@ -2,9 +2,9 @@
 
 use crate::clojure;
 use clojure::rust::Object::*;
-use clojure::rust::ObjError::*;
+use clojure::rust::ObjResult::*;
 
-pub trait IHashEq: TObject {
+pub trait IHashEq: IObject {
     fn hasheq(&self) -> ObjResult<usize>;
 }
 

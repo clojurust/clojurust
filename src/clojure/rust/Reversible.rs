@@ -4,20 +4,21 @@ use crate::*;
 
 use_obj! {
     clojure::rust::Object;
-    clojure::rust::ObjError;
-    clojure::lang::ISeq;
+    clojure::rust::IObject;
+    clojure::rust::ObjResult;
 }
 
 init_obj! {
     Reversible {
         clojure::rust::Object::init();
-        clojure::rust::ObjError::init();
-        clojure::lang::ISeq::init();
+        clojure::rust::IObject::init();
+        clojure::rust::ObjResult::init();
     }
 }
 
 
-pub trait Reversible: TObject {
-    fn rseq(&self) -> ObjResult<&'_ ISeq>;
+pub trait Reversible: IObject {
+    /// Reversible -> ISeq
+    fn rseq(&self) -> ObjResult<Object>;
 }
 

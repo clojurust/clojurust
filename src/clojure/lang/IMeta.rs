@@ -4,16 +4,16 @@ use crate::*;
 
 use_obj! {
     clojure::rust::Object;
-    clojure::rust::ObjError;
+    clojure::rust::ObjResult;
 }
 
 init_obj! {
     Runnable {
         clojure::rust::Object::init();
-        clojure::rust::ObjError::init();
+        clojure::rust::ObjResult::init();
     }
 }
 
-pub trait IMeta: TObject {
+pub trait IMeta: IObject {
     fn meta(&self) -> ObjResult<Object>;
 }

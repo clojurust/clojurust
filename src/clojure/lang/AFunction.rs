@@ -3,7 +3,7 @@ use crate::*;
 
 use_obj! {
     clojure::rust::Object;
-    clojure::rust::ObjError;
+    clojure::rust::ObjResult;
     clojure::rust::Comparator;
     clojure::rust::Serializable;
     clojure::lang::AFn;
@@ -13,7 +13,7 @@ use_obj! {
 init_obj! {
     AFunction {
         clojure::rust::Object::init();
-        clojure::rust::ObjError::init();
+        clojure::rust::ObjResult::init();
         clojure::rust::Comparator::init();
         clojure::rust::Serializable::init();
         clojure::lang::AFn::init();

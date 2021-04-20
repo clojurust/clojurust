@@ -10,14 +10,16 @@ use crate::*;
 
 use_obj! {
     clojure::rust::Object;
+    clojure::rust::IObject;
     clojure::rust::Class;
 }
 
-castable_to!(SMember => [sync] TObject, Member);
+castable_to!(SMember => [sync] IObject, Member);
 
 init_obj! {
     Member {
         clojure::rust::Object::init();
+        clojure::rust::IObject::init();
         clojure::rust::Class::init();
     }
 }
@@ -59,7 +61,7 @@ impl Display for SMember {
     }
 }
 
-impl TObject for SMember {
+impl IObject for SMember {
     fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }

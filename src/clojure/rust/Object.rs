@@ -1,6 +1,6 @@
 //! # Defines Rust dynamic `Object`s.
 //!
-//! Define dynamic `Object`s as Option<Arc<TObject>>
+//! Define dynamic `Object`s as Option<Arc<IObject>>
 
 use std::{clone::Clone};
 use std::{fmt::*, hash::*, sync::*};
@@ -11,39 +11,33 @@ use crate::*;
 
 use_obj! {
     clojure::rust::Class;
-    clojure::rust::ObjError;
+    clojure::rust::IObject;
+    clojure::rust::ObjResult;
 }
 
-castable_to!(Object => [sync] TObject);
+castable_to!(Object => [sync] IObject);
 
 init_obj! {
     Object {
         clojure::rust::Class::init();
+        clojure::rust::IObject::init();
+        clojure::rust::ObjResult::init();
     }
 }
 
-#[derive(Debug)]
-pub struct Object {
-    pub inner: Option<Arc<TObject>>,
-}
 
-/// `Object` `Protocol` for all defined `Object`s
-///
-///
-pub trait TObject: Debug + Display + CastFromSync  {
-    /// Return `Class` of `Object`
-    fn get_class<'a>(&self) -> &'a SClass;
+pub type Object = Option<Arc<IObject>>;
 
-    fn get_hash(&self) -> usize;
-
-    fn equals(&self, other: &Object) -> bool;
-}
+// #[derive(Debug)]
+// pub struct Object {
+//     pub inner: Option<Arc<IObject>>,
+// }
 
 impl<'a> Object
 where
-    Object: TObject + 'a,
+    Object: IObject + 'a,
 {
-    pub fn new(obj: Option<Arc<TObject>>) -> Object {
+    pub fn new(obj: Option<Arc<IObject>>) -> Object {
         Object { inner: obj }
     }
 
@@ -66,7 +60,9 @@ where
         match o.inner {
             None => false,
             Some(o) => {
-                let a = CastArc::cast::<T>(o).as_deref();
+                let a = 
+                    CastArc::cast::<T>(o).as_deref();
+                
                 match a {
                     Ok(_) => true,
                     _ => false,
@@ -96,12 +92,12 @@ where
         match o.inner {
             None => 0,
             Some(o) => {
-                Arc::<dyn TObject>::strong_count(&o)
+                Arc::<dyn IObject>::strong_count(&o)
             },
         }
     }
 
-    pub fn call_by_id(&self, id: usize, args: &[Object]) -> ObjResult<Object> {
+    pub fn call(&self, id: usize, args: &[Object]) -> ObjResult<Object> {
         let o = self.clone();
         match o.inner {
             None => err("Cannot call function on nil"),
@@ -117,7 +113,7 @@ where
     //     b.call(name, args).clone()
     // }
 
-    pub fn get_by_id(&self, id: usize) -> ObjResult<Object> {
+    pub fn get(&self, id: usize) -> ObjResult<Object> {
         let a = self.clone();
         let b = a.get_class();
         b.get(self.clone(), id)
@@ -143,7 +139,7 @@ impl Display for Object {
 ///
 /// Functions are applied to the `content` of `Object`
 // #[cast_to([sync] IObject, Debug)];
-impl TObject for Object {
+impl IObject for Object {
     fn get_class<'a>(&self) -> &'a SClass {
         let a = self.clone();
         match a.inner {

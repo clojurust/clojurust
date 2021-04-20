@@ -1,4 +1,4 @@
-/// Iterable
+/// Iterator
 
 use crate::*;
 
@@ -10,7 +10,7 @@ use_obj! {
 }
 
 init_obj! {
-    Iterator {
+    Function {
         clojure::rust::Object::init();
         clojure::rust::IObject::init();
         clojure::rust::ObjResult::init();
@@ -18,7 +18,13 @@ init_obj! {
     }
 }
 
-pub trait Iterable: IObject {
-    /// Iterable -> Iterator
-    fn iterator(&self) -> ObjResult<Object>;
+pub trait Iterator: IObject {
+    /// Iterator -> bool
+    fn hasNext(&self) -> ObjResult<Object>;
+    
+    /// Iterator -> Object
+    fn next(&self) -> ObjResult<Object>;
+    
+    /// Iterator
+    fn remove(&self) -> ObjResult<Object>;
 }

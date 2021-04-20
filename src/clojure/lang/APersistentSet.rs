@@ -1,4 +1,4 @@
-//! # HashSet of `Object`s with `TObject` protocol
+//! # HashSet of `Object`s with `IObject` protocol
 //!
 //! This is a wrapper on `im-rs` HashSet<Object> library
 

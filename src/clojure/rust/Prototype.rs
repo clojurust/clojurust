@@ -8,14 +8,16 @@ use crate::*;
 
 use_obj! {
     clojure::rust::Object;
+    clojure::rust::IObject;
     clojure::rust::Class;
 }
 
-castable_to!(SPrototype => [sync] TObject, Prototype);
+castable_to!(SPrototype => [sync] IObject, Prototype);
 
 init_obj! {
     Prototype {
         clojure::rust::Object::init();
+        clojure::rust::IObject::init();
         clojure::rust::Class::init();
     }
 }
@@ -37,7 +39,7 @@ impl Display for SPrototype {
     }
 }
 
-impl TObject for SPrototype {
+impl IObject for SPrototype {
     fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }

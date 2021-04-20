@@ -16,16 +16,20 @@ use crate::*;
 
 use_obj! {
     clojure::rust::Object;
+    clojure::rust::IObject;
+    clojure::rust::ObjResult;
     clojure::rust::Class;
     clojure::lang::PersistentVector;
     clojure::rust::Unique;
 }
 
-castable_to!(SGlobals => [sync] TObject, Globals);
+castable_to!(SGlobals => [sync] IObject, Globals);
 
 init_obj! {
     Globals {
         clojure::rust::Object::init();
+        clojure::rust::IObject::init();
+        clojure::rust::ObjResult::init();
         clojure::rust::Class::init();
         clojure::lang::PersistentVector::init();
         clojure::rust::Unique::init();
@@ -38,16 +42,18 @@ pub struct SGlobals {
     pub obj_vect: Object,  // SObjVector
 }
 
-pub trait Globals: CastFromSync {
-    fn update_object(&mut self, name: &str, value: &Object) -> Option<(usize, Object)>;
+pub trait Globals: IObject + CastFromSync {
+    /// Globals -> String -> Object -> Globals
+    fn update(&mut self, name: &str, value: &Object) -> ObjResult<Object>;
 
-    fn add_object(&mut self, name: &str, value: &Object) -> usize;
+    /// Globals -> usize -> Object
+    fn get_obj_by_id(&self, index: usize) -> ObjResult<Object>;
 
-    fn get_obj_by_id(&self, index: usize) -> Object;
+    /// Globals -> String -> Object
+    fn get_obj_by_name(&self, name: &str) -> ObjResult<Object>;
 
-    fn get_obj_by_name(&self, name: &str) -> Object;
-
-    fn get_id_for_name(&self, name: &str) -> Option<usize>;
+    /// Globals -> String -> usize
+    fn get_id_for_name(&self, name: &str) -> ObjResult<Object>;
 }
 
 impl SGlobals {
@@ -59,23 +65,23 @@ impl SGlobals {
 use crate::new_obj;
 
 impl Globals for SGlobals {
-    fn update_object(&mut self, name: &str, value: &Object) -> Option<(usize, Object)> {
+    /// Globals -> String -> Object -> Globals
+    fn update(&mut self, name: &str, value: &Object) -> ObjResult<Object> {
         todo!()
     }
 
-    fn add_object(&mut self, name: &str, value: &Object) -> usize {
+    /// Globals -> usize -> Object
+    fn get_obj_by_id(&self, index: usize) -> ObjResult<Object> {
         todo!()
     }
 
-    fn get_obj_by_id(&self, index: usize) -> Object {
+    /// Globals -> String -> Object
+    fn get_obj_by_name(&self, name: &str) -> ObjResult<Object> {
         todo!()
     }
 
-    fn get_obj_by_name(&self, index: &str) -> Object {
-        todo!()
-    }
-
-    fn get_id_for_name(&self, name: &str) -> Option<usize> {
+    /// Globals -> String -> usize
+    fn get_id_for_name(&self, name: &str) -> ObjResult<Object> {
         todo!()
     }
 }
@@ -87,7 +93,7 @@ impl Display for SGlobals {
     }
 }
 
-impl TObject for SGlobals {
+impl IObject for SGlobals {
     fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }

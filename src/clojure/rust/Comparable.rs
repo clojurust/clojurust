@@ -4,17 +4,19 @@ use crate::*;
 
 use_obj! {
     clojure::rust::Object;
-    clojure::rust::ObjError;
+    clojure::rust::IObject;
+    clojure::rust::ObjResult;
 }
 
 init_obj! {
     Comparable {
         clojure::rust::Object::init();
-        clojure::rust::ObjError::init();
+        clojure::rust::IObject::init();
+        clojure::rust::ObjResult::init();
     }
 }
 
-pub trait Comparable: TObject {
+pub trait Comparable: IObject {
     /// Compare with object
     ///
     /// result < 0 iff self < o 

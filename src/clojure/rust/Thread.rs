@@ -1,24 +1,22 @@
+
 use crate::*;
 
 use_obj! {
     // clojure::rust::Object;
     // clojure::rust::ObjResult;
     clojure::rust::IObject;
-    clojure::rust::Callable;
-    clojure::rust::Thread;
+    clojure::rust::Runnable;
 }
 
 init_obj! {
-    Runnable {
+    Thread {
         // clojure::rust::Object::init();
         // clojure::rust::ObjResult::init();
         clojure::rust::IObject::init();
-        clojure::rust::Callable::init();
-        clojure::rust::Thread::init();
+        clojure::rust::Runnable::init();
     }
 }
 
+pub trait Thread: IObject + Runnable {
 
-pub trait Runnable: IObject + Callable + Thread {
-    fn run(&self);
 }

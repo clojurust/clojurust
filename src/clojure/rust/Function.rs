@@ -8,19 +8,21 @@ use std::{fmt::*, sync::*};
 use crate::*;
 
 use_obj! {
-    clojure::rust::Class;
     clojure::rust::Object;
-//    clojure::rust::fn_method_native;
+    clojure::rust::IObject;
+    clojure::rust::ObjResult;
+    clojure::rust::Class;
 }
 
-castable_to!(SFunction => [sync] TObject, Function);
+castable_to!(SFunction => [sync] IObject, Function);
 
 init_obj! {
     Function {
-        clojure::rust::Class::init();
         clojure::rust::Object::init();
-//        clojure::rust::fn_method_native::init();
-}
+        clojure::rust::IObject::init();
+        clojure::rust::ObjResult::init();
+        clojure::rust::Class::init();
+    }
 }
 
 #[derive(Debug)]
@@ -37,7 +39,7 @@ unsafe impl Send for SFunction {}
 
 unsafe impl Sync for SFunction {}
 
-trait Function: CastFromSync {
+pub trait Function: IObject + CastFromSync {
     fn call(&self, args: &Object) -> Object;
 
     fn get(&self, arity: usize) -> Object;
@@ -75,7 +77,7 @@ impl Display for SFunction {
     }
 }
 
-impl TObject for SFunction {
+impl IObject for SFunction {
     fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }

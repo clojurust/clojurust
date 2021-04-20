@@ -14,20 +14,24 @@ use crate::*;
 
 use_obj! {
     clojure::rust::Object;
+    clojure::rust::IObject;
+    clojure::rust::ObjResult;
     clojure::rust::Class;
 }
 
-castable_to!(SFnMethodNative => [sync] TObject, FnMethodNative);
+castable_to!(SFnMethodNative => [sync] IObject, FnMethodNative);
 
 init_obj! {
     FnMethodNative {
         clojure::rust::Object::init();
+        clojure::rust::IObject::init();
+        clojure::rust::ObjResult::init();
         clojure::rust::Class::init();
     }
 }
 
 pub struct SFnMethodNative {
-    inner: fn(&[Object]) -> Object
+    inner: fn(&[Object]) -> ObjResult<Object>
 }
 
 impl Debug for SFnMethodNative {
@@ -36,12 +40,12 @@ impl Debug for SFnMethodNative {
     }
 }
 
-pub trait FnMethodNative {
-    fn call(&self, args: &[Object]) -> Object;
+pub trait FnMethodNative: IObject {
+    fn call(&self, args: &[Object]) -> ObjResult<Object>;
 }
 
 impl FnMethodNative for SFnMethodNative {
-    fn call(&self, args: &[Object]) -> Object {
+    fn call(&self, args: &[Object]) -> ObjResult<Object> {
         let f = self.inner;
         f(args)
     }
@@ -54,7 +58,7 @@ impl Display for SFnMethodNative {
     }
 }
 
-impl TObject for SFnMethodNative {
+impl IObject for SFnMethodNative {
     fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }

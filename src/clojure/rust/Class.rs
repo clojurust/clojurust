@@ -9,15 +9,17 @@ use crate::*;
 
 use_obj! {
     clojure::rust::Object;
-    clojure::rust::ObjError;
+    clojure::rust::IObject;
+    clojure::rust::ObjResult;
 }
 
-castable_to!(SClass => [sync] TObject, Class);
+castable_to!(SClass => [sync] IObject, Class);
 
 init_obj! {
     Class {
         clojure::rust::Object::init();
-        clojure::rust::ObjError::init();
+        clojure::rust::IObject::init();
+        clojure::rust::ObjResult::init();
     }
 }
 
@@ -62,7 +64,7 @@ impl SClass {
 /// `Class`: `Protocol` for `Object`s and `SClass`es
 ///
 ///
-pub trait Class: CastFromSync {
+pub trait Class: IObject + CastFromSync {
     /// Call `method` by id with `Object`s arguments
     fn call(&self, obj: Object, id: usize, args: &[Object]) -> ObjResult<Object>;
 
@@ -88,7 +90,7 @@ impl Display for SClass {
     }
 }
 
-impl TObject for SClass {
+impl IObject for SClass {
     /// Return `Class` of `Object`
     fn get_class<'a>(&self) -> &'a SClass {
         todo!()

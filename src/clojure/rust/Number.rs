@@ -9,27 +9,29 @@ use crate::*;
 
 use_obj! {
     clojure::rust::Object;
+    clojure::rust::IObject;
     clojure::rust::Class;
 }
 
-castable_to!(BigInteger => [sync] TObject, Number);
-castable_to!(Long => [sync] TObject, Number);
-castable_to!(Integer => [sync] TObject, Number);
-castable_to!(Short => [sync] TObject, Number);
-castable_to!(Byte => [sync] TObject, Number);
-castable_to!(Double => [sync] TObject, Number);
-castable_to!(Float => [sync] TObject, Number);
-castable_to!(Usize => [sync] TObject, Number);
+castable_to!(BigInteger => [sync] IObject, Number);
+castable_to!(Long => [sync] IObject, Number);
+castable_to!(Integer => [sync] IObject, Number);
+castable_to!(Short => [sync] IObject, Number);
+castable_to!(Byte => [sync] IObject, Number);
+castable_to!(Double => [sync] IObject, Number);
+castable_to!(Float => [sync] IObject, Number);
+castable_to!(Usize => [sync] IObject, Number);
 
 init_obj! {
     Number {
         clojure::rust::Object::init();
+        clojure::rust::IObject::init();
         clojure::rust::Class::init();
     }
 }
 
 /// All numeric values have the `Number` trait.
-pub trait Number: CastFromSync {
+pub trait Number: IObject {
     fn big_integer_value_o(&self) -> Object;
 
     fn long_value_o(&self) -> Object;

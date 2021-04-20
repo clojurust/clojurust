@@ -11,24 +11,30 @@ use crate::*;
 
 use_obj! {
     clojure::rust::Object;
+    clojure::rust::IObject;
     clojure::rust::Class;
+    clojure::lang::PersistentHashSet;
 }
 
-castable_to!(SProtocol => [sync] TObject, Protocol);
+castable_to!(SProtocol => [sync] IObject, Protocol);
 
 init_obj! {
     Protocols {
         clojure::rust::Object::init();
+        clojure::rust::IObject::init();
         clojure::rust::Class::init();
+        clojure::lang::PersistentHashSet::init();
     }
 }
 
-#[derive(Debug)]
-struct SProtocol {
-    /// This is the template functions of the `Prototype`.
-    /// TODO
-    template: Object, // SObjHashSet of Prototype
-}
+pub type SProtocol = SPersistentHashSet;
+
+// #[derive(Debug)]
+// struct SProtocol {
+//     /// This is the template functions of the `Prototype`.
+//     /// TODO
+//     template: Object, // SPersistentHashSet of Prototype
+// }
 
 impl Display for SProtocol {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result {
@@ -36,7 +42,7 @@ impl Display for SProtocol {
     }
 }
 
-impl TObject for SProtocol {
+impl IObject for SProtocol {
     fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }
@@ -50,7 +56,7 @@ impl TObject for SProtocol {
     }
 }
 
-pub trait Protocol: CastFromSync {}
+pub trait Protocol: IObject {}
 
 impl Protocol {}
 

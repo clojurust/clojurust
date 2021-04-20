@@ -11,14 +11,16 @@ use crate::*;
 
 use_obj! {
     clojure::rust::Object;
+    clojure::rust::IObject;
     clojure::rust::Class;
 }
 
-castable_to!(SObjError => [sync] TObject, ObjError);
+castable_to!(SObjError => [sync] IObject, ObjError);
 
 init_obj! {
     ObjError {
         clojure::rust::Object::init();
+        clojure::rust::IObject::init();
         clojure::rust::Class::init();
     }
 }
@@ -64,7 +66,7 @@ impl fmt::Display for SObjError {
     }
 }
 
-impl TObject for SObjError {
+impl IObject for SObjError {
     fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }

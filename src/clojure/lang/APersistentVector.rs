@@ -1,4 +1,4 @@
-//! # Vector of `Object`s with `TObject` protocol
+//! # Vector of `Object`s with `IObject` protocol
 //!
 //! This is a wrapper on `im-rs` Vector<Object> library
 
@@ -56,7 +56,7 @@ init_obj! {
     }
 }
 
-// castable_to!(SAPersistentVector => [sync] APersistentVector, TObject, IPersistentVector,  
+// castable_to!(SAPersistentVector => [sync] APersistentVector, IObject, IPersistentVector,  
 //     List, RandomAccess, Comparable, Serializable, IHashEq);
 
 // #[derive(Debug)]
@@ -65,7 +65,7 @@ init_obj! {
 //     _hash_eq: usize,
 // }
 
-pub trait APersistentVector: TObject + IPersistentVector + Iterable 
+pub trait APersistentVector: IObject + IPersistentVector + Iterable 
                         + List + RandomAccess + Comparable + Serializable
                         + IHashEq 
 {
@@ -78,7 +78,7 @@ pub struct SRSeq {
     i: usize,
 }
 
-pub trait RSeq: TObject + ASeq + IndexedSeq + Counted {
+pub trait RSeq: IObject + ASeq + IndexedSeq + Counted {
 
 }
 
@@ -90,7 +90,7 @@ pub struct SSubVector {
     _meta: Object, //&'a IPersistantMap,
 }
 
-pub trait SubVector: TObject + IObj {
+pub trait SubVector: IObject + IObj {
     fn v(&self) -> Object;
     fn start(&self) -> usize;
     fn end(&self) -> usize;
@@ -111,18 +111,18 @@ impl SubVector for SSubVector {
 }
 
 impl IObj for SSubVector {
-    fn withMeta(&self, meta: &Object) -> clojure::rust::ObjError::ObjResult<&'_ IObj> {
+    fn withMeta(&self, meta: &Object) -> clojure::rust::ObjResult::ObjResult<&'_ IObj> {
         todo!()
     }
 }
 
 impl IMeta for SSubVector {
-    fn meta(&self) -> clojure::rust::ObjError::ObjResult<&'_ super::IPersistentMap::IPersistentMap> {
+    fn meta(&self) -> clojure::rust::ObjResult::ObjResult<&'_ super::IPersistentMap::IPersistentMap> {
         Ok(self._meta.clone())
     }
 }
 
-impl TObject for SSubVector {
+impl IObject for SSubVector {
     fn get_class<'a>(&self) -> &'a clojure::rust::Class::SClass {
         todo!()
     }

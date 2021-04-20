@@ -1,4 +1,4 @@
-//! # HashSet of `Object`s with `TObject` protocol
+//! # HashSet of `Object`s with `IObject` protocol
 //!
 //! This is a wrapper on `im-rs` HashSet<Object> library
 
@@ -7,23 +7,27 @@
 
 use std::{fmt::*};
 
-use im::hashset;
-
-// use intertrait::cast::*;
+use im::hashset::*;
+use im::hashmap::*;
 
 use crate::*;
 
 use_obj! {
     clojure::rust::Object;
+    clojure::rust::IObject;
+    clojure::lang::IObj;
     clojure::rust::Class;
     clojure::lang::APersistentSet;
 }
 
-castable_to!(SPersistentHashSet => [sync] TObject, PersistentHashSet);
+castable_to!(SPersistentHashSet => 
+        [sync] IObject, PersistentHashSet, IObj, APersistentSet);
 
 init_obj! {
     PersistentHashSet {
         clojure::rust::Object::init();
+        clojure::rust::IObject::init();
+        clojure::lang::IObj::init();
         clojure::rust::Class::init();
         // clojure::lang::a_persistent_set::init();
     }
@@ -31,10 +35,13 @@ init_obj! {
 
 #[derive(Debug)]
 pub struct SPersistentHashSet {
-    inner: hashset::HashSet<Object>
+    /// hashmap::HashMap<Object>
+    meta: Object,
+    /// hashset::HashSet<Object>
+    inner: Object 
 }
 
-impl TObject for SPersistentHashSet {
+impl IObject for SPersistentHashSet {
     fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }
@@ -51,7 +58,8 @@ impl TObject for SPersistentHashSet {
 impl Default for SPersistentHashSet {
     fn default() -> Self {
         SPersistentHashSet {
-            inner: hashset::HashSet::<Object>::default()
+            meta: HashMap::<Object>::default(),
+            inner: HashSet::<Object>::default()
         }
     
     }
@@ -64,7 +72,7 @@ impl Display for SPersistentHashSet {
     }
 }
 
-pub trait PersistentHashSet: TObject + APersistentSet {
+pub trait PersistentHashSet: IObject + IObj + APersistentSet {
 }
 
 impl PersistentHashSet for SPersistentHashSet {

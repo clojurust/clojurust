@@ -2,9 +2,10 @@
 
 use crate::clojure;
 use clojure::rust::Object::*;
-use clojure::rust::ObjError::*;
-use clojure::lang::ISeq::*;
+use clojure::rust::IObject::*;
+use clojure::rust::ObjResult::*;
 
-pub trait Sequable: TObject {
-    fn seq(&self) -> ObjResult<&'_ ISeq>;
+pub trait Sequable: IObject {
+    /// Sequable -> ISeq
+    fn seq(&self) -> ObjResult<Object>;
 }

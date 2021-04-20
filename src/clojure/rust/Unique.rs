@@ -11,16 +11,16 @@ use crate::*;
 
 use_obj! {
     clojure::rust::Object;
-    clojure::rust::ObjError;
+    clojure::rust::ObjResult;
     clojure::rust::Class;
     clojure::rust::Counted;
     clojure::rust::Indexed;
-    clojure::rust::Stri;
+    clojure::rust::String;
     clojure::lang::PersistentHashMap;
     clojure::lang::PersistentVector;
 }
 
-castable_to!(SUnique => [sync] TObject, Unique);
+castable_to!(SUnique => [sync] IObject, Unique);
 
 init_obj! {
     SUnique {
@@ -152,7 +152,7 @@ impl Unique for SUnique {
     }
 }
 
-impl TObject for SUnique {
+impl IObject for SUnique {
     fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }

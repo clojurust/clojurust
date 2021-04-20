@@ -23,6 +23,8 @@ For now, in the creation of the clojure::rust modules, say the Rust host environ
 
 The idea, is not to have an optimized structure as first draft, but a working concepts framework, easy to refactor as experiments are tested.
 
+For example the current model for Clojure objects is a boxed and synchronized structure. Returned values are boxed in a Result struct incorporating error values. So it's clearly the less efficient and the more ressource consumig way to do it, so optimization can only go in a more fast result... :grind:
+
 Meanwhile, the first Core Clojure classes can be developed in parallel, for testing purposes, but a strong separation shall be preserved.
 
 ## Goals

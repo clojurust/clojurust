@@ -1,4 +1,4 @@
-//! # Vector of `Object`s with `TObject` protocol
+//! # Vector of `Object`s with `IObject` protocol
 //!
 //! This is a wrapper on `im-rs` Vector<Object> library
 
@@ -6,13 +6,15 @@
 // use std::{fmt::*, hash::*};
 use std::{fmt::*};
 
-use im::vector;
+use im::hashmap::*;
+use im::vector::*;
 
 // use intertrait::cast::*;
 use crate::*;
 
 use_obj! {
     clojure::rust::Object;
+    clojure::rust::IObject;
     clojure::rust::Class;
     clojure::rust::Serializable;
     clojure::rust::Comparable;
@@ -21,7 +23,7 @@ use_obj! {
     clojure::rust::Iterable;
     clojure::rust::Indexed;
     clojure::rust::Associative;
-    clojure::rust::ObjError;
+    clojure::rust::ObjResult;
     clojure::rust::RandomAccess;
     clojure::rust::List;
     clojure::lang::APersistentVector;
@@ -37,27 +39,53 @@ use_obj! {
     clojure::lang::IEditableCollection;
 }
 
-castable_to!(SPersistentVector => [sync] TObject, PersistentVector, APersistentVector, 
+castable_to!(SPersistentVector => [sync] IObject, PersistentVector, APersistentVector, 
                                         IObj, Counted, Indexed, IEditableCollection, IKVReduce);
 
 init_obj! {
     PersistentVector {
         clojure::rust::Object::init();
+        clojure::rust::IObject::init();
         clojure::rust::Class::init();
-    }
+        clojure::rust::Serializable::init();
+        clojure::rust::Comparable::init();
+        clojure::rust::Reversible::init();
+        clojure::rust::Counted::init();
+        clojure::rust::Iterable::init();
+        clojure::rust::Indexed::init();
+        clojure::rust::Associative::init();
+        clojure::rust::ObjResult::init();
+        clojure::rust::RandomAccess::init();
+        clojure::rust::List::init();
+        clojure::lang::APersistentVector::init();
+        clojure::lang::IPersistentVector::init();
+        clojure::lang::IPersistentStack::init();
+        clojure::lang::IPersistentCollection::init();
+        clojure::lang::ITransientCollection::init();
+        clojure::lang::IObj::init();
+        clojure::lang::IMeta::init();
+        clojure::lang::IHashEq::init();
+        clojure::lang::Sequable::init();
+        clojure::lang::IKVReduce::init();
+        clojure::lang::IEditableCollection::init();
+        }
 }
 
 /////////////////////////////////
 // Objects
 #[derive(Debug)]
 pub struct SPersistentVector {
+    _hash: usize,
+    _hash_eq: usize, 
+    /// hashmap::HashMap<Object>
     meta: Object,
-    inner: im::vector::Vector<Object>
+    ///
+    inner: Object 
 }
 
 //////////////////////////////////
 // Protocols
-pub trait PersistentVector: TObject + APersistentVector 
+pub trait PersistentVector: IObject + APersistentVector 
                     + IObj + IEditableCollection + IKVReduce {
 }
 
@@ -68,11 +96,11 @@ impl PersistentVector for SPersistentVector {
 
 impl APersistentVector for SPersistentVector {
     fn _hash(&self) -> usize {
-        todo!()
+        self._hash
     }
 
     fn _hash_eq(&self) -> usize {
-        todo!()
+        self._hash_eq
     }
 }
 
@@ -214,7 +242,7 @@ impl Associative for SPersistentVector {
 impl Iterable for SPersistentVector {
 }
 
-impl TObject for SPersistentVector {
+impl IObject for SPersistentVector {
     fn get_class<'a>(&self) -> &'a SClass {
         todo!()
     }

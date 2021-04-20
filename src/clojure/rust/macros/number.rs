@@ -11,7 +11,7 @@ macro_rules! number_def {
             value: $def,
         }
 
-        castable_to!($name => [sync] TObject, Number);
+        castable_to!($name => [sync] IObject, Number);
 
         impl $name {
             pub fn new(value: $def) -> Object {
@@ -19,7 +19,7 @@ macro_rules! number_def {
             }
         }
 
-        impl TObject for $name {
+        impl IObject for $name {
             fn get_class<'a>(&self) -> &'a SClass {
                 todo!()
             }

@@ -15,7 +15,7 @@ use_obj! {
     clojure::lang::Sequential;
     clojure::rust::Counted;
     clojure::rust::Object;
-    clojure::rust::ObjError;
+    clojure::rust::ObjResult;
     clojure::lang::ISeq;
 }
 
@@ -26,13 +26,13 @@ init_obj! {
         clojure::lang::Sequential::init();
         clojure::rust::Counted::init();
         clojure::rust::Object::init();
-        clojure::rust::ObjError::init();
+        clojure::rust::ObjResult::init();
         clojure::lang::ISeq::init();
     }
 }
 
 
-pub trait IndexedSeq: TObject + Counted + IPersistentCollection + ISeq 
+pub trait IndexedSeq: IObject + Counted + IPersistentCollection + ISeq 
         + Sequable + Sequential {
     fn index(&self) -> ObjResult<usize>;
 }
