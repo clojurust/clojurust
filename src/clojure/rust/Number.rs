@@ -13,14 +13,15 @@ use_obj! {
     clojure::rust::Class;
 }
 
-castable_to!(BigInteger => [sync] IObject, Number);
-castable_to!(Long => [sync] IObject, Number);
-castable_to!(Integer => [sync] IObject, Number);
-castable_to!(Short => [sync] IObject, Number);
-castable_to!(Byte => [sync] IObject, Number);
-castable_to!(Double => [sync] IObject, Number);
-castable_to!(Float => [sync] IObject, Number);
-castable_to!(Usize => [sync] IObject, Number);
+use intertrait::*;
+// castable_to!(BigInteger => [sync] IObject, Number);
+// castable_to!(Long => [sync] IObject, Number);
+// castable_to!(Integer => [sync] IObject, Number);
+// castable_to!(Short => [sync] IObject, Number);
+// castable_to!(Byte => [sync] IObject, Number);
+// castable_to!(Double => [sync] IObject, Number);
+// castable_to!(Float => [sync] IObject, Number);
+// castable_to!(Usize => [sync] IObject, Number);
 
 init_obj! {
     Number {

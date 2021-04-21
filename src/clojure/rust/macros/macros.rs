@@ -65,14 +65,10 @@ macro_rules! init_obj {
 #[macro_export]
 macro_rules! use_obj {
     ($($tail:tt)*) => {
-
-        use intertrait::*;
-
         // use crate::*;
         // use crate::use_init_obj;
         // use crate::init_obj;
 
-        use crate::clojure;
         use_init_obj!($($tail)*);
     }
 }

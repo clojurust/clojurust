@@ -1,4 +1,5 @@
 
+
 use crate::*;
 
 use_obj! {
@@ -6,9 +7,11 @@ use_obj! {
 }
 
 init_obj! {
-    Runnable {
+    MethodImplCache {
         clojure::rust::IObject::init();
     }
 }
 
-pub trait Serializable: IObject {}
+pub trait MethodImplCache: IObject {
+
+}

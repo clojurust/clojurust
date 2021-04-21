@@ -2,7 +2,7 @@
 //!
 //!
 
-use std::{fmt::*, sync::*};
+use std::sync::*;
 
 use intertrait::cast::{CastArc, CastRef};
 use lazy_static::lazy_static;
@@ -11,6 +11,7 @@ use crate::*;
 
 use_obj! {
     clojure::rust::Object;
+    clojure::rust::IObject;
     clojure::rust::ObjResult;
     clojure::rust::Class;
     clojure::rust::Counted;
@@ -20,15 +21,21 @@ use_obj! {
     clojure::lang::PersistentVector;
 }
 
+use intertrait::*;
 castable_to!(SUnique => [sync] IObject, Unique);
 
 init_obj! {
     SUnique {
         clojure::rust::Object::init();
+        clojure::rust::IObject::init();
+        clojure::rust::ObjResult::init();
         clojure::rust::Class::init();
+        clojure::rust::Counted::init();
+        clojure::rust::Indexed::init();
+        clojure::rust::String::init();
         clojure::lang::PersistentHashMap::init();
         clojure::lang::PersistentVector::init();
-        }
+    }
 }
 
 /// # A keyword storage structure
@@ -41,7 +48,6 @@ init_obj! {
 /// As a `String` is added, it's index is added in the `map` `ObjHashMap`.
 ///
 /// # Examples
-#[derive(Debug)]
 pub struct SUnique {
     /// `SPersistentMap` of `name`: `String` -> `id`: `usize`
     pub map: Object,
@@ -55,7 +61,7 @@ unsafe impl Send for SUnique {}
 unsafe impl Sync for SUnique {}
 
 /// Protocole `Unique`
-pub trait Unique: CastFromSync {
+pub trait Unique: IObject {
     /// Size of SStrVector
     fn len(&self) -> ObjResult<usize>;
 
@@ -100,7 +106,7 @@ impl Unique for SUnique {
     fn get_name(&self, key: usize) -> ObjResult<String> {
         let v = self.cast::<Indexed>().unwrap();
         let res = v.nth_1(key).unwrap();
-        Ok(res.to_string())
+        Ok(res.toString().to_string())
     }
 
     /// Gives index of name
@@ -153,15 +159,19 @@ impl Unique for SUnique {
 }
 
 impl IObject for SUnique {
-    fn get_class<'a>(&self) -> &'a SClass {
+    fn getClass<'a>(&self) -> &'a SClass {
         todo!()
     }
 
-    fn get_hash(&self) -> usize {
+    fn hashCode(&self) -> usize {
         todo!()
     }
 
     fn equals(&self, other: &Object) -> bool {
+        todo!()
+    }
+
+    fn toString(&self) -> usize {
         todo!()
     }
 }
@@ -190,12 +200,6 @@ impl Default for SUnique {
             map: new_obj!(SPersistentHashMap::default()),
             vect: new_obj!(SPersistentVector::default()),
         }
-    }
-}
-
-impl Display for SUnique {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "SUnique")
     }
 }
 

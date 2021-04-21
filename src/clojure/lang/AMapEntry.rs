@@ -4,6 +4,7 @@ use crate::*;
 
 use_obj! {
     clojure::rust::Object;
+    clojure::rust::IObject;
     clojure::rust::ObjResult;
     clojure::lang::APersistentVector;
     clojure::lang::IPersistentVector;
@@ -16,6 +17,7 @@ use_obj! {
 init_obj! {
     AMapEntry {
         clojure::rust::Object::init();
+        clojure::rust::IObject::init();
         clojure::rust::ObjResult::init();
         clojure::lang::APersistentVector::init();
         clojure::lang::IPersistentVector::init();

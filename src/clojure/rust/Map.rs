@@ -16,7 +16,7 @@ pub trait Map: IObject {
 
 }
 
-/// This is an entry for K = V = Object
-pub trait MapEntry: IObject {
+pub trait Entry: IObject {
 
 }
+

@@ -4,8 +4,7 @@
 
 // use lazy_static::__Deref;
 // use std::{fmt::*, hash::*};
-
-use std::{fmt::*};
+use std::sync::*;
 
 use im::hashset::*;
 use im::hashmap::*;
@@ -15,42 +14,53 @@ use crate::*;
 use_obj! {
     clojure::rust::Object;
     clojure::rust::IObject;
+    clojure::rust::ObjResult;
     clojure::lang::IObj;
     clojure::rust::Class;
     clojure::lang::APersistentSet;
+    clojure::lang::IMeta;
 }
 
+use intertrait::*;
 castable_to!(SPersistentHashSet => 
-        [sync] IObject, PersistentHashSet, IObj, APersistentSet);
+        [sync] IObject, PersistentHashSet, IObj, IMeta, APersistentSet);
 
 init_obj! {
     PersistentHashSet {
         clojure::rust::Object::init();
         clojure::rust::IObject::init();
+        clojure::rust::ObjResult::init();
         clojure::lang::IObj::init();
         clojure::rust::Class::init();
-        // clojure::lang::a_persistent_set::init();
-    }
+        clojure::lang::APersistentSet::init();
+        clojure::lang::IMeta::init();
+        }
 }
 
-#[derive(Debug)]
 pub struct SPersistentHashSet {
     /// hashmap::HashMap<Object>
-    meta: Object,
+    meta: Arc<HashMap<Object, Object>>,
     /// hashset::HashSet<Object>
-    inner: Object 
+    inner: Arc<HashSet<Object>>
 }
 
 impl IObject for SPersistentHashSet {
-    fn get_class<'a>(&self) -> &'a SClass {
+    #[allow(non_snake_case)]
+    fn getClass<'a>(&self) -> &'a SClass {
         todo!()
     }
 
-    fn get_hash(&self) -> usize {
+    #[allow(non_snake_case)]
+    fn hashCode(&self) -> usize {
         todo!()
     }
 
     fn equals(&self, other: &Object) -> bool {
+        todo!()
+    }
+
+    #[allow(non_snake_case)]
+    fn toString(&self) -> usize {
         todo!()
     }
 }
@@ -58,17 +68,10 @@ impl IObject for SPersistentHashSet {
 impl Default for SPersistentHashSet {
     fn default() -> Self {
         SPersistentHashSet {
-            meta: HashMap::<Object>::default(),
-            inner: HashSet::<Object>::default()
+            meta: Arc::new(HashMap::<Object, Object>::default()),
+            inner: Arc::new(HashSet::<Object>::default())
         }
     
-    }
-}
-
-impl Display for SPersistentHashSet {
-    /// Return string representation of
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "PersistentSet {:?}", self.inner)
     }
 }
 
@@ -76,6 +79,18 @@ pub trait PersistentHashSet: IObject + IObj + APersistentSet {
 }
 
 impl PersistentHashSet for SPersistentHashSet {
+}
+
+impl IMeta for SPersistentHashSet {
+    fn meta(&self) -> ObjResult<Object> {
+        todo!()
+    }
+}
+
+impl IObj for SPersistentHashSet {
+    fn withMeta(&self, meta: &Object) -> clojure::rust::ObjResult::ObjResult<Object> {
+        todo!()
+    }
 }
 
 impl APersistentSet for SPersistentHashSet {

@@ -2,7 +2,6 @@
 //!
 //! A lot TODO
 
-use std::fmt;
 use std::io;
 
 // use intertrait::cast::*;
@@ -15,6 +14,7 @@ use_obj! {
     clojure::rust::Class;
 }
 
+use intertrait::*;
 castable_to!(SObjError => [sync] IObject, ObjError);
 
 init_obj! {
@@ -55,27 +55,24 @@ impl From<io::Error> for SObjError {
         SObjError {
             msg: String::from("Error"),
             err: ErrorType::Error,
-            
         }
     }
 }
 
-impl fmt::Display for SObjError {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "^ObjError {:?}", self)
-    }
-}
-
 impl IObject for SObjError {
-    fn get_class<'a>(&self) -> &'a SClass {
+    fn getClass<'a>(&self) -> &'a SClass {
         todo!()
     }
 
-    fn get_hash(&self) -> usize {
+    fn hashCode(&self) -> usize {
         todo!()
     }
 
     fn equals(&self, other: &Object) -> bool {
+        todo!()
+    }
+
+    fn toString(&self) -> usize {
         todo!()
     }
 }
@@ -89,21 +86,21 @@ pub fn err<T>(msg: &str) -> ObjResult<T> {
 
 pub fn err_cast<T>(from: &Object, to: &str) -> ObjResult<T> {
     Err(SObjError {
-        msg: format!("Cannot cast {:?} to {:?}", from, to),
+        msg: format!("Cannot cast {:?} to {:?}", from.toString(), to),
         err: ErrorType::BadCast
     })
 }
 
 pub fn err_not_found<T>(what: &Object, into: &Object) -> ObjResult<T> {
     Err(SObjError {
-        msg: format!("Not found {:?} in {:?}", what, into),
+        msg: format!("Not found {:?} in {:?}", what.toString(), into.toString()),
         err: ErrorType::NotFound
     })
 }
 
 pub fn err_arity<T>(arity: usize, obj: &Object) -> ObjResult<T> {
     Err(SObjError {
-        msg: format!("Bad Arity {:?} on {:?}", arity, obj),
+        msg: format!("Bad Arity {:?} on {:?}", arity, obj.toString()),
         err: ErrorType::Arity
     })
 }

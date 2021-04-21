@@ -18,7 +18,6 @@ init_obj! {
     }
 }
 
-
 pub trait Runnable: IObject + Callable + Thread {
     fn run(&self);
 }

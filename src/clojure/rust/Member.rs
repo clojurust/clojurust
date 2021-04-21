@@ -4,8 +4,6 @@
 
 // use intertrait::cast::*;
 
-use std::fmt::*;
-
 use crate::*;
 
 use_obj! {
@@ -14,6 +12,7 @@ use_obj! {
     clojure::rust::Class;
 }
 
+use intertrait::*;
 castable_to!(SMember => [sync] IObject, Member);
 
 init_obj! {
@@ -24,7 +23,6 @@ init_obj! {
     }
 }
 
-#[derive(Debug)]
 pub struct SMember {
     name: usize,
     class: usize,
@@ -48,29 +46,26 @@ impl SMember {
     }
 }
 
-pub trait Member: CastFromSync {}
+pub trait Member: IObject {}
 
 impl Member {}
 
 impl Member for SMember {}
 
-impl Display for SMember {
-    /// Return string representation of
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "Member {}", self.name)
-    }
-}
-
 impl IObject for SMember {
-    fn get_class<'a>(&self) -> &'a SClass {
+    fn getClass<'a>(&self) -> &'a SClass {
         todo!()
     }
 
-    fn get_hash(&self) -> usize {
+    fn hashCode(&self) -> usize {
         todo!()
     }
 
     fn equals(&self, other: &Object) -> bool {
+        todo!()
+    }
+
+    fn toString(&self) -> usize {
         todo!()
     }
 }

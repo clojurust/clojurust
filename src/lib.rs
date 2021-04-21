@@ -20,7 +20,24 @@
 // #![allow(unused_imports)]
 #![allow(bare_trait_objects)]
 #![allow(non_snake_case)]
+#![allow(non_camel_case_types)]
+
 #![recursion_limit = "256"]
+
+// For Iterator
+#![feature(rustc_attrs)]
+#![feature(iter_advance_by)]
+#![feature(iter_intersperse)]
+#![feature(iter_map_while)]
+#![feature(iter_partition_in_place)]
+#![feature(iter_is_partitioned)]
+#![feature(try_trait)]
+#![feature(try_blocks)]
+#![feature(control_flow_enum)]
+#![feature(try_find)]
+#![feature(cmp_min_max_by)]
+#![feature(iter_order_by)]
+
 // #![feature(fn_traits)]
 // #![feature(trace_macros)]
 // trace_macros!(true);
@@ -31,7 +48,7 @@
 pub mod clojure {
     /// Clojure language module
     ///
-    /// description de lang
+    /// clojure::lang modules
     pub mod lang {
         pub mod AFn;
         pub mod AFunction;
@@ -46,25 +63,30 @@ pub mod clojure {
         pub mod IHashEq;
         pub mod IKVReduce;
         pub mod IMapEntry;
+        pub mod IMapIterable;
         pub mod IMeta;
         pub mod IndexedSeq;
         pub mod IObj;
         pub mod IPersistentCollection;
         pub mod IPersistentMap;
+        pub mod IPersistentSet;
         pub mod IPersistentStack;
         pub mod IPersistentVector;
         pub mod ISeq;
         pub mod ITransientCollection;
+        pub mod MapEntry;
         pub mod MapEquivalence;
+        pub mod MethodImplCache;
         pub mod PersistentHashMap;
         pub mod PersistentHashSet;
         pub mod PersistentVector;
         pub mod RT;
         pub mod Sequable;
         pub mod Sequential;
+        pub mod Set;
     }
 
-    /// Rust host Module
+    /// clojure::rust host modules
     pub mod rust {
         pub mod Associative;
         pub mod Callable;

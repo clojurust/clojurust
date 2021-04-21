@@ -4,8 +4,7 @@
 
 // use intertrait::cast::*;
 
-use std::fmt::*;
-use im::hashmap;
+use im::hashmap::*;
 
 use crate::*;
 
@@ -17,12 +16,18 @@ use_obj! {
     clojure::lang::IPersistentMap;
     clojure::rust::Counted;
     clojure::rust::Iterable;
+    clojure::rust::Iterator;
+    clojure::lang::IObj;
     clojure::lang::IMeta;
     clojure::rust::Associative;
+    clojure::lang::IEditableCollection;
+    clojure::lang::IMapIterable;
+    clojure::lang::IKVReduce;
 }
 
+use intertrait::*;
 castable_to!(SPersistentHashMap => [sync] IObject, PersistentHashMap, Counted, 
-                                Iterable, IMeta, Associative);
+                                Iterable, IObj, IMeta, Associative);
 
 init_obj! {
     PersistentHashMap {
@@ -33,30 +38,35 @@ init_obj! {
         clojure::lang::IPersistentMap::init();
         clojure::rust::Counted::init();
         clojure::rust::Iterable::init();
+        clojure::rust::Iterator::init();
+        clojure::lang::IObj::init();
         clojure::lang::IMeta::init();
         clojure::rust::Associative::init();
-        }
+        clojure::lang::IEditableCollection::init();
+        clojure::lang::IMapIterable::init();
+        clojure::lang::IKVReduce::init();
+    }
 }
 
-#[derive(Debug)]
 pub struct SPersistentHashMap {
-    inner: hashmap::HashMap<Object, Object>
+    inner: HashMap<Object, Object>
 }
 
-pub trait PersistentHashMap: IObject {
+pub trait PersistentHashMap: IObject + IEditableCollection + IObj +
+                IMapIterable + IKVReduce {
 }
 
 impl IPersistentMap for SPersistentHashMap {
-    fn assoc(&self, key: Object, val: Object) -> ObjResult<&'_ IPersistentMap> {
+    fn assoc(&self, key: Object, val: Object) -> ObjResult<Object> {
         todo!()
     }
 
     #[allow(non_snake_case)]
-    fn assocEx(&self, key: Object, val: Object) -> ObjResult<&'_ IPersistentMap> {
+    fn assocEx(&self, key: Object, val: Object) -> ObjResult<Object> {
         todo!()
     }
 
-    fn without(&self, key: Object) -> ObjResult<&'_ IPersistentMap> {
+    fn without(&self, key: Object) -> ObjResult<Object> {
         todo!()
     }
 }
@@ -74,10 +84,13 @@ impl IMeta for SPersistentHashMap {
 }
     
 impl Iterable for SPersistentHashMap {
+    fn iterator(&self) -> ObjResult<Object> {
+        todo!()
+    }
 }
     
 impl Associative for SPersistentHashMap {
-    fn assoc(&self, key: &Object, value: &Object) -> ObjResult<&Associative> {
+    fn assoc(&self, key: &Object, value: &Object) -> ObjResult<Object> {
         todo!()
     }
 
@@ -87,21 +100,28 @@ impl Associative for SPersistentHashMap {
     }
 
     #[allow(non_snake_case)]
-    fn entryAt(&self, key: &Object) -> ObjResult<&super::IMapEntry::IMapEntry> {
+    fn entryAt(&self, key: &Object) -> ObjResult<Object> {
         todo!()
     }
 }
     
 impl IObject for SPersistentHashMap {
-    fn get_class<'a>(&self) -> &'a SClass {
+    #[allow(non_snake_case)]
+    fn getClass<'a>(&self) -> &'a SClass {
         todo!()
     }
 
-    fn get_hash(&self) -> usize {
+    #[allow(non_snake_case)]
+    fn hashCode(&self) -> usize {
         todo!()
     }
 
     fn equals(&self, other: &Object) -> bool {
+        todo!()
+    }
+
+    #[allow(non_snake_case)]
+    fn toString(&self) -> usize {
         todo!()
     }
 }
@@ -109,20 +129,50 @@ impl IObject for SPersistentHashMap {
 impl Default for SPersistentHashMap {
     fn default() -> Self {
         SPersistentHashMap {
-            inner: hashmap::HashMap::<Object, Object>::default()
+            inner: HashMap::<Object, Object>::default()
         }
     
-    }
-}
-
-impl Display for SPersistentHashMap {
-    /// Return string representation of
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "SPersistentMap {:?}", self.inner)
     }
 }
 
 impl PersistentHashMap for SPersistentHashMap {
 }
 
-impl PersistentHashMap {}
+impl IMapIterable for SPersistentHashMap {
+    fn keyIterator(&self) -> ObjResult<Object> {
+        todo!()
+    }
+
+    fn valIterator(&self) -> ObjResult<Object> {
+        todo!()
+    }
+}
+
+impl Iterator for SPersistentHashMap {
+    fn next(&self) -> ObjResult<Object> {
+        todo!()
+    }
+
+    fn hasNext(&self) -> ObjResult<bool> {
+        todo!()
+    }
+}
+
+impl IObj for SPersistentHashMap {
+    fn withMeta(&self, meta: &Object) -> ObjResult<Object> {
+        todo!()
+    }
+}
+
+impl IEditableCollection for SPersistentHashMap {
+    fn asTransient(&self) -> ObjResult<Object> {
+        todo!()
+    }
+}
+
+impl IKVReduce for SPersistentHashMap {
+    fn kvreduce(&self, f: Object, init: Object) -> ObjResult<Object> {
+        todo!()
+    }
+}
+

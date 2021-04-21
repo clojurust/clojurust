@@ -21,5 +21,6 @@ init_obj! {
 }
 
 pub trait ISeq: IObject + Sequable + IPersistentCollection {
-    fn cons(&self, o: &Object) -> ObjResult<&'_ ISeq>;
+    /// ISeq -> Object -> ISeq
+    fn cons(&self, o: &Object) -> ObjResult<Object>;
 }

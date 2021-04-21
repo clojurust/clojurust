@@ -2,6 +2,7 @@
 //!
 
 use std::{convert::*, fmt::*};
+use std::sync::*;
 
 use crate::*;
 
@@ -11,7 +12,8 @@ use_obj! {
     clojure::rust::Class;
 }
 
-castable_to!(String => [sync] IObject, IString);
+use intertrait::*;
+castable_to!(string => [sync] IObject);
 
 init_obj! {
     Stri {
@@ -21,47 +23,42 @@ init_obj! {
     }
 }
 
-// #[derive(Debug)]
-// pub struct SStri {
-//     pub inner: String,
-// }
+#[derive(Debug)]
+#[allow(non_camel_case_types)]
+pub struct string {
+    pub inner: String,
+}
 
-pub trait IString: IObject {}
+impl string {}
 
-impl String {}
-
-impl IString for String {}
-
-/// String -> Object
+/// string -> string
 impl From<String> for Object {
     fn from(s: String) -> Self {
-        Object::from(String::from(s))
+        new_obj!(string { inner: s })
     }
 }
 
-/// &str -> Object
+/// &str -> string
 impl From<&str> for Object {
     fn from(s: &str) -> Self {
-        Object::from(String::from(s))
+        new_obj!(string { inner: String::from(s)})
     }
 }
 
-impl Display for String {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "\"{:?}\"", self.inner)
-    }
-}
-
-impl IObject for String {
-    fn get_class<'a>(&self) -> &'a SClass {
+impl IObject for string {
+    fn getClass<'a>(&self) -> &'a SClass {
         todo!()
     }
 
-    fn get_hash(&self) -> usize {
+    fn hashCode(&self) -> usize {
         todo!()
     }
 
     fn equals(&self, other: &Object) -> bool {
+        todo!()
+    }
+
+    fn toString(&self) -> usize {
         todo!()
     }
 }

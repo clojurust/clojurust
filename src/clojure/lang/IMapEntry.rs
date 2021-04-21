@@ -18,7 +18,7 @@ init_obj! {
     }
 }
 
-pub trait IMapEntry: IObject + MapEntry {
+pub trait IMapEntry: IObject + Entry {
     fn key(&self) -> ObjResult<Object>;
     fn val(&self) -> ObjResult<Object>;    
 }

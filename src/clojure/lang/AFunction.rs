@@ -23,6 +23,6 @@ init_obj! {
 
 pub trait AFunction: AFn + IObj + Comparator + Serializable {
     /// AFunction -> MethodImplCache
-    fn __methodImplCache(&self) -> MethodImplCache;
+    fn __methodImplCache(&self) -> ObjResult<Object>;
 }
 

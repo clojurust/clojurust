@@ -6,7 +6,7 @@
 //! * `Class`es and `Prototype`s' `Function`s.
 //! * `Object`s' `Member`s' getter and setters.
 
-use std::{fmt::*, sync::*};
+use std::sync::*;
 
 use lazy_static::lazy_static;
 
@@ -23,6 +23,7 @@ use_obj! {
     clojure::rust::Unique;
 }
 
+use intertrait::*;
 castable_to!(SGlobals => [sync] IObject, Globals);
 
 init_obj! {
@@ -36,10 +37,9 @@ init_obj! {
     }
 }
 
-#[derive(Debug)]
 pub struct SGlobals {
-    pub unique_name: Object, // SUnique
-    pub obj_vect: Object,  // SObjVector
+    unique_name: Object, // SUnique
+    obj_vect: Object,  // SObjVector
 }
 
 pub trait Globals: IObject + CastFromSync {
@@ -86,23 +86,20 @@ impl Globals for SGlobals {
     }
 }
 
-impl Display for SGlobals {
-    /// Return string representation of
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "Globals")
-    }
-}
-
 impl IObject for SGlobals {
-    fn get_class<'a>(&self) -> &'a SClass {
+    fn getClass<'a>(&self) -> &'a SClass {
         todo!()
     }
 
-    fn get_hash(&self) -> usize {
+    fn hashCode(&self) -> usize {
         todo!()
     }
 
     fn equals(&self, other: &Object) -> bool {
+        todo!()
+    }
+
+    fn toString(&self) -> usize {
         todo!()
     }
 }
@@ -111,7 +108,7 @@ impl Default for SGlobals {
     fn default() -> Self {
         SGlobals {
             unique_name: SUnique::new(),
-            obj_vect: new_obj!(SPersistentVector::default()),
+            obj_vect: new_obj!(SPersistentVector::default())
         }
     }
 }

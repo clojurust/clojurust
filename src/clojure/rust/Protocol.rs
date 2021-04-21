@@ -5,8 +5,6 @@
 
 // use intertrait::cast::*;
 
-use std::fmt::*;
-
 use crate::*;
 
 use_obj! {
@@ -16,6 +14,7 @@ use_obj! {
     clojure::lang::PersistentHashSet;
 }
 
+use intertrait::*;
 castable_to!(SProtocol => [sync] IObject, Protocol);
 
 init_obj! {
@@ -27,31 +26,27 @@ init_obj! {
     }
 }
 
-pub type SProtocol = SPersistentHashSet;
-
-// #[derive(Debug)]
-// struct SProtocol {
-//     /// This is the template functions of the `Prototype`.
-//     /// TODO
-//     template: Object, // SPersistentHashSet of Prototype
-// }
-
-impl Display for SProtocol {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "^Protocol {:?}", self.template)
-    }
-}
+pub struct SProtocol {
+    inner: SPersistentHashSet
+} 
 
 impl IObject for SProtocol {
-    fn get_class<'a>(&self) -> &'a SClass {
+    #[allow(non_snake_case)]
+    fn getClass<'a>(&self) -> &'a SClass {
         todo!()
     }
 
-    fn get_hash(&self) -> usize {
+    #[allow(non_snake_case)]
+    fn hashCode(&self) -> usize {
         todo!()
     }
 
     fn equals(&self, other: &Object) -> bool {
+        todo!()
+    }
+
+    #[allow(non_snake_case)]
+    fn toString(&self) -> usize {
         todo!()
     }
 }

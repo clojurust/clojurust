@@ -19,6 +19,7 @@ use_obj! {
     clojure::rust::Class;
 }
 
+use intertrait::*;
 castable_to!(SFnMethodNative => [sync] IObject, FnMethodNative);
 
 init_obj! {
@@ -51,23 +52,20 @@ impl FnMethodNative for SFnMethodNative {
     }
 }
 
-impl Display for SFnMethodNative {
-    /// Return string representation of
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "Method native")
-    }
-}
-
 impl IObject for SFnMethodNative {
-    fn get_class<'a>(&self) -> &'a SClass {
+    fn getClass<'a>(&self) -> &'a SClass {
         todo!()
     }
 
-    fn get_hash(&self) -> usize {
+    fn hashCode(&self) -> usize {
         todo!()
     }
 
     fn equals(&self, other: &Object) -> bool {
+        todo!()
+    }
+
+    fn toString(&self) -> usize {
         todo!()
     }
 }

@@ -2,7 +2,7 @@
 //!
 //! This defines the `Class` name of the object and its `Protocol`s
 
-use std::{fmt::Display, sync::*};
+use std::{sync::*};
 
 /// include and init needed `Rust` `Objects` for `clojure::lang`
 use crate::*;
@@ -13,6 +13,7 @@ use_obj! {
     clojure::rust::ObjResult;
 }
 
+use intertrait::*;
 castable_to!(SClass => [sync] IObject, Class);
 
 init_obj! {
@@ -31,7 +32,6 @@ init_obj! {
 /// }
 /// ```
 ///
-#[derive(Debug)]
 pub struct SClass {
     /// `usize` -> classname
     id: usize,
@@ -64,7 +64,7 @@ impl SClass {
 /// `Class`: `Protocol` for `Object`s and `SClass`es
 ///
 ///
-pub trait Class: IObject + CastFromSync {
+pub trait Class: IObject {
     /// Call `method` by id with `Object`s arguments
     fn call(&self, obj: Object, id: usize, args: &[Object]) -> ObjResult<Object>;
 
@@ -83,24 +83,21 @@ impl Class for SClass {
     }
 }
 
-impl Display for SClass {
-    /// Return string representation of
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "Class")
-    }
-}
-
 impl IObject for SClass {
     /// Return `Class` of `Object`
-    fn get_class<'a>(&self) -> &'a SClass {
+    fn getClass<'a>(&self) -> &'a SClass {
         todo!()
     }
 
-    fn get_hash(&self) -> usize {
+    fn hashCode(&self) -> usize {
         todo!()
     }
 
     fn equals(&self, other: &Object) -> bool {
+        todo!()
+    }
+
+    fn toString(&self) -> usize {
         todo!()
     }
 }

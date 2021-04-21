@@ -5,6 +5,15 @@
 use crate::*;
 
 use_obj! {
+    // clojure::rust::Object; 
+    clojure::rust::IObject;
+    clojure::lang::IPersistentSet;
+    clojure::lang::AFn;
+    clojure::rust::Collection;
+    clojure::lang::Set;
+    clojure::rust::Serializable;
+    clojure::lang::IHashEq;
+
 }
 
 init_obj! {
@@ -12,5 +21,7 @@ init_obj! {
     }
 }
 
-pub trait APersistentSet {
+pub trait APersistentSet: IObject + AFn + IPersistentSet 
+                + Collection + Set + Serializable + IHashEq {
+    
 }

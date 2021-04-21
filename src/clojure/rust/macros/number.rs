@@ -20,22 +20,20 @@ macro_rules! number_def {
         }
 
         impl IObject for $name {
-            fn get_class<'a>(&self) -> &'a SClass {
+            fn getClass<'a>(&self) -> &'a SClass {
                 todo!()
             }
 
-            fn get_hash(&self) -> usize {
+            fn hashCode(&self) -> usize {
                 todo!()
             }
 
             fn equals(&self, other: &Object) -> bool {
                 todo!()
             }
-        }
 
-        impl Display for $name {
-            fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-                write!(f, "$Name {:?}", self.value)
+            fn toString(&self) -> usize {
+                todo!() 
             }
         }
 

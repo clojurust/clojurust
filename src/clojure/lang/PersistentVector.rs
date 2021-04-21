@@ -4,9 +4,9 @@
 
 // use lazy_static::__Deref;
 // use std::{fmt::*, hash::*};
-use std::{fmt::*};
+use std::sync::*;
 
-use im::hashmap::*;
+// use im::hashmap::*;
 use im::vector::*;
 
 // use intertrait::cast::*;
@@ -21,6 +21,7 @@ use_obj! {
     clojure::rust::Reversible;
     clojure::rust::Counted;
     clojure::rust::Iterable;
+    clojure::rust::Iterator;
     clojure::rust::Indexed;
     clojure::rust::Associative;
     clojure::rust::ObjResult;
@@ -37,8 +38,10 @@ use_obj! {
     clojure::lang::Sequable;
     clojure::lang::IKVReduce;
     clojure::lang::IEditableCollection;
+    clojure::rust::Collection;
 }
 
+use intertrait::*;
 castable_to!(SPersistentVector => [sync] IObject, PersistentVector, APersistentVector, 
                                         IObj, Counted, Indexed, IEditableCollection, IKVReduce);
 
@@ -52,6 +55,7 @@ init_obj! {
         clojure::rust::Reversible::init();
         clojure::rust::Counted::init();
         clojure::rust::Iterable::init();
+        clojure::rust::Iterator::init();
         clojure::rust::Indexed::init();
         clojure::rust::Associative::init();
         clojure::rust::ObjResult::init();
@@ -68,12 +72,12 @@ init_obj! {
         clojure::lang::Sequable::init();
         clojure::lang::IKVReduce::init();
         clojure::lang::IEditableCollection::init();
-        }
+        clojure::rust::Collection::init();
+    }
 }
 
 /////////////////////////////////
 // Objects
-#[derive(Debug)]
 pub struct SPersistentVector {
     _hash: usize,
     _hash_eq: usize, 
@@ -92,6 +96,28 @@ pub trait PersistentVector: IObject + APersistentVector
 //////////////////////////////////
 // Implementations
 impl PersistentVector for SPersistentVector {
+}
+
+impl Collection for SPersistentVector {
+    fn size(&self) -> usize {
+        todo!()
+    }
+
+    fn isEmpty(&self) -> bool {
+        todo!()
+    }
+
+    fn contains(&self) -> ObjResult<bool> {
+        todo!()
+    }
+
+    fn toArray(&self) -> ObjResult<Vec<Object>> {
+        todo!()
+    }
+
+    fn containsAll(&self, c: &Object) -> ObjResult<bool> {
+        todo!()
+    }
 }
 
 impl APersistentVector for SPersistentVector {
@@ -131,14 +157,14 @@ impl RandomAccess for SPersistentVector {
 
 impl IEditableCollection for SPersistentVector {
     #[allow(non_snake_case)]
-    fn asTransient(&self) -> ObjResult<&'_ super::ITransientCollection::ITransientCollection> {
+    fn asTransient(&self) -> ObjResult<Object> {
         todo!()
     }
 }
 
 impl IObj for SPersistentVector {
     #[allow(non_snake_case)]
-    fn withMeta(&self, meta: &Object) -> ObjResult<&'_ IObj> {
+    fn withMeta(&self, meta: &Object) -> ObjResult<Object> {
         todo!()
     }
 }
@@ -154,11 +180,11 @@ impl List for SPersistentVector {
 
 impl IPersistentVector for SPersistentVector {
     #[allow(non_snake_case)]
-    fn assocN(&self, i: usize, val: &Object) -> ObjResult<&'_ IPersistentVector> {
+    fn assocN(&self, i: usize, val: &Object) -> ObjResult<Object> {
         todo!()
     }
 
-    fn cons(&self, o: Object) -> ObjResult<&'_ IPersistentVector> {
+    fn cons(&self, o: Object) -> ObjResult<Object> {
         todo!()
     }
 
@@ -172,13 +198,13 @@ impl IPersistentStack for SPersistentVector {
         todo!()
     }
 
-    fn pop(&self) -> ObjResult<&'_ IPersistentStack> {
+    fn pop(&self) -> ObjResult<Object> {
         todo!()
     }
 }
 
 impl IPersistentCollection for SPersistentVector {
-    fn cons(&self, o: &Object) -> ObjResult<&'_ IPersistentCollection> {
+    fn cons(&self, o: &Object) -> ObjResult<Object> {
         todo!()
     }
 
@@ -186,7 +212,7 @@ impl IPersistentCollection for SPersistentVector {
         todo!()
     }
 
-    fn empty(&self) -> ObjResult<&'_ IPersistentCollection> {
+    fn empty(&self) -> ObjResult<Object> {
         todo!()
     }
 
@@ -212,19 +238,19 @@ impl Counted for SPersistentVector {
 }
 
 impl Reversible for SPersistentVector {
-    fn rseq(&self) -> ObjResult<&'_ super::ISeq::ISeq> {
+    fn rseq(&self) -> ObjResult<Object> {
         todo!()
     }
 }
 
 impl Sequable for SPersistentVector {
-    fn seq(&self) -> ObjResult<&'_ super::ISeq::ISeq> {
+    fn seq(&self) -> ObjResult<Object> {
         todo!()
     }
 }
 
 impl Associative for SPersistentVector {
-    fn assoc(&self, key: &Object, value: &Object) -> ObjResult<&Associative> {
+    fn assoc(&self, key: &Object, value: &Object) -> ObjResult<Object> {
         todo!()
     }
 
@@ -234,24 +260,34 @@ impl Associative for SPersistentVector {
     }
 
     #[allow(non_snake_case)]
-    fn entryAt(&self, key: &Object) -> ObjResult<&super::IMapEntry::IMapEntry> {
+    fn entryAt(&self, key: &Object) -> ObjResult<Object> {
         todo!()
     }
 }
 
 impl Iterable for SPersistentVector {
+    fn iterator(&self) -> ObjResult<Object> {
+        todo!()
+    }
 }
 
 impl IObject for SPersistentVector {
-    fn get_class<'a>(&self) -> &'a SClass {
+    #[allow(non_snake_case)]
+    fn getClass<'a>(&self) -> &'a SClass {
         todo!()
     }
 
-    fn get_hash(&self) -> usize {
+    #[allow(non_snake_case)]
+    fn hashCode(&self) -> usize {
         todo!()
     }
 
     fn equals(&self, other: &Object) -> bool {
+        todo!()
+    }
+
+    #[allow(non_snake_case)]
+    fn toString(&self) -> usize {
         todo!()
     }
 }
@@ -259,16 +295,29 @@ impl IObject for SPersistentVector {
 impl Default for SPersistentVector {
     fn default() -> Self {
         SPersistentVector {
+            _hash: 0,
+            _hash_eq: 0,
             meta: Object::null(),
-            inner: vector::Vector::<Object>::default()
+            inner: new_obj!(Vector::<Object>::default())
         }
     }
 }
 
-impl Display for SPersistentVector {
-    /// Return string representation of vector
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "^{:?} {:?}", self.meta(), self.inner)
+impl IObject for Vector::<Object> {
+    fn getClass<'a>(&self) -> &'a SClass {
+        todo!()
+    }
+
+    fn hashCode(&self) -> usize {
+        todo!()
+    }
+
+    fn toString(&self) -> usize {
+        todo!()
+    }
+
+    fn equals(&self, other: &Object) -> bool {
+        todo!()
     }
 }
 

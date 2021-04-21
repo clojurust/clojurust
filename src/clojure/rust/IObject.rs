@@ -1,6 +1,4 @@
 /// IObject
-use std::fmt::*;
-
 use crate::*;
 
 use_obj! {
@@ -18,11 +16,14 @@ init_obj! {
 /// `IObject` `Protocol` for all defined `Object`s
 ///
 ///
-pub trait IObject: Debug + Display + CastFromSync  {
+use intertrait::*;
+pub trait IObject: CastFromSync  {
     /// Return `Class` of `Object`
-    fn get_class<'a>(&self) -> &'a SClass;
+    fn getClass<'a>(&self) -> &'a SClass;
 
-    fn get_hash(&self) -> usize;
+    fn hashCode(&self) -> usize;
+
+    fn toString(&self) -> usize;
 
     fn equals(&self, other: &Object) -> bool;
 }

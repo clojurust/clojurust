@@ -3,7 +3,7 @@
 //! Define dynamic `Object`s as Option<Arc<IObject>>
 
 use std::{clone::Clone};
-use std::{fmt::*, hash::*, sync::*};
+use std::{hash::*, sync::*};
 
 use intertrait::cast::CastArc;
 
@@ -15,6 +15,7 @@ use_obj! {
     clojure::rust::ObjResult;
 }
 
+use intertrait::*;
 castable_to!(Object => [sync] IObject);
 
 init_obj! {
@@ -26,7 +27,9 @@ init_obj! {
 }
 
 
-pub type Object = Option<Arc<IObject>>;
+pub struct Object {
+    inner: Option<Arc<IObject>>
+}
 
 // #[derive(Debug)]
 // pub struct Object {
@@ -102,7 +105,7 @@ where
         match o.inner {
             None => err("Cannot call function on nil"),
             Some(o) => {
-                o.get_class().call(self.clone(), id, args)
+                o.getClass().call(self.clone(), id, args)
             },
         }
     }
@@ -115,7 +118,7 @@ where
 
     pub fn get(&self, id: usize) -> ObjResult<Object> {
         let a = self.clone();
-        let b = a.get_class();
+        let b = a.getClass();
         b.get(self.clone(), id)
     }
 
@@ -126,31 +129,22 @@ where
     // }
 }
 
-impl Display for Object {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        match self.inner {
-            Some(inner) => {write!(f, "{:?}", inner)}
-            None => {write!(f, "nil")}
-        }
-    }
-}
-
 /// SImplementation of protocol IObject for Object.
 ///
 /// Functions are applied to the `content` of `Object`
 // #[cast_to([sync] IObject, Debug)];
 impl IObject for Object {
-    fn get_class<'a>(&self) -> &'a SClass {
+    fn getClass<'a>(&self) -> &'a SClass {
         let a = self.clone();
         match a.inner {
             None => todo!(),
-            Some(o) => {o.get_class()},
+            Some(o) => {o.getClass()},
         }
     }
 
-    fn get_hash(&self) -> usize {
+    fn hashCode(&self) -> usize {
         match self.inner {
-            Some(o) => {o.get_hash()}
+            Some(o) => {o.hashCode()}
             None => {0}
         }
     }
@@ -166,6 +160,10 @@ impl IObject for Object {
             }
         }
      }
+
+    fn toString(&self) -> String {
+        todo!()
+    }
 }
 
 impl Clone for Object {
@@ -187,7 +185,7 @@ impl PartialEq for Object {
 
 impl Hash for Object {
     fn hash<H: Hasher>(&self, state: &mut H) {
-        state.write_usize(self.get_hash())
+        state.write_usize(self.hashCode())
     }
 
     fn hash_slice<H: Hasher>(data: &[Self], state: &mut H)

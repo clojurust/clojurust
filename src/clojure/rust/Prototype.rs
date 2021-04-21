@@ -12,6 +12,7 @@ use_obj! {
     clojure::rust::Class;
 }
 
+use intertrait::*;
 castable_to!(SPrototype => [sync] IObject, Prototype);
 
 init_obj! {
@@ -33,22 +34,20 @@ impl Prototype {}
 
 impl Prototype for SPrototype {}
 
-impl Display for SPrototype {
-    fn fmt(&self, f: &mut Formatter<'_>) -> Result {
-        write!(f, "^Prototype {:?}", self.multi_arity)
-    }
-}
-
 impl IObject for SPrototype {
-    fn get_class<'a>(&self) -> &'a SClass {
+    fn getClass<'a>(&self) -> &'a SClass {
         todo!()
     }
 
-    fn get_hash(&self) -> usize {
+    fn hashCode(&self) -> usize {
         todo!()
     }
 
     fn equals(&self, other: &Object) -> bool {
+        todo!()
+    }
+
+    fn toString(&self) -> usize {
         todo!()
     }
 }
