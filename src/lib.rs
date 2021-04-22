@@ -50,6 +50,7 @@ pub mod clojure {
     ///
     /// clojure::lang modules
     pub mod lang {
+        pub mod objects {
         pub mod AFn;
         pub mod AFunction;
         pub mod AMapEntry;
@@ -84,43 +85,109 @@ pub mod clojure {
         pub mod Sequable;
         pub mod Sequential;
         pub mod Set;
+        }
+
+        pub use objects::AFn::*;
+        pub use objects::AFunction::*;
+        pub use objects::AMapEntry::*;
+        pub use objects::APersistentMap::*;
+        pub use objects::APersistentSet::*;
+        pub use objects::APersistentVector::*;
+        pub use objects::ASeq::*;
+        pub use objects::Fn::*;
+        pub use objects::IEditableCollection::*;
+        pub use objects::IFn::*;
+        pub use objects::IHashEq::*;
+        pub use objects::IKVReduce::*;
+        pub use objects::IMapEntry::*;
+        pub use objects::IMapIterable::*;
+        pub use objects::IMeta::*;
+        pub use objects::IndexedSeq::*;
+        pub use objects::IObj::*;
+        pub use objects::IPersistentCollection::*;
+        pub use objects::IPersistentMap::*;
+        pub use objects::IPersistentSet::*;
+        pub use objects::IPersistentStack::*;
+        pub use objects::IPersistentVector::*;
+        pub use objects::ISeq::*;
+        pub use objects::ITransientCollection::*;
+        pub use objects::MapEntry::*;
+        pub use objects::MapEquivalence::*;
+        pub use objects::MethodImplCache::*;
+        pub use objects::PersistentHashMap::*;
+        pub use objects::PersistentHashSet::*;
+        pub use objects::PersistentVector::*;
+        pub use objects::RT::*;
+        pub use objects::Sequable::*;
+        pub use objects::Sequential::*;
+        pub use objects::Set::*;
     }
 
     /// clojure::rust host modules
     pub mod rust {
-        pub mod Associative;
-        pub mod Callable;
-        pub mod Class;
-        pub mod Collection;
-        pub mod Comparable;
-        pub mod Comparator;
-        pub mod Counted;
-        pub mod FnMethodNative;
-        pub mod Function;
-        pub mod Globals;
-        pub mod IObject;
-        pub mod Indexed;
-        pub mod Iterable;
-        pub mod Iterator;
-        pub mod List;
-        pub mod Map;
-        pub mod Member;
-        pub mod Number;
-        pub mod Object;
-        pub mod ObjResult;
-        pub mod Protocol;
-        pub mod Prototype;
-        pub mod RandomAccess;
-        pub mod Reversible;
-        pub mod Runnable;
-        pub mod Serializable;
-        pub mod String;
-        pub mod Thread;
-        pub mod Unique;
+        pub mod objects {
+            pub mod Associative;
+            pub mod Callable;
+            pub mod Class;
+            pub mod Collection;
+            pub mod Comparable;
+            pub mod Comparator;
+            pub mod Counted;
+            pub mod FnMethodNative;
+            pub mod Function;
+            pub mod Globals;
+            pub mod IObject;
+            pub mod Indexed;
+            pub mod Iterable;
+            pub mod List;
+            pub mod Map;
+            pub mod Member;
+            pub mod Number;
+            pub mod Object;
+            pub mod ObjResult;
+            pub mod Protocol;
+            pub mod Prototype;
+            pub mod RandomAccess;
+            pub mod Reversible;
+            pub mod Runnable;
+            pub mod Serializable;
+            pub mod String;
+            pub mod Thread;
+            pub mod Unique;
+        }
         pub mod macros {
             pub mod macros;
             pub mod number;
         }
+
+        pub use objects::Associative::*;
+        pub use objects::Callable::*;
+        pub use objects::Class::*;
+        pub use objects::Collection::*;
+        pub use objects::Comparable::*;
+        pub use objects::Comparator::*;
+        pub use objects::Counted::*;
+        pub use objects::FnMethodNative::*;
+        pub use objects::Function::*;
+        pub use objects::Globals::*;
+        pub use objects::IObject::*;
+        pub use objects::Indexed::*;
+        pub use objects::Iterable::*;
+        pub use objects::List::*;
+        pub use objects::Map::*;
+        pub use objects::Member::*;
+        pub use objects::Number::*;
+        pub use objects::Object::*;
+        pub use objects::ObjResult::*;
+        pub use objects::Protocol::*;
+        pub use objects::Prototype::*;
+        pub use objects::RandomAccess::*;
+        pub use objects::Reversible::*;
+        pub use objects::Runnable::*;
+        pub use objects::Serializable::*;
+        pub use objects::String::*;
+        pub use objects::Thread::*;
+        pub use objects::Unique::*;
     }
 }
 
