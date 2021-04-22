@@ -14,19 +14,6 @@ use clojure::lang::*;
 use intertrait::*;
 castable_to!(SUnique => [sync] IObject, Unique);
 
-init_obj! {
-    SUnique {
-        clojure::rust::Object::init();
-        clojure::rust::IObject::init();
-        clojure::rust::ObjResult::init();
-        clojure::rust::Class::init();
-        clojure::rust::Counted::init();
-        clojure::rust::Indexed::init();
-        clojure::lang::PersistentHashMap::init();
-        clojure::lang::PersistentVector::init();
-    }
-}
-
 /// # A keyword storage structure
 ///
 /// We will store all `String`s used as reference to objects as `usize`.

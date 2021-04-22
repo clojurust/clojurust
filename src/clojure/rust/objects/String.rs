@@ -11,14 +11,6 @@ use clojure::rust::*;
 use intertrait::*;
 castable_to!(string => [sync] IObject);
 
-init_obj! {
-    Stri {
-        clojure::rust::Object::init();
-        clojure::rust::IObject::init();
-        clojure::rust::Class::init();
-    }
-}
-
 #[derive(Debug)]
 #[allow(non_camel_case_types)]
 pub struct string {
@@ -54,7 +46,7 @@ impl IObject for string {
         todo!()
     }
 
-    fn toString(&self) -> usize {
+    fn toString(&self) -> String {
         todo!()
     }
 }

@@ -14,38 +14,9 @@ use clojure::rust::*;
 use clojure::lang::*;
 
 use intertrait::*;
-castable_to!(SPersistentVector => [sync] IObject, PersistentVector, APersistentVector, 
-                                        IObj, Counted, Indexed, IEditableCollection, IKVReduce);
-
-init_obj! {
-    PersistentVector {
-        clojure::rust::Object::init();
-        clojure::rust::IObject::init();
-        clojure::rust::Class::init();
-        clojure::rust::Serializable::init();
-        clojure::rust::Comparable::init();
-        clojure::rust::Reversible::init();
-        clojure::rust::Counted::init();
-        clojure::rust::Iterable::init();
-        clojure::rust::Indexed::init();
-        clojure::rust::Associative::init();
-        clojure::rust::ObjResult::init();
-        clojure::rust::RandomAccess::init();
-        clojure::rust::List::init();
-        clojure::lang::APersistentVector::init();
-        clojure::lang::IPersistentVector::init();
-        clojure::lang::IPersistentStack::init();
-        clojure::lang::IPersistentCollection::init();
-        clojure::lang::ITransientCollection::init();
-        clojure::lang::IObj::init();
-        clojure::lang::IMeta::init();
-        clojure::lang::IHashEq::init();
-        clojure::lang::Sequable::init();
-        clojure::lang::IKVReduce::init();
-        clojure::lang::IEditableCollection::init();
-        clojure::rust::Collection::init();
-    }
-}
+castable_to!(SPersistentVector => [sync] IObject, PersistentVector, 
+                    APersistentVector, IObj, Counted, Indexed, 
+                    IEditableCollection, IKVReduce);
 
 /////////////////////////////////
 // Objects
@@ -258,7 +229,7 @@ impl IObject for SPersistentVector {
     }
 
     #[allow(non_snake_case)]
-    fn toString(&self) -> usize {
+    fn toString(&self) -> String {
         todo!()
     }
 }
@@ -283,7 +254,7 @@ impl IObject for Vector::<Object> {
         todo!()
     }
 
-    fn toString(&self) -> usize {
+    fn toString(&self) -> String {
         todo!()
     }
 

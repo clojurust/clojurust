@@ -11,14 +11,6 @@ use clojure::rust::*;
 use intertrait::*;
 castable_to!(SMember => [sync] IObject, Member);
 
-init_obj! {
-    Member {
-        clojure::rust::Object::init();
-        clojure::rust::IObject::init();
-        clojure::rust::Class::init();
-    }
-}
-
 pub struct SMember {
     name: usize,
     class: usize,

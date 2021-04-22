@@ -4,13 +4,6 @@ use crate::*;
 use clojure::rust::*;
 // use clojure::lang::*;
 
-init_obj! {
-    Associative {
-        clojure::rust::Object::init();
-        clojure::rust::ObjResult::init();
-    }
-}
-
 pub trait Associative {
     /// Associative -> Object -> Object -> Associative
     fn assoc(&self, key: &Object, value: &Object) -> ObjResult<Object>;

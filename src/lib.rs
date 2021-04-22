@@ -21,9 +21,7 @@
 #![allow(bare_trait_objects)]
 #![allow(non_snake_case)]
 #![allow(non_camel_case_types)]
-
 #![recursion_limit = "256"]
-
 // For Iterator
 #![feature(rustc_attrs)]
 #![feature(iter_advance_by)]
@@ -51,40 +49,42 @@ pub mod clojure {
     /// clojure::lang modules
     pub mod lang {
         pub mod objects {
-        pub mod AFn;
-        pub mod AFunction;
-        pub mod AMapEntry;
-        pub mod APersistentMap;
-        pub mod APersistentSet;
-        pub mod APersistentVector;
-        pub mod ASeq;
-        pub mod Fn;
-        pub mod IEditableCollection;
-        pub mod IFn;
-        pub mod IHashEq;
-        pub mod IKVReduce;
-        pub mod IMapEntry;
-        pub mod IMapIterable;
-        pub mod IMeta;
-        pub mod IndexedSeq;
-        pub mod IObj;
-        pub mod IPersistentCollection;
-        pub mod IPersistentMap;
-        pub mod IPersistentSet;
-        pub mod IPersistentStack;
-        pub mod IPersistentVector;
-        pub mod ISeq;
-        pub mod ITransientCollection;
-        pub mod MapEntry;
-        pub mod MapEquivalence;
-        pub mod MethodImplCache;
-        pub mod PersistentHashMap;
-        pub mod PersistentHashSet;
-        pub mod PersistentVector;
-        pub mod RT;
-        pub mod Sequable;
-        pub mod Sequential;
-        pub mod Set;
+            pub mod AFn;
+            pub mod AFunction;
+            pub mod AMapEntry;
+            pub mod APersistentMap;
+            pub mod APersistentSet;
+            pub mod APersistentVector;
+            pub mod ASeq;
+            pub mod Fn;
+            pub mod IEditableCollection;
+            pub mod IFn;
+            pub mod IHashEq;
+            pub mod IKVReduce;
+            pub mod IMapEntry;
+            pub mod IMapIterable;
+            pub mod IMeta;
+            pub mod IObj;
+            pub mod IPersistentCollection;
+            pub mod IPersistentMap;
+            pub mod IPersistentSet;
+            pub mod IPersistentStack;
+            pub mod IPersistentVector;
+            pub mod ISeq;
+            pub mod ITransientCollection;
+            pub mod IndexedSeq;
+            pub mod MapEntry;
+            pub mod MapEquivalence;
+            pub mod MethodImplCache;
+            pub mod PersistentHashMap;
+            pub mod PersistentHashSet;
+            pub mod PersistentVector;
+            pub mod RSeq;
+            pub mod RT;
+            pub mod Sequable;
+            pub mod Sequential;
+            pub mod SubVector;
+            pub mod Util;
         }
 
         pub use objects::AFn::*;
@@ -102,7 +102,6 @@ pub mod clojure {
         pub use objects::IMapEntry::*;
         pub use objects::IMapIterable::*;
         pub use objects::IMeta::*;
-        pub use objects::IndexedSeq::*;
         pub use objects::IObj::*;
         pub use objects::IPersistentCollection::*;
         pub use objects::IPersistentMap::*;
@@ -111,16 +110,19 @@ pub mod clojure {
         pub use objects::IPersistentVector::*;
         pub use objects::ISeq::*;
         pub use objects::ITransientCollection::*;
+        pub use objects::IndexedSeq::*;
         pub use objects::MapEntry::*;
         pub use objects::MapEquivalence::*;
         pub use objects::MethodImplCache::*;
         pub use objects::PersistentHashMap::*;
         pub use objects::PersistentHashSet::*;
         pub use objects::PersistentVector::*;
+        pub use objects::RSeq::*;
         pub use objects::RT::*;
         pub use objects::Sequable::*;
         pub use objects::Sequential::*;
-        pub use objects::Set::*;
+        pub use objects::SubVector::*;
+        pub use objects::Util::*;
     }
 
     /// clojure::rust host modules
@@ -136,6 +138,7 @@ pub mod clojure {
             pub mod FnMethodNative;
             pub mod Function;
             pub mod Globals;
+            pub mod ILookup;
             pub mod IObject;
             pub mod Indexed;
             pub mod Iterable;
@@ -143,14 +146,15 @@ pub mod clojure {
             pub mod Map;
             pub mod Member;
             pub mod Number;
-            pub mod Object;
             pub mod ObjResult;
+            pub mod Object;
             pub mod Protocol;
             pub mod Prototype;
             pub mod RandomAccess;
             pub mod Reversible;
             pub mod Runnable;
             pub mod Serializable;
+            pub mod Set;
             pub mod String;
             pub mod Thread;
             pub mod Unique;
@@ -170,6 +174,7 @@ pub mod clojure {
         pub use objects::FnMethodNative::*;
         pub use objects::Function::*;
         pub use objects::Globals::*;
+        pub use objects::ILookup::*;
         pub use objects::IObject::*;
         pub use objects::Indexed::*;
         pub use objects::Iterable::*;
@@ -177,14 +182,15 @@ pub mod clojure {
         pub use objects::Map::*;
         pub use objects::Member::*;
         pub use objects::Number::*;
-        pub use objects::Object::*;
         pub use objects::ObjResult::*;
+        pub use objects::Object::*;
         pub use objects::Protocol::*;
         pub use objects::Prototype::*;
         pub use objects::RandomAccess::*;
         pub use objects::Reversible::*;
         pub use objects::Runnable::*;
         pub use objects::Serializable::*;
+        pub use objects::Set::*;
         pub use objects::String::*;
         pub use objects::Thread::*;
         pub use objects::Unique::*;

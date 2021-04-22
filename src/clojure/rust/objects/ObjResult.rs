@@ -13,14 +13,6 @@ use clojure::rust::*;
 use intertrait::*;
 castable_to!(SObjError => [sync] IObject, ObjError);
 
-init_obj! {
-    ObjError {
-        clojure::rust::Object::init();
-        clojure::rust::IObject::init();
-        clojure::rust::Class::init();
-    }
-}
-
 pub type ObjResult<T> = std::result::Result<T, SObjError>;
 
 #[derive(Debug)]

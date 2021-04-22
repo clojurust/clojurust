@@ -3,15 +3,6 @@ use crate::*;
 use clojure::rust::*;
 // use clojure::lang::*;
 
-init_obj! {
-    Collection {
-        clojure::rust::Object::init();
-        clojure::rust::IObject::init();
-        clojure::rust::ObjResult::init();
-        clojure::rust::Iterable::init();
-    }
-}
-
 pub trait Collection: IObject + Iterable {
     fn size(&self) -> usize;
     fn isEmpty(&self) -> bool;

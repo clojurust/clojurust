@@ -4,13 +4,6 @@ use crate::*;
 use clojure::rust::*;
 // use clojure::lang::*;
 
-init_obj! {
-    IObject {
-        clojure::rust::Class::init();
-        clojure::rust::Object::init();
-    }
-}
-
 /// `IObject` `Protocol` for all defined `Object`s
 ///
 ///

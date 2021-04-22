@@ -12,15 +12,6 @@ use clojure::lang::*;
 use intertrait::*;
 castable_to!(SProtocol => [sync] IObject, Protocol);
 
-init_obj! {
-    Protocols {
-        clojure::rust::Object::init();
-        clojure::rust::IObject::init();
-        clojure::rust::Class::init();
-        clojure::lang::PersistentHashSet::init();
-    }
-}
-
 pub struct SProtocol {
     inner: SPersistentHashSet
 } 
@@ -41,7 +32,7 @@ impl IObject for SProtocol {
     }
 
     #[allow(non_snake_case)]
-    fn toString(&self) -> usize {
+    fn toString(&self) -> String {
         todo!()
     }
 }

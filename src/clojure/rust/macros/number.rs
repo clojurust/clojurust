@@ -6,7 +6,6 @@
 #[macro_export]
 macro_rules! number_def {
     ($name:ident, $def:ty) => {
-        #[derive(Debug)]
         pub struct $name {
             value: $def,
         }
@@ -32,7 +31,7 @@ macro_rules! number_def {
                 todo!()
             }
 
-            fn toString(&self) -> usize {
+            fn toString(&self) -> String {
                 todo!() 
             }
         }

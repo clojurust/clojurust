@@ -12,15 +12,6 @@ use clojure::rust::*;
 use intertrait::*;
 castable_to!(SFunction => [sync] IObject, Function);
 
-init_obj! {
-    Function {
-        clojure::rust::Object::init();
-        clojure::rust::IObject::init();
-        clojure::rust::ObjResult::init();
-        clojure::rust::Class::init();
-    }
-}
-
 pub struct SFunction {
     /// index of full name: ns + class/protocol + name
     pub full_name: usize,
@@ -78,7 +69,7 @@ impl IObject for SFunction {
         todo!()
     }
 
-    fn toString(&self) -> usize {
+    fn toString(&self) -> String {
         todo!()
     }
 }

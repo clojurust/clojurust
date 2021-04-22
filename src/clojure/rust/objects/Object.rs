@@ -12,13 +12,13 @@ use clojure::rust::*;
 use intertrait::{*, cast::CastArc};
 castable_to!(Object => [sync] IObject);
 
-init_obj! {
-    Object {
-        clojure::rust::Class::init();
-        clojure::rust::IObject::init();
-        clojure::rust::ObjResult::init();
-    }
-}
+// init_obj! {
+//     Object {
+//         clojure::rust::Class::init();
+//         clojure::rust::IObject::init();
+//         clojure::rust::ObjResult::init();
+//     }
+// }
 
 
 pub struct Object {

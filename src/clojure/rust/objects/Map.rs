@@ -1,20 +1,19 @@
-//! An object that maps keys to values. A map cannot contain duplicate keys; each key can map to at most one value.
+//! Protocol Map
 
 use crate::*;
 use clojure::rust::*;
-// use clojure::lang::*;
+use clojure::lang::*;
 
-init_obj! {
-    Map {
-        clojure::rust::IObject::init();
-    }
-}
+pub trait Map: IObject + IPersistentCollection + Counted {
+    // 
 
-pub trait Map: IObject {
 
 }
 
 pub trait Entry: IObject {
+    // Entry -> Object (key)
+    fn getKey(&self) -> ObjResult<Object>;
 
+    // Entry -> Object (key)
+    fn getValue(&self) -> ObjResult<Object>;
 }
-

@@ -16,15 +16,6 @@ use clojure::rust::*;
 use intertrait::*;
 castable_to!(SFnMethodNative => [sync] IObject, FnMethodNative);
 
-init_obj! {
-    FnMethodNative {
-        clojure::rust::Object::init();
-        clojure::rust::IObject::init();
-        clojure::rust::ObjResult::init();
-        clojure::rust::Class::init();
-    }
-}
-
 pub struct SFnMethodNative {
     inner: fn(&[Object]) -> ObjResult<Object>
 }
@@ -59,7 +50,7 @@ impl IObject for SFnMethodNative {
         todo!()
     }
 
-    fn toString(&self) -> usize {
+    fn toString(&self) -> String {
         todo!()
     }
 }

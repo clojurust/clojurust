@@ -11,14 +11,6 @@ use clojure::rust::*;
 use intertrait::*;
 castable_to!(SPrototype => [sync] IObject, Prototype);
 
-init_obj! {
-    Prototype {
-        clojure::rust::Object::init();
-        clojure::rust::IObject::init();
-        clojure::rust::Class::init();
-    }
-}
-
 #[derive(Debug)]
 pub struct SPrototype {
     multi_arity: Option<usize>,

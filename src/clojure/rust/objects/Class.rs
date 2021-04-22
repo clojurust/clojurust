@@ -11,14 +11,6 @@ use clojure::rust::*;
 use intertrait::*;
 castable_to!(SClass => [sync] IObject, Class);
 
-init_obj! {
-    Class {
-        clojure::rust::Object::init();
-        clojure::rust::IObject::init();
-        clojure::rust::ObjResult::init();
-    }
-}
-
 /// ## Clojure Class descriptor for Class :
 /// ``` clojure
 /// {

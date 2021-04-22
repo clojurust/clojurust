@@ -17,17 +17,6 @@ use clojure::lang::*;
 use intertrait::*;
 castable_to!(SGlobals => [sync] IObject, Globals);
 
-init_obj! {
-    Globals {
-        clojure::rust::Object::init();
-        clojure::rust::IObject::init();
-        clojure::rust::ObjResult::init();
-        clojure::rust::Class::init();
-        clojure::lang::PersistentVector::init();
-        clojure::rust::Unique::init();
-    }
-}
-
 pub struct SGlobals {
     unique_name: Object, // SUnique
     obj_vect: Object,  // SObjVector
@@ -90,7 +79,7 @@ impl IObject for SGlobals {
         todo!()
     }
 
-    fn toString(&self) -> usize {
+    fn toString(&self) -> String {
         todo!()
     }
 }

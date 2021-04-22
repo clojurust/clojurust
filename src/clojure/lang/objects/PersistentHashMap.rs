@@ -11,26 +11,29 @@ use clojure::rust::*;
 use clojure::lang::*;
 
 use intertrait::*;
-castable_to!(SPersistentHashMap => [sync] IObject, PersistentHashMap, Counted, 
-                                Iterable, IObj, IMeta, Associative);
-
-init_obj! {
-    PersistentHashMap {
-        clojure::rust::Object::init();
-        clojure::rust::IObject::init();
-        clojure::rust::ObjResult::init();
-        clojure::rust::Class::init();
-        clojure::lang::IPersistentMap::init();
-        clojure::rust::Counted::init();
-        clojure::rust::Iterable::init();
-        clojure::lang::IObj::init();
-        clojure::lang::IMeta::init();
-        clojure::rust::Associative::init();
-        clojure::lang::IEditableCollection::init();
-        clojure::lang::IMapIterable::init();
-        clojure::lang::IKVReduce::init();
-    }
-}
+castable_to!(SPersistentHashMap => [sync] 
+    Associative, 
+    Callable, 
+    Counted, 
+    IEditableCollection, 
+    IFn, 
+    IObj, 
+    IObject, 
+    IMeta, 
+    Iterable, 
+    IHashEq, 
+    IKVReduce, 
+    ILookup, 
+    IMapIterable, 
+    IPersistentCollection, 
+    IPersistentMap,
+    Iterable, 
+    Map,
+    MapEquivalence, 
+    PersistentHashMap, 
+    Runnable, 
+    Sequable, 
+    Serializable);
 
 pub struct SPersistentHashMap {
     inner: HashMap<Object, Object>
@@ -120,6 +123,14 @@ impl Default for SPersistentHashMap {
 }
 
 impl PersistentHashMap for SPersistentHashMap {
+}
+
+impl Iterator for SPersistentHashMap {
+    type Item = Object;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        todo!()
+    }
 }
 
 impl IMapIterable for SPersistentHashMap {

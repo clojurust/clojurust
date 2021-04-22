@@ -3,12 +3,8 @@ use crate::*;
 use clojure::rust::*;
 use clojure::lang::*;
 
-init_obj! {
-    Map {
-        clojure::rust::IObject::init();
-        clojure::lang::AMapEntry::init();
-    }
-}
+////////////////
+/// Here me must implement im::hashmap::Entry
 
 pub trait MapEntry: IObject + AMapEntry {
 
