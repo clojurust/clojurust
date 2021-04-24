@@ -5,39 +5,41 @@
 
 // use intertrait::cast::*;
 
-use crate::*;
-use clojure::rust::*;
 use clojure::lang::*;
-
+use clojure::rust::*;
 use intertrait::*;
+
+use crate::*;
 castable_to!(SProtocol => [sync] IObject, Protocol);
 
-pub struct SProtocol {
-    inner: SPersistentHashSet
-} 
-
-impl IObject for SProtocol {
-    #[allow(non_snake_case)]
-    fn getClass<'a>(&self) -> &'a SClass {
-        todo!()
-    }
-
-    #[allow(non_snake_case)]
-    fn hashCode(&self) -> usize {
-        todo!()
-    }
-
-    fn equals(&self, other: &Object) -> bool {
-        todo!()
-    }
-
-    #[allow(non_snake_case)]
-    fn toString(&self) -> String {
-        todo!()
-    }
+pub struct SProtocol
+{
+    inner: SPersistentHashSet,
 }
 
-pub trait Protocol: IObject {}
+impl IObject for SProtocol
+{
+    #[allow(non_snake_case)]
+    fn getClass<'a>(&self) -> &'a SClass { todo!() }
+
+    #[allow(non_snake_case)]
+    fn hashCode(&self) -> usize { todo!() }
+
+    fn equals(
+        &self,
+        other: &Object,
+    ) -> bool
+    {
+        todo!()
+    }
+
+    #[allow(non_snake_case)]
+    fn toString(&self) -> String { todo!() }
+}
+
+pub trait Protocol: IObject
+{
+}
 
 impl Protocol {}
 

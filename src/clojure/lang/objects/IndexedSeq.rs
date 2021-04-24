@@ -1,9 +1,10 @@
+use clojure::lang::*;
+use clojure::rust::*;
 
 use crate::*;
-use clojure::rust::*;
-use clojure::lang::*;
 
-pub trait IndexedSeq: IObject + Counted + IPersistentCollection + ISeq 
-        + Sequable + Sequential {
+pub trait IndexedSeq:
+    IObject+Counted+IPersistentCollection+ISeq+Sequable+Sequential
+{
     fn index(&self) -> ObjResult<usize>;
 }

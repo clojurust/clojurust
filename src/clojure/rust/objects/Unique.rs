@@ -1,17 +1,16 @@
 //! `Unique` association of names with unique id
 //!
-//!
 
 use std::sync::*;
 
-use intertrait::cast::{CastArc, CastRef};
+use clojure::lang::*;
+use clojure::rust::*;
+use intertrait::cast::CastArc;
+use intertrait::cast::CastRef;
+use intertrait::*;
 use lazy_static::lazy_static;
 
 use crate::*;
-use clojure::rust::*;
-use clojure::lang::*;
-
-use intertrait::*;
 castable_to!(SUnique => [sync] IObject, Unique);
 
 /// # A keyword storage structure
@@ -24,7 +23,8 @@ castable_to!(SUnique => [sync] IObject, Unique);
 /// As a `String` is added, it's index is added in the `map` `ObjHashMap`.
 ///
 /// # Examples
-pub struct SUnique {
+pub struct SUnique
+{
     /// `SPersistentMap` of `name`: `String` -> `id`: `usize`
     pub map: Object,
 
@@ -37,45 +37,61 @@ unsafe impl Send for SUnique {}
 unsafe impl Sync for SUnique {}
 
 /// Protocole `Unique`
-pub trait Unique: IObject {
+pub trait Unique: IObject
+{
     /// Size of SStrVector
     fn len(&self) -> ObjResult<usize>;
 
     /// Gives name of index
     ///
     /// return None if doesn't exist
-    fn get_name<'a>(&self, index: usize) -> ObjResult<String>;
+    fn get_name<'a>(
+        &self,
+        index: usize,
+    ) -> ObjResult<String>;
 
     /// Gives index of name
     ///
     /// Create name and index is they doesn't exist
-    fn get_or_make_index(&mut self, index: &str) -> ObjResult<usize>;
+    fn get_or_make_index(
+        &mut self,
+        index: &str,
+    ) -> ObjResult<usize>;
 
     /// Gives index of name
     ///
     /// return None if doesn't exist
-    fn get_index(&mut self, name: &str) -> ObjResult<usize>;
+    fn get_index(
+        &mut self,
+        name: &str,
+    ) -> ObjResult<usize>;
 
     /// Tests if name exists
-    fn test(&self, key: &str) -> ObjResult<bool>;
+    fn test(
+        &self,
+        key: &str,
+    ) -> ObjResult<bool>;
 }
 
 // `Implementation` of `Protocol` `Unique` for `SUnique`
-impl Unique for SUnique {
+impl Unique for SUnique
+{
     /// Size of SStrVector
-    fn len(&self) -> ObjResult<usize> {
-        let v = match self.get_vect() {
-            Ok(v) => {v},
-            Err(e) => return Err(e)
-        };
-
+    fn len(&self) -> ObjResult<usize>
+    {
+        let v = self.get_vect().unwrap();
+        let v = v.cast::<Counted>().unwrap();
         v.count()
     }
 
     /// Gives name of index
     ///
     /// return None if doesn't exist
-    fn get_name(&self, key: usize) -> ObjResult<String> {
+    fn get_name(
+        &self,
+        key: usize,
+    ) -> ObjResult<String>
+    {
         let v = self.cast::<Indexed>().unwrap();
         let res = v.nth_1(key).unwrap();
         Ok(res.toString().to_string())
@@ -84,19 +100,26 @@ impl Unique for SUnique {
     /// Gives index of name
     ///
     /// Create name and index is they doesn't exist
-    fn get_or_make_index(&mut self, name: &str) -> ObjResult<usize> {
+    fn get_or_make_index(
+        &mut self,
+        name: &str,
+    ) -> ObjResult<usize>
+    {
         let m = self.map.cast::<SPersistentHashMap>().unwrap();
         let v = self.vect.cast::<SPersistentVector>().unwrap();
 
-        if let Some(o) = m.get(name) {
+        if let Some(o) = m.get(name)
+        {
             return *o;
-        } else {
-            let length = self.len();
+        }
+        else
+        {
+            let length = self.len().unwrap();
             v.push_back(String::from(name));
             *m = m.update(String::from(name), length);
 
             let k = SUnique {
-                map: new_obj!(*m),
+                map:  new_obj!(*m),
                 vect: new_obj!(*v),
             };
             *self = k;
@@ -109,80 +132,94 @@ impl Unique for SUnique {
     /// Gives index of name
     ///
     /// return Error if doesn't exist
-    fn get_index(&mut self, name: &str) -> ObjResult<usize> {
+    fn get_index(
+        &mut self,
+        name: &str,
+    ) -> ObjResult<usize>
+    {
         let m = self.map.cast::<SPersistentHashMap>().unwrap();
         let v = self.vect.cast::<SPersistentVector>().unwrap();
-        if let Some(o) = m.get(name) {
-            o
-        } else {
-            return err_not_found(&new_obj!(string::from(name)), &self.map);
-        }
+        let o = m.get(name).unwrap();
+        Ok(o)
     }
 
     /// Tests if name exists
-    fn test(&self, name: &str) -> ObjResult<bool> {
-        if let Some(m) = self.map.cast::<SPersistentHashMap>() {
-            match m.get(name) {
-                Some(_) => return true,
-                None => return false
+    fn test(
+        &self,
+        name: &str,
+    ) -> ObjResult<bool>
+    {
+        if let m = self.map.cast::<SPersistentHashMap>().unwrap()
+        {
+            match m.get(name)
+            {
+                | Some(_) => return Ok(true),
+                | None => return Ok(false),
             }
         }
     }
 }
 
-impl IObject for SUnique {
-    fn getClass<'a>(&self) -> &'a SClass {
+impl IObject for SUnique
+{
+    fn getClass<'a>(&self) -> &'a SClass { todo!() }
+
+    fn hashCode(&self) -> usize { todo!() }
+
+    fn equals(
+        &self,
+        other: &Object,
+    ) -> bool
+    {
         todo!()
     }
 
-    fn hashCode(&self) -> usize {
-        todo!()
-    }
-
-    fn equals(&self, other: &Object) -> bool {
-        todo!()
-    }
-
-    fn toString(&self) -> usize {
-        todo!()
-    }
+    fn toString(&self) -> String { todo!() }
 }
 
-impl SUnique {
-    fn get_vect(&self) -> ObjResult<&SPersistentVector> {
-        let v = match self.vect.inner {
-            Some(v) => {v},
-            _ => {
-                return err::<&SPersistentVector>("SUnique.vect not initialized")
-            }
+impl SUnique
+{
+    fn get_vect(&self) -> ObjResult<&SPersistentVector>
+    {
+        let v = match self.vect.inner
+        {
+            | Some(v) => v,
+            | _ =>
+            {
+                return err::<&SPersistentVector>(
+                    "SUnique.vect not initialized",
+                )
+            },
         };
 
-        match v.cast::<SPersistentVector>() {
-            Ok(c) => 
-                Ok(c.as_ref()),
-            Err(e) => 
-                err_cast(&self.vect, "<&SPersistentVector>"),
-        }       
+        match v.cast::<SPersistentVector>()
+        {
+            | Ok(c) => Ok(c.as_ref()),
+            | Err(e) => err_cast(&self.vect, "<&SPersistentVector>"),
+        }
     }
 }
 
-impl Default for SUnique {
-    fn default() -> Self {
+impl Default for SUnique
+{
+    fn default() -> Self
+    {
         SUnique {
-            map: new_obj!(SPersistentHashMap::default()),
+            map:  new_obj!(SPersistentHashMap::default()),
             vect: new_obj!(SPersistentVector::default()),
         }
     }
 }
 
-impl SUnique {
-    pub fn new() -> Object {
-        new_obj!(SUnique::default())
-    }
+impl SUnique
+{
+    pub fn new() -> Object { new_obj!(SUnique::default()) }
 }
 
-impl Drop for SUnique {
-    fn drop(&mut self) {
+impl Drop for SUnique
+{
+    fn drop(&mut self)
+    {
         println!("Dropping Keyword state! -> {:?}", self.to_string());
     }
 }
@@ -195,7 +232,8 @@ lazy_static! {
 }
 
 #[test]
-fn test_keywords() {
+fn test_keywords()
+{
     // // Initial state
     // println!(
     //     "Init state len = {:?} state = {:?}",

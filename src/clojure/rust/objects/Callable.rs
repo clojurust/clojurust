@@ -1,9 +1,11 @@
 // Callable
 
-use crate::*;
 use clojure::rust::*;
+
+use crate::*;
 // use clojure::lang::*;
 
-pub trait Callable {
+pub trait Callable
+{
     fn call(&self) -> ObjResult<Object>;
 }

@@ -1,16 +1,17 @@
 //! Protocol Map
 
-use crate::*;
-use clojure::rust::*;
 use clojure::lang::*;
+use clojure::rust::*;
 
-pub trait Map: IObject + IPersistentCollection + Counted {
-    // 
+use crate::*;
 
-
+pub trait Map: IObject+IPersistentCollection+Counted
+{
+    //
 }
 
-pub trait Entry: IObject {
+pub trait Entry: IObject
+{
     // Entry -> Object (key)
     fn getKey(&self) -> ObjResult<Object>;
 

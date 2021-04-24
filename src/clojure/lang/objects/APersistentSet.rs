@@ -2,11 +2,12 @@
 //!
 //! This is a wrapper on `im-rs` HashSet<Object> library
 
-use crate::*;
-use clojure::rust::*;
 use clojure::lang::*;
+use clojure::rust::*;
 
-pub trait APersistentSet: IObject + AFn + IPersistentSet 
-                + Collection + Set + Serializable + IHashEq {
-    
+use crate::*;
+
+pub trait APersistentSet:
+    IObject+AFn+IPersistentSet+Collection+Set+Serializable+IHashEq
+{
 }

@@ -1,10 +1,12 @@
 //! Protocol IEditableCollection
 
-use crate::*;
-use clojure::rust::*;
 // use clojure::lang::*;
+use clojure::rust::*;
 
-pub trait IEditableCollection: IObject {
+use crate::*;
+
+pub trait IEditableCollection: IObject
+{
     /// IEditableCollection -> ITransientCollection
     fn asTransient(&self) -> ObjResult<Object>;
 }

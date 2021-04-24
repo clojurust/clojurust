@@ -1,8 +1,8 @@
+use clojure::rust::*;
 
 use crate::*;
-use clojure::rust::*;
 // use clojure::lang::*;
 
-pub trait Thread: IObject {
-
+pub trait Thread: IObject
+{
 }

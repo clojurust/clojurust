@@ -1,9 +1,8 @@
-
+use clojure::rust::*;
 
 use crate::*;
-use clojure::rust::*;
 // use clojure::lang::*;
 
-pub trait MethodImplCache: IObject {
-
+pub trait MethodImplCache: IObject
+{
 }

@@ -2,11 +2,12 @@
 //!
 //! This is a wrapper on `im-rs` HashMap<Object,Object> library
 
-use crate::*;
-use clojure::rust::*;
 use clojure::lang::*;
+use clojure::rust::*;
 
-pub trait APersistentMap: IPersistentMap + Map + Iterable + Serializable
-        + MapEquivalence + IHashEq {
+use crate::*;
 
+pub trait APersistentMap:
+    IPersistentMap+Map+Iterable+Serializable+MapEquivalence+IHashEq
+{
 }

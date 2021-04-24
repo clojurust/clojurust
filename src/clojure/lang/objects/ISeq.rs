@@ -1,10 +1,15 @@
 //! Protocol ISeq
 
-use crate::*;
-use clojure::rust::*;
 use clojure::lang::*;
+use clojure::rust::*;
 
-pub trait ISeq: IObject + Sequable + IPersistentCollection {
+use crate::*;
+
+pub trait ISeq: IObject+Sequable+IPersistentCollection
+{
     /// ISeq -> Object -> ISeq
-    fn cons(&self, o: &Object) -> ObjResult<Object>;
+    fn cons(
+        &self,
+        o: &Object,
+    ) -> ObjResult<Object>;
 }

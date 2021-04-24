@@ -1,3 +1,4 @@
+//
 #![crate_name = "clojurust"]
 
 //! # `clojurust` crate: Proof of concept for a Clojure library in Rust.
@@ -10,9 +11,6 @@
 //! ## `crate::clojure::rust` module
 //!
 //! This module contains the `Rust` host.
-//!
-//!
-//!
 #![allow(dead_code)]
 #![allow(unused_variables)]
 // ![warn(unreachable_pub, missing_docs)]
@@ -35,6 +33,7 @@
 #![feature(try_find)]
 #![feature(cmp_min_max_by)]
 #![feature(iter_order_by)]
+#![feature(associated_type_defaults)]
 
 // #![feature(fn_traits)]
 // #![feature(trace_macros)]
@@ -43,12 +42,15 @@
 /// Clojure Module
 ///
 /// description de clojure
-pub mod clojure {
+pub mod clojure
+{
     /// Clojure language module
     ///
     /// clojure::lang modules
-    pub mod lang {
-        pub mod objects {
+    pub mod lang
+    {
+        pub mod objects
+        {
             pub mod AFn;
             pub mod AFunction;
             pub mod AMapEntry;
@@ -118,16 +120,18 @@ pub mod clojure {
         pub use objects::PersistentHashSet::*;
         pub use objects::PersistentVector::*;
         pub use objects::RSeq::*;
-        pub use objects::RT::*;
         pub use objects::Sequable::*;
         pub use objects::Sequential::*;
         pub use objects::SubVector::*;
         pub use objects::Util::*;
+        pub use objects::RT::*;
     }
 
     /// clojure::rust host modules
-    pub mod rust {
-        pub mod objects {
+    pub mod rust
+    {
+        pub mod objects
+        {
             pub mod Associative;
             pub mod Callable;
             pub mod Class;
@@ -159,7 +163,8 @@ pub mod clojure {
             pub mod Thread;
             pub mod Unique;
         }
-        pub mod macros {
+        pub mod macros
+        {
             pub mod macros;
             pub mod number;
         }
@@ -198,9 +203,11 @@ pub mod clojure {
 }
 
 #[cfg(test)]
-mod tests {
+mod tests
+{
     #[test]
-    fn it_works() {
+    fn it_works()
+    {
         assert_eq!(2 + 2, 4);
     }
 }

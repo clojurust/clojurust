@@ -1,9 +1,15 @@
 //! Protocol IKVReduce
 
-use crate::*;
-use clojure::rust::*;
 // use clojure::lang::*;
+use clojure::rust::*;
 
-pub trait IKVReduce: IObject {
-    fn kvreduce(&self, f: Object, init: Object) -> ObjResult<Object>;
+use crate::*;
+
+pub trait IKVReduce: IObject
+{
+    fn kvreduce(
+        &self,
+        f: Object,
+        init: Object,
+    ) -> ObjResult<Object>;
 }

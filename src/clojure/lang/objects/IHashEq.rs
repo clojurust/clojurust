@@ -1,10 +1,11 @@
 //! Protocol IHashEq
 
-use crate::*;
-use clojure::rust::*;
 // use clojure::lang::*;
+use clojure::rust::*;
 
-pub trait IHashEq: IObject {
+use crate::*;
+
+pub trait IHashEq: IObject
+{
     fn hasheq(&self) -> ObjResult<usize>;
 }
-

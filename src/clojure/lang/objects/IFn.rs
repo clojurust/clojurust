@@ -1,7 +1,16 @@
-use crate::*;
+use clojure::lang::*;
 use clojure::rust::*;
-// use clojure::lang::*;
 
-pub trait IFn: IObject + Callable {
+use crate::*;
 
+pub trait IFn: IObject+Callable
+{
+    fn invoke(
+        &self,
+        args: &[&Object],
+    ) -> ObjResult<Object>;
+    fn apply(
+        &self,
+        arglist: &ISeq,
+    ) -> ObjResult<Object>;
 }

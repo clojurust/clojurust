@@ -1,14 +1,13 @@
-/// IObject
-
-use crate::*;
 use clojure::rust::*;
 // use clojure::lang::*;
-
 /// `IObject` `Protocol` for all defined `Object`s
 ///
-///
 use intertrait::*;
-pub trait IObject: CastFromSync  {
+
+/// IObject
+use crate::*;
+pub trait IObject: CastFromSync
+{
     /// Return `Class` of `Object`
     fn getClass<'a>(&self) -> &'a SClass;
 
@@ -16,5 +15,8 @@ pub trait IObject: CastFromSync  {
 
     fn toString(&self) -> String;
 
-    fn equals(&self, other: &Object) -> bool;
+    fn equals(
+        &self,
+        other: &Object,
+    ) -> bool;
 }

@@ -1,16 +1,28 @@
 //! Protocol Associative
 
-use crate::*;
 use clojure::rust::*;
+
+use crate::*;
 // use clojure::lang::*;
 
-pub trait Associative {
+pub trait Associative
+{
     /// Associative -> Object -> Object -> Associative
-    fn assoc(&self, key: &Object, value: &Object) -> ObjResult<Object>;
-    
+    fn assoc(
+        &self,
+        key: &Object,
+        value: &Object,
+    ) -> ObjResult<Object>;
+
     /// Associative -> Object -> bool
-    fn containsKey(&self, key: &Object) -> ObjResult<bool>;
+    fn containsKey(
+        &self,
+        key: &Object,
+    ) -> ObjResult<bool>;
 
     /// Associative -> Object -> IMapEntry
-    fn entryAt(&self, key: &Object) -> ObjResult<Object>;
+    fn entryAt(
+        &self,
+        key: &Object,
+    ) -> ObjResult<Object>;
 }

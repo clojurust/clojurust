@@ -32,7 +32,7 @@ macro_rules! number_def {
             }
 
             fn toString(&self) -> String {
-                todo!() 
+                todo!()
             }
         }
 

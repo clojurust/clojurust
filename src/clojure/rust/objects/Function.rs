@@ -5,34 +5,47 @@
 // use lazy_static::{__Deref, lazy_static};
 use std::sync::*;
 
-use crate::*;
 use clojure::rust::*;
 // use clojure::lang::*;
-
 use intertrait::*;
+
+use crate::*;
 castable_to!(SFunction => [sync] IObject, Function);
 
-pub struct SFunction {
+pub struct SFunction
+{
     /// index of full name: ns + class/protocol + name
     pub full_name: usize,
     /// Mark optional arity of multi-arity function.
-    pub multiary: Option<usize>,
+    pub multiary:  Option<usize>,
     /// PersistentHashMap arity `usize` ->
-    pub func: Object,
+    pub func:      Object,
 }
 
 unsafe impl Send for SFunction {}
 
 unsafe impl Sync for SFunction {}
 
-pub trait Function: IObject + CastFromSync {
-    fn call(&self, args: &Object) -> ObjResult<Object>;
+pub trait Function: IObject+CastFromSync
+{
+    fn call(
+        &self,
+        args: &Object,
+    ) -> ObjResult<Object>;
 
-    fn get(&self, arity: usize) -> ObjResult<Object>;
+    fn get(
+        &self,
+        arity: usize,
+    ) -> ObjResult<Object>;
 }
 
-impl Function for SFunction {
-    fn get(&self, arity: usize) -> ObjResult<Object> {
+impl Function for SFunction
+{
+    fn get(
+        &self,
+        arity: usize,
+    ) -> ObjResult<Object>
+    {
         // let mut index = arity;
         // match self.multiary {
         //     Some(max) => {
@@ -51,39 +64,51 @@ impl Function for SFunction {
         todo!()
     }
 
-    fn call(&self, args: &Object) -> ObjResult<Object> {
+    fn call(
+        &self,
+        args: &Object,
+    ) -> ObjResult<Object>
+    {
         todo!()
     }
 }
 
-impl IObject for SFunction {
-    fn getClass<'a>(&self) -> &'a SClass {
+impl IObject for SFunction
+{
+    fn getClass<'a>(&self) -> &'a SClass { todo!() }
+
+    fn hashCode(&self) -> usize { todo!() }
+
+    fn equals(
+        &self,
+        other: &Object,
+    ) -> bool
+    {
         todo!()
     }
 
-    fn hashCode(&self) -> usize {
-        todo!()
-    }
-
-    fn equals(&self, other: &Object) -> bool {
-        todo!()
-    }
-
-    fn toString(&self) -> String {
-        todo!()
-    }
+    fn toString(&self) -> String { todo!() }
 }
 
 use crate::new_obj;
 
-impl SFunction {
-    pub fn new(full_name: usize, multiary: Option<usize>, func: Object) -> Object {
-        new_obj!(SFunction { full_name, multiary, func })
+impl SFunction
+{
+    pub fn new(
+        full_name: usize,
+        multiary: Option<usize>,
+        func: Object,
+    ) -> Object
+    {
+        new_obj!(SFunction {
+            full_name,
+            multiary,
+            func
+        })
     }
 }
 
-impl Default for SFunction {
-    fn default() -> Self {
-        todo!()
-    }
+impl Default for SFunction
+{
+    fn default() -> Self { todo!() }
 }

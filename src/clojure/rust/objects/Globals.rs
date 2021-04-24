@@ -8,92 +8,128 @@
 
 use std::sync::*;
 
+use clojure::lang::*;
+use clojure::rust::*;
+use intertrait::*;
 use lazy_static::lazy_static;
 
 use crate::*;
-use clojure::rust::*;
-use clojure::lang::*;
-
-use intertrait::*;
 castable_to!(SGlobals => [sync] IObject, Globals);
 
-pub struct SGlobals {
+pub struct SGlobals
+{
     unique_name: Object, // SUnique
-    obj_vect: Object,  // SObjVector
+    obj_vect:    Object, // SObjVector
 }
 
-pub trait Globals: IObject + CastFromSync {
+pub trait Globals: IObject+CastFromSync
+{
     /// Globals -> String -> Object -> Globals
-    fn update(&mut self, name: &str, value: &Object) -> ObjResult<Object>;
+    fn update(
+        &mut self,
+        name: &str,
+        value: &Object,
+    ) -> ObjResult<Object>;
 
     /// Globals -> usize -> Object
-    fn get_obj_by_id(&self, index: usize) -> ObjResult<Object>;
+    fn get_obj_by_id(
+        &self,
+        index: usize,
+    ) -> ObjResult<Object>;
 
     /// Globals -> String -> Object
-    fn get_obj_by_name(&self, name: &str) -> ObjResult<Object>;
+    fn get_obj_by_name(
+        &self,
+        name: &str,
+    ) -> ObjResult<Object>;
 
     /// Globals -> String -> usize
-    fn get_id_for_name(&self, name: &str) -> ObjResult<Object>;
+    fn get_id_for_name(
+        &self,
+        name: &str,
+    ) -> ObjResult<Object>;
 }
 
-impl SGlobals {
-    fn new() -> Object {
-        new_obj!(SGlobals::default())
-    }
+impl SGlobals
+{
+    fn new() -> Object { new_obj!(SGlobals::default()) }
 }
 
 use crate::new_obj;
 
-impl Globals for SGlobals {
+impl Globals for SGlobals
+{
     /// Globals -> String -> Object -> Globals
-    fn update(&mut self, name: &str, value: &Object) -> ObjResult<Object> {
+    fn update(
+        &mut self,
+        name: &str,
+        value: &Object,
+    ) -> ObjResult<Object>
+    {
         todo!()
     }
 
     /// Globals -> usize -> Object
-    fn get_obj_by_id(&self, index: usize) -> ObjResult<Object> {
+    fn get_obj_by_id(
+        &self,
+        index: usize,
+    ) -> ObjResult<Object>
+    {
         todo!()
     }
 
     /// Globals -> String -> Object
-    fn get_obj_by_name(&self, name: &str) -> ObjResult<Object> {
+    fn get_obj_by_name(
+        &self,
+        name: &str,
+    ) -> ObjResult<Object>
+    {
         todo!()
     }
 
     /// Globals -> String -> usize
-    fn get_id_for_name(&self, name: &str) -> ObjResult<Object> {
+    fn get_id_for_name(
+        &self,
+        name: &str,
+    ) -> ObjResult<Object>
+    {
         todo!()
     }
 }
 
-impl IObject for SGlobals {
-    fn getClass<'a>(&self) -> &'a SClass {
+impl IObject for SGlobals
+{
+    fn getClass<'a>(&self) -> &'a SClass { todo!() }
+
+    fn hashCode(&self) -> usize { todo!() }
+
+    fn equals(
+        &self,
+        other: &Object,
+    ) -> bool
+    {
         todo!()
     }
 
-    fn hashCode(&self) -> usize {
-        todo!()
-    }
-
-    fn equals(&self, other: &Object) -> bool {
-        todo!()
-    }
-
-    fn toString(&self) -> String {
-        todo!()
-    }
+    fn toString(&self) -> String { todo!() }
 }
 
-impl Default for SGlobals {
-    fn default() -> Self {
+impl Default for SGlobals
+{
+    fn default() -> Self
+    {
         SGlobals {
             unique_name: SUnique::new(),
-            obj_vect: new_obj!(SPersistentVector::default())
+            obj_vect:    new_obj!(SPersistentVector::default()),
         }
     }
 }
 
 lazy_static! {
-    pub static ref CLASSES: Object = Object { inner: None };
-    pub static ref PROTOCOLS: Object = Object { inner: None };
+    pub static ref CLASSES: Object = Object {
+        inner: None,
+    };
+    pub static ref PROTOCOLS: Object = Object {
+        inner: None,
+    };
 }
