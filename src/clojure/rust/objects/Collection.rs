@@ -3,8 +3,7 @@ use clojure::rust::*;
 use crate::*;
 // use clojure::lang::*;
 
-pub trait Collection: IObject+Iterable
-{
+pub trait Collection: IObject+Iterable {
     fn size(&self) -> usize;
     fn isEmpty(&self) -> bool;
     fn contains(&self) -> ObjResult<bool>;

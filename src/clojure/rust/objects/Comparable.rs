@@ -5,8 +5,7 @@ use clojure::rust::*;
 use crate::*;
 // use clojure::lang::*;
 
-pub trait Comparable: IObject
-{
+pub trait Comparable: IObject {
     /// Compare with object
     ///
     /// result < 0 iff self < o

@@ -5,13 +5,11 @@ use clojure::rust::*;
 
 use crate::*;
 
-pub trait Map: IObject+IPersistentCollection+Counted
-{
+pub trait Map: IObject+IPersistentCollection+Counted {
     //
 }
 
-pub trait Entry: IObject
-{
+pub trait Entry: IObject {
     // Entry -> Object (key)
     fn getKey(&self) -> ObjResult<Object>;
 

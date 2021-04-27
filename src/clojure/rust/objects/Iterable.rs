@@ -4,8 +4,7 @@ use clojure::rust::*;
 use crate::*;
 // use clojure::lang::*;
 
-pub trait Iterable: IObject
-{
+pub trait Iterable: IObject {
     /// Iterable -> Iterator
     fn iterator(&self) -> ObjResult<Object>;
 }

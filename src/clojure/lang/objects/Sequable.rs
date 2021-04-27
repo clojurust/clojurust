@@ -5,8 +5,7 @@ use clojure::rust::*;
 use crate::*;
 // use clojure::lang::*;
 
-pub trait Sequable: IObject
-{
+pub trait Sequable: IObject {
     /// Sequable -> ISeq
     fn seq(&self) -> ObjResult<Object>;
 }

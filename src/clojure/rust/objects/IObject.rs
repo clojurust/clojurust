@@ -1,13 +1,11 @@
 use clojure::rust::*;
 // use clojure::lang::*;
 /// `IObject` `Protocol` for all defined `Object`s
-///
 use intertrait::*;
 
 /// IObject
 use crate::*;
-pub trait IObject: CastFromSync
-{
+pub trait IObject: CastFromSync {
     /// Return `Class` of `Object`
     fn getClass<'a>(&self) -> &'a SClass;
 

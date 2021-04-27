@@ -2,6 +2,4 @@
 // use clojure::rust::*;
 // use clojure::lang::*;
 
-trait Fn
-{
-}
+trait Fn {}

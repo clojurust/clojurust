@@ -4,8 +4,7 @@ use clojure::rust::*;
 use crate::*;
 // use clojure::lang::*;
 
-pub trait Comparator: IObject
-{
+pub trait Comparator: IObject {
     /// AFunction -> Object -> Object -> int
     fn compare(
         o1: Object,

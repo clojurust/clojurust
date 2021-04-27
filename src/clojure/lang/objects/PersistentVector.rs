@@ -17,8 +17,7 @@ castable_to!(SPersistentVector => [sync] IObject, PersistentVector,      APersis
 
 /////////////////////////////////
 // Objects
-pub struct SPersistentVector
-{
+pub struct SPersistentVector {
     _hash:    usize,
     _hash_eq: usize,
     /// hashmap::HashMap<Object>
@@ -38,8 +37,7 @@ pub trait PersistentVector:
 // Implementations
 impl PersistentVector for SPersistentVector {}
 
-impl Collection for SPersistentVector
-{
+impl Collection for SPersistentVector {
     fn size(&self) -> usize { todo!() }
 
     fn isEmpty(&self) -> bool { todo!() }
@@ -51,114 +49,97 @@ impl Collection for SPersistentVector
     fn containsAll(
         &self,
         c: &Object,
-    ) -> ObjResult<bool>
-    {
+    ) -> ObjResult<bool> {
         todo!()
     }
 }
 
-impl APersistentVector for SPersistentVector
-{
+impl APersistentVector for SPersistentVector {
     fn _hash(&self) -> usize { self._hash }
 
     fn _hash_eq(&self) -> usize { self._hash_eq }
 }
 
-impl IKVReduce for SPersistentVector
-{
+impl IKVReduce for SPersistentVector {
     fn kvreduce(
         &self,
         f: Object,
         init: Object,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 }
 
-impl IHashEq for SPersistentVector
-{
+impl IHashEq for SPersistentVector {
     fn hasheq(&self) -> ObjResult<usize> { todo!() }
 }
 
 impl Serializable for SPersistentVector {}
 
-impl Comparable for SPersistentVector
-{
+impl Comparable for SPersistentVector {
     #[allow(non_snake_case)]
     fn compareTo(
         &self,
         o: &Object,
-    ) -> ObjResult<i8>
-    {
+    ) -> ObjResult<i8> {
         todo!()
     }
 }
 
 impl RandomAccess for SPersistentVector {}
 
-impl IEditableCollection for SPersistentVector
-{
+impl IEditableCollection for SPersistentVector {
     #[allow(non_snake_case)]
     fn asTransient(&self) -> ObjResult<Object> { todo!() }
 }
 
-impl IObj for SPersistentVector
-{
+impl IObj for SPersistentVector {
     #[allow(non_snake_case)]
     fn withMeta(
         &self,
         meta: &Object,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 }
 
-impl IMeta for SPersistentVector
-{
+impl IMeta for SPersistentVector {
     fn meta(&self) -> ObjResult<Object> { Ok(self.meta) }
 }
 
 impl List for SPersistentVector {}
 
-impl IPersistentVector for SPersistentVector
-{
+impl IPersistentVector for SPersistentVector {
     #[allow(non_snake_case)]
     fn assocN(
         &self,
         i: usize,
         val: &Object,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 
     fn cons(
         &self,
         o: Object,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 
     fn length(&self) -> ObjResult<usize> { todo!() }
 }
 
-impl IPersistentStack for SPersistentVector
-{
+impl IPersistentStack for SPersistentVector {
     fn peek(&self) -> ObjResult<Object> { todo!() }
 
     fn pop(&self) -> ObjResult<Object> { todo!() }
 }
 
-impl IPersistentCollection for SPersistentVector
-{
+impl IPersistentCollection for SPersistentVector {
     fn cons(
         &self,
         o: &Object,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 
@@ -169,19 +150,16 @@ impl IPersistentCollection for SPersistentVector
     fn equiv(
         &self,
         o: Object,
-    ) -> ObjResult<bool>
-    {
+    ) -> ObjResult<bool> {
         todo!()
     }
 }
 
-impl Indexed for SPersistentVector
-{
+impl Indexed for SPersistentVector {
     fn nth_1(
         &self,
         i: usize,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 
@@ -189,35 +167,29 @@ impl Indexed for SPersistentVector
         &self,
         i: usize,
         notFound: Object,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 }
 
-impl Counted for SPersistentVector
-{
+impl Counted for SPersistentVector {
     fn count(&self) -> ObjResult<usize> { todo!() }
 }
 
-impl Reversible for SPersistentVector
-{
+impl Reversible for SPersistentVector {
     fn rseq(&self) -> ObjResult<Object> { todo!() }
 }
 
-impl Sequable for SPersistentVector
-{
+impl Sequable for SPersistentVector {
     fn seq(&self) -> ObjResult<Object> { todo!() }
 }
 
-impl Associative for SPersistentVector
-{
+impl Associative for SPersistentVector {
     fn assoc(
         &self,
         key: &Object,
         value: &Object,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 
@@ -225,8 +197,7 @@ impl Associative for SPersistentVector
     fn containsKey(
         &self,
         key: &Object,
-    ) -> ObjResult<bool>
-    {
+    ) -> ObjResult<bool> {
         todo!()
     }
 
@@ -234,19 +205,16 @@ impl Associative for SPersistentVector
     fn entryAt(
         &self,
         key: &Object,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 }
 
-impl Iterable for SPersistentVector
-{
+impl Iterable for SPersistentVector {
     fn iterator(&self) -> ObjResult<Object> { todo!() }
 }
 
-impl IObject for SPersistentVector
-{
+impl IObject for SPersistentVector {
     #[allow(non_snake_case)]
     fn getClass<'a>(&self) -> &'a SClass { todo!() }
 
@@ -256,8 +224,7 @@ impl IObject for SPersistentVector
     fn equals(
         &self,
         other: &Object,
-    ) -> bool
-    {
+    ) -> bool {
         todo!()
     }
 
@@ -265,10 +232,8 @@ impl IObject for SPersistentVector
     fn toString(&self) -> String { todo!() }
 }
 
-impl Default for SPersistentVector
-{
-    fn default() -> Self
-    {
+impl Default for SPersistentVector {
+    fn default() -> Self {
         SPersistentVector {
             _hash:    0,
             _hash_eq: 0,
@@ -278,8 +243,7 @@ impl Default for SPersistentVector
     }
 }
 
-impl IObject for Vector<Object>
-{
+impl IObject for Vector<Object> {
     fn getClass<'a>(&self) -> &'a SClass { todo!() }
 
     fn hashCode(&self) -> usize { todo!() }
@@ -289,8 +253,7 @@ impl IObject for Vector<Object>
     fn equals(
         &self,
         other: &Object,
-    ) -> bool
-    {
+    ) -> bool {
         todo!()
     }
 }

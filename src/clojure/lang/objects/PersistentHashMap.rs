@@ -12,8 +12,7 @@ use intertrait::*;
 use crate::*;
 castable_to!(SPersistentHashMap => [sync] Associative, Callable, Counted,  IEditableCollection, IFn, IObj, IObject, IMeta, Iterable, IHashEq,  IKVReduce, ILookup, IMapIterable, IPersistentCollection, IPersistentMap,   Map, MapEquivalence, Runnable, Sequable, Serializable);
 
-pub struct SPersistentHashMap
-{
+pub struct SPersistentHashMap {
     inner: HashMap<Object, Object>,
 }
 
@@ -24,14 +23,12 @@ pub trait PersistentHashMap:
 
 impl SPersistentHashMap {}
 
-impl IPersistentMap for SPersistentHashMap
-{
+impl IPersistentMap for SPersistentHashMap {
     fn assoc(
         &self,
         key: Object,
         val: Object,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 
@@ -40,43 +37,36 @@ impl IPersistentMap for SPersistentHashMap
         &self,
         key: Object,
         val: Object,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 
     fn without(
         &self,
         key: Object,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 }
 
-impl Counted for SPersistentHashMap
-{
+impl Counted for SPersistentHashMap {
     fn count(&self) -> ObjResult<usize> { todo!() }
 }
 
-impl IMeta for SPersistentHashMap
-{
+impl IMeta for SPersistentHashMap {
     fn meta(&self) -> ObjResult<Object> { todo!() }
 }
 
-impl Iterable for SPersistentHashMap
-{
+impl Iterable for SPersistentHashMap {
     fn iterator(&self) -> ObjResult<Object> { todo!() }
 }
 
-impl Associative for SPersistentHashMap
-{
+impl Associative for SPersistentHashMap {
     fn assoc(
         &self,
         key: &Object,
         value: &Object,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 
@@ -84,8 +74,7 @@ impl Associative for SPersistentHashMap
     fn containsKey(
         &self,
         key: &Object,
-    ) -> ObjResult<bool>
-    {
+    ) -> ObjResult<bool> {
         todo!()
     }
 
@@ -93,14 +82,12 @@ impl Associative for SPersistentHashMap
     fn entryAt(
         &self,
         key: &Object,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 }
 
-impl IObject for SPersistentHashMap
-{
+impl IObject for SPersistentHashMap {
     #[allow(non_snake_case)]
     fn getClass<'a>(&self) -> &'a SClass { todo!() }
 
@@ -110,8 +97,7 @@ impl IObject for SPersistentHashMap
     fn equals(
         &self,
         other: &Object,
-    ) -> bool
-    {
+    ) -> bool {
         todo!()
     }
 
@@ -119,10 +105,8 @@ impl IObject for SPersistentHashMap
     fn toString(&self) -> String { todo!() }
 }
 
-impl Default for SPersistentHashMap
-{
-    fn default() -> Self
-    {
+impl Default for SPersistentHashMap {
+    fn default() -> Self {
         SPersistentHashMap {
             inner: HashMap::<Object, Object>::default(),
         }
@@ -131,15 +115,13 @@ impl Default for SPersistentHashMap
 
 impl PersistentHashMap for SPersistentHashMap {}
 
-impl Iterator for SPersistentHashMap
-{
+impl Iterator for SPersistentHashMap {
     type Item = SPersistentHashMap;
 
     fn next(&mut self) -> Option<Self::Item> { todo!() }
 }
 
-impl IMapIterable for SPersistentHashMap
-{
+impl IMapIterable for SPersistentHashMap {
     type Item = SPersistentHashMap;
 
     fn keyIterator(&self) -> ObjResult<Object> { todo!() }
@@ -147,53 +129,44 @@ impl IMapIterable for SPersistentHashMap
     fn valIterator(&self) -> ObjResult<Object> { todo!() }
 }
 
-impl IObj for SPersistentHashMap
-{
+impl IObj for SPersistentHashMap {
     fn withMeta(
         &self,
         meta: &Object,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 }
 
-impl Callable for SPersistentHashMap
-{
+impl Callable for SPersistentHashMap {
     fn call(&self) -> ObjResult<Object> { self.call() }
 }
 
-impl IFn for SPersistentHashMap
-{
+impl IFn for SPersistentHashMap {
     fn invoke(
         &self,
         args: &[&Object],
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 
     fn apply(
         &self,
         arglist: &ISeq,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 }
 
-impl IHashEq for SPersistentHashMap
-{
+impl IHashEq for SPersistentHashMap {
     fn hasheq(&self) -> ObjResult<usize> { todo!() }
 }
 
-impl ILookup for SPersistentHashMap
-{
+impl ILookup for SPersistentHashMap {
     fn valAt1(
         &self,
         key: Object,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 
@@ -201,19 +174,16 @@ impl ILookup for SPersistentHashMap
         &self,
         key: Object,
         notFound: Object,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 }
 
-impl IPersistentCollection for SPersistentHashMap
-{
+impl IPersistentCollection for SPersistentHashMap {
     fn cons(
         &self,
         o: &Object,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 
@@ -224,14 +194,12 @@ impl IPersistentCollection for SPersistentHashMap
     fn equiv(
         &self,
         o: Object,
-    ) -> ObjResult<bool>
-    {
+    ) -> ObjResult<bool> {
         todo!()
     }
 }
 
-impl Sequable for SPersistentHashMap
-{
+impl Sequable for SPersistentHashMap {
     fn seq(&self) -> ObjResult<Object> { todo!() }
 }
 
@@ -239,8 +207,7 @@ impl MapEquivalence for SPersistentHashMap {}
 
 impl Map for SPersistentHashMap {}
 
-impl Runnable for SPersistentHashMap
-{
+impl Runnable for SPersistentHashMap {
     fn run(&self) { todo!() }
 }
 
@@ -248,19 +215,16 @@ impl Thread for SPersistentHashMap {}
 
 impl Serializable for SPersistentHashMap {}
 
-impl IEditableCollection for SPersistentHashMap
-{
+impl IEditableCollection for SPersistentHashMap {
     fn asTransient(&self) -> ObjResult<Object> { todo!() }
 }
 
-impl IKVReduce for SPersistentHashMap
-{
+impl IKVReduce for SPersistentHashMap {
     fn kvreduce(
         &self,
         f: Object,
         init: Object,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 }

@@ -18,8 +18,7 @@ castable_to!(SClass => [sync] IObject, Class);
 ///     :protocols      #{ Protocol }
 /// }
 /// ```
-pub struct SClass
-{
+pub struct SClass {
     /// `usize` -> classname
     id: usize,
 
@@ -37,15 +36,13 @@ unsafe impl Send for SClass {}
 
 unsafe impl Sync for SClass {}
 
-impl SClass
-{
+impl SClass {
     fn new(
         id: usize,
         protocols: Object,
         members: Object,
         methods: Object,
-    ) -> Object
-    {
+    ) -> Object {
         new_obj!(SClass {
             id,
             protocols,
@@ -56,8 +53,7 @@ impl SClass
 }
 
 /// `Class`: `Protocol` for `Object`s and `SClass`es
-pub trait Class: IObject
-{
+pub trait Class: IObject {
     /// Call `method` by id with `Object`s arguments
     fn call(
         &self,
@@ -74,16 +70,14 @@ pub trait Class: IObject
     ) -> ObjResult<Object>;
 }
 
-impl Class for SClass
-{
+impl Class for SClass {
     /// Call named `method` with `Object`s arguments
     fn call(
         &self,
         obj: Object,
         id: usize,
         args: &[Object],
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 
@@ -91,14 +85,12 @@ impl Class for SClass
         &self,
         obj: Object,
         id: usize,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 }
 
-impl IObject for SClass
-{
+impl IObject for SClass {
     /// Return `Class` of `Object`
     fn getClass<'a>(&self) -> &'a SClass { todo!() }
 
@@ -107,8 +99,7 @@ impl IObject for SClass
     fn equals(
         &self,
         other: &Object,
-    ) -> bool
-    {
+    ) -> bool {
         todo!()
     }
 

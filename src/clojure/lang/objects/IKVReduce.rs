@@ -5,8 +5,7 @@ use clojure::rust::*;
 
 use crate::*;
 
-pub trait IKVReduce: IObject
-{
+pub trait IKVReduce: IObject {
     fn kvreduce(
         &self,
         f: Object,

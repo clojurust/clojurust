@@ -5,8 +5,7 @@ use clojure::rust::*;
 
 use crate::*;
 
-pub trait IPersistentCollection: IObject+Sequable
-{
+pub trait IPersistentCollection: IObject+Sequable {
     fn cons(
         &self,
         o: &Object,

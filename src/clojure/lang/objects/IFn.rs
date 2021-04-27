@@ -3,8 +3,7 @@ use clojure::rust::*;
 
 use crate::*;
 
-pub trait IFn: IObject+Callable
-{
+pub trait IFn: IObject+Callable {
     fn invoke(
         &self,
         args: &[&Object],

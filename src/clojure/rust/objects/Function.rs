@@ -12,8 +12,7 @@ use intertrait::*;
 use crate::*;
 castable_to!(SFunction => [sync] IObject, Function);
 
-pub struct SFunction
-{
+pub struct SFunction {
     /// index of full name: ns + class/protocol + name
     pub full_name: usize,
     /// Mark optional arity of multi-arity function.
@@ -26,8 +25,7 @@ unsafe impl Send for SFunction {}
 
 unsafe impl Sync for SFunction {}
 
-pub trait Function: IObject+CastFromSync
-{
+pub trait Function: IObject+CastFromSync {
     fn call(
         &self,
         args: &Object,
@@ -39,13 +37,11 @@ pub trait Function: IObject+CastFromSync
     ) -> ObjResult<Object>;
 }
 
-impl Function for SFunction
-{
+impl Function for SFunction {
     fn get(
         &self,
         arity: usize,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         // let mut index = arity;
         // match self.multiary {
         //     Some(max) => {
@@ -67,14 +63,12 @@ impl Function for SFunction
     fn call(
         &self,
         args: &Object,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 }
 
-impl IObject for SFunction
-{
+impl IObject for SFunction {
     fn getClass<'a>(&self) -> &'a SClass { todo!() }
 
     fn hashCode(&self) -> usize { todo!() }
@@ -82,8 +76,7 @@ impl IObject for SFunction
     fn equals(
         &self,
         other: &Object,
-    ) -> bool
-    {
+    ) -> bool {
         todo!()
     }
 
@@ -92,14 +85,12 @@ impl IObject for SFunction
 
 use crate::new_obj;
 
-impl SFunction
-{
+impl SFunction {
     pub fn new(
         full_name: usize,
         multiary: Option<usize>,
         func: Object,
-    ) -> Object
-    {
+    ) -> Object {
         new_obj!(SFunction {
             full_name,
             multiary,
@@ -108,7 +99,6 @@ impl SFunction
     }
 }
 
-impl Default for SFunction
-{
+impl Default for SFunction {
     fn default() -> Self { todo!() }
 }

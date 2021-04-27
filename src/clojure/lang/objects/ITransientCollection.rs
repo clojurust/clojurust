@@ -5,8 +5,7 @@ use clojure::rust::*;
 use crate::*;
 // use clojure::lang::*;
 
-pub trait ITransientCollection: IObject
-{
+pub trait ITransientCollection: IObject {
     /// ITransientCollection -> ITransientCollection
     fn conj(
         &self,

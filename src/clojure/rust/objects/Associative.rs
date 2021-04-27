@@ -5,8 +5,7 @@ use clojure::rust::*;
 use crate::*;
 // use clojure::lang::*;
 
-pub trait Associative
-{
+pub trait Associative {
     /// Associative -> Object -> Object -> Associative
     fn assoc(
         &self,

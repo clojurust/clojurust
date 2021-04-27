@@ -1,10 +1,10 @@
 # Rust format for ClojuRust
 
-blank_lines_upper_bound      = 1
-brace_style                  = "AlwaysNextLine"
-combine_control_expr         = false
-wrap_comments                = true
-control_brace_style          = "AlwaysNextLine"
+blank_lines_upper_bound = 1
+# brace_style                  = "AlwaysNextLine"
+combine_control_expr = false
+wrap_comments        = true
+# control_brace_style          = "AlwaysNextLine"
 empty_item_single_line       = true
 enum_discrim_align_threshold = 20
 fn_args_layout               = "Vertical"

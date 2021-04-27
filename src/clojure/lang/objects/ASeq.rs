@@ -3,6 +3,4 @@ use clojure::rust::*;
 
 use crate::*;
 
-pub trait ASeq: IObject+ISeq+Sequential+List+Serializable+IHashEq
-{
-}
+pub trait ASeq: IObject+ISeq+Sequential+List+Serializable+IHashEq {}

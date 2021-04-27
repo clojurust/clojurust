@@ -16,14 +16,12 @@ use lazy_static::lazy_static;
 use crate::*;
 castable_to!(SGlobals => [sync] IObject, Globals);
 
-pub struct SGlobals
-{
+pub struct SGlobals {
     unique_name: Object, // SUnique
     obj_vect:    Object, // SObjVector
 }
 
-pub trait Globals: IObject+CastFromSync
-{
+pub trait Globals: IObject+CastFromSync {
     /// Globals -> String -> Object -> Globals
     fn update(
         &mut self,
@@ -50,22 +48,19 @@ pub trait Globals: IObject+CastFromSync
     ) -> ObjResult<Object>;
 }
 
-impl SGlobals
-{
+impl SGlobals {
     fn new() -> Object { new_obj!(SGlobals::default()) }
 }
 
 use crate::new_obj;
 
-impl Globals for SGlobals
-{
+impl Globals for SGlobals {
     /// Globals -> String -> Object -> Globals
     fn update(
         &mut self,
         name: &str,
         value: &Object,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 
@@ -73,8 +68,7 @@ impl Globals for SGlobals
     fn get_obj_by_id(
         &self,
         index: usize,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 
@@ -82,8 +76,7 @@ impl Globals for SGlobals
     fn get_obj_by_name(
         &self,
         name: &str,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 
@@ -91,14 +84,12 @@ impl Globals for SGlobals
     fn get_id_for_name(
         &self,
         name: &str,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 }
 
-impl IObject for SGlobals
-{
+impl IObject for SGlobals {
     fn getClass<'a>(&self) -> &'a SClass { todo!() }
 
     fn hashCode(&self) -> usize { todo!() }
@@ -106,18 +97,15 @@ impl IObject for SGlobals
     fn equals(
         &self,
         other: &Object,
-    ) -> bool
-    {
+    ) -> bool {
         todo!()
     }
 
     fn toString(&self) -> String { todo!() }
 }
 
-impl Default for SGlobals
-{
-    fn default() -> Self
-    {
+impl Default for SGlobals {
+    fn default() -> Self {
         SGlobals {
             unique_name: SUnique::new(),
             obj_vect:    new_obj!(SPersistentVector::default()),

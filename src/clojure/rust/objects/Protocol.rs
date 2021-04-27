@@ -12,13 +12,11 @@ use intertrait::*;
 use crate::*;
 castable_to!(SProtocol => [sync] IObject, Protocol);
 
-pub struct SProtocol
-{
+pub struct SProtocol {
     inner: SPersistentHashSet,
 }
 
-impl IObject for SProtocol
-{
+impl IObject for SProtocol {
     #[allow(non_snake_case)]
     fn getClass<'a>(&self) -> &'a SClass { todo!() }
 
@@ -28,8 +26,7 @@ impl IObject for SProtocol
     fn equals(
         &self,
         other: &Object,
-    ) -> bool
-    {
+    ) -> bool {
         todo!()
     }
 
@@ -37,9 +34,7 @@ impl IObject for SProtocol
     fn toString(&self) -> String { todo!() }
 }
 
-pub trait Protocol: IObject
-{
-}
+pub trait Protocol: IObject {}
 
 impl Protocol {}
 

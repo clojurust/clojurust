@@ -5,8 +5,7 @@ use clojure::rust::*;
 
 use crate::*;
 
-pub trait AMapEntry: IObject+APersistentVector+IMapEntry
-{
+pub trait AMapEntry: IObject+APersistentVector+IMapEntry {
     fn assocN(
         &self,
         i: usize,

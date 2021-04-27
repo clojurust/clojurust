@@ -21,8 +21,7 @@ castable_to!(Object => [sync] IObject);
 //     }
 // }
 
-pub struct Object
-{
+pub struct Object {
     pub inner: Option<Arc<IObject>>,
 }
 
@@ -35,24 +34,20 @@ impl<'a> Object
 where
     Object: IObject+'a,
 {
-    pub fn new(obj: Option<Arc<IObject>>) -> Object
-    {
+    pub fn new(obj: Option<Arc<IObject>>) -> Object {
         Object {
             inner: obj,
         }
     }
 
-    pub fn null() -> Object
-    {
+    pub fn null() -> Object {
         Object {
             inner: None,
         }
     }
 
-    pub fn is_null(&self) -> bool
-    {
-        match self.inner
-        {
+    pub fn is_null(&self) -> bool {
+        match self.inner {
             | Some(_) => false,
             | None => true,
         }
@@ -63,15 +58,12 @@ where
         T: 'static,
     {
         let o = self.clone();
-        match o.inner
-        {
+        match o.inner {
             | None => false,
-            | Some(o) =>
-            {
+            | Some(o) => {
                 let a = CastArc::cast::<T>(o).as_deref();
 
-                match a
-                {
+                match a {
                     | Ok(_) => true,
                     | _ => false,
                 }
@@ -79,16 +71,12 @@ where
         }
     }
 
-    pub fn cast<T>(&'a self) -> ObjResult<&'static T>
-    {
-        match self.inner
-        {
+    pub fn cast<T>(&'a self) -> ObjResult<&'static T> {
+        match self.inner {
             | None => err_cast(self, "?"),
-            | Some(o) =>
-            {
+            | Some(o) => {
                 let a = CastArc::cast::<T>(o).as_deref();
-                match a
-                {
+                match a {
                     | Ok(o) => Ok(o),
                     | Err(_) => err_cast(self, "?"),
                 }
@@ -96,11 +84,9 @@ where
         }
     }
 
-    pub fn strong_count(&self) -> usize
-    {
+    pub fn strong_count(&self) -> usize {
         let o = self.clone();
-        match o.inner
-        {
+        match o.inner {
             | None => 0,
             | Some(o) => Arc::<dyn IObject>::strong_count(&o),
         }
@@ -110,11 +96,9 @@ where
         &self,
         id: usize,
         args: &[Object],
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         let o = self.clone();
-        match o.inner
-        {
+        match o.inner {
             | None => err("Cannot call function on nil"),
             | Some(o) => o.getClass().call(self.clone(), id, args),
         }
@@ -129,8 +113,7 @@ where
     pub fn get(
         &self,
         id: usize,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         let a = self.clone();
         let b = a.getClass();
         b.get(self.clone(), id)
@@ -147,22 +130,17 @@ where
 ///
 /// Functions are applied to the `content` of `Object`
 // #[cast_to([sync] IObject, Debug)];
-impl IObject for Object
-{
-    fn getClass<'a>(&self) -> &'a SClass
-    {
+impl IObject for Object {
+    fn getClass<'a>(&self) -> &'a SClass {
         let a = self.clone();
-        match a.inner
-        {
+        match a.inner {
             | None => todo!(),
             | Some(o) => o.getClass(),
         }
     }
 
-    fn hashCode(&self) -> usize
-    {
-        match self.inner
-        {
+    fn hashCode(&self) -> usize {
+        match self.inner {
             | Some(o) => o.hashCode(),
             | None => 0,
         }
@@ -171,13 +149,10 @@ impl IObject for Object
     fn equals(
         &self,
         other: &Object,
-    ) -> bool
-    {
-        match self.inner
-        {
+    ) -> bool {
+        match self.inner {
             | Some(o) => o.equals(other),
-            | None => match other.inner
-            {
+            | None => match other.inner {
                 | Some(_) => false,
                 | None => true,
             },
@@ -187,10 +162,8 @@ impl IObject for Object
     fn toString(&self) -> String { todo!() }
 }
 
-impl Clone for Object
-{
-    fn clone(&self) -> Self
-    {
+impl Clone for Object {
+    fn clone(&self) -> Self {
         let Object {
             inner,
         } = self;
@@ -202,24 +175,20 @@ impl Clone for Object
 
 impl Eq for Object {}
 
-impl PartialEq for Object
-{
+impl PartialEq for Object {
     fn eq(
         &self,
         other: &Self,
-    ) -> bool
-    {
+    ) -> bool {
         self.equals(other)
     }
 }
 
-impl Hash for Object
-{
+impl Hash for Object {
     fn hash<H: Hasher>(
         &self,
         state: &mut H,
-    )
-    {
+    ) {
         state.write_usize(self.hashCode())
     }
 
@@ -229,8 +198,7 @@ impl Hash for Object
     ) where
         Self: Sized,
     {
-        for piece in data
-        {
+        for piece in data {
             piece.hash(state);
         }
     }

@@ -3,8 +3,7 @@ use clojure::rust::*;
 use crate::*;
 // use clojure::lang::*;
 
-pub trait ILookup: IObject
-{
+pub trait ILookup: IObject {
     // ILookup -> Object -> Object
     fn valAt1(
         &self,

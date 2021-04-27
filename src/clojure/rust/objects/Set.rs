@@ -3,8 +3,7 @@ use clojure::rust::*;
 use crate::*;
 // use clojure::lang::*;
 
-pub trait Set: IObject
-{
+pub trait Set: IObject {
     fn size(&self) -> usize;
 
     fn isEmpty(&self) -> bool;

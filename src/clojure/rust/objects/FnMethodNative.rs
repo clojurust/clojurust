@@ -16,44 +16,37 @@ use intertrait::*;
 use crate::*;
 castable_to!(SFnMethodNative => [sync] IObject, FnMethodNative);
 
-pub struct SFnMethodNative
-{
+pub struct SFnMethodNative {
     inner: fn(&[Object]) -> ObjResult<Object>,
 }
 
-impl Debug for SFnMethodNative
-{
+impl Debug for SFnMethodNative {
     fn fmt(
         &self,
         f: &mut Formatter<'_>,
-    ) -> Result
-    {
+    ) -> Result {
         write!(f, "Method native")
     }
 }
 
-pub trait FnMethodNative: IObject
-{
+pub trait FnMethodNative: IObject {
     fn call(
         &self,
         args: &[Object],
     ) -> ObjResult<Object>;
 }
 
-impl FnMethodNative for SFnMethodNative
-{
+impl FnMethodNative for SFnMethodNative {
     fn call(
         &self,
         args: &[Object],
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         let f = self.inner;
         f(args)
     }
 }
 
-impl IObject for SFnMethodNative
-{
+impl IObject for SFnMethodNative {
     fn getClass<'a>(&self) -> &'a SClass { todo!() }
 
     fn hashCode(&self) -> usize { todo!() }
@@ -61,8 +54,7 @@ impl IObject for SFnMethodNative
     fn equals(
         &self,
         other: &Object,
-    ) -> bool
-    {
+    ) -> bool {
         todo!()
     }
 

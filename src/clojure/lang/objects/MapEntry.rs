@@ -6,6 +6,4 @@ use crate::*;
 
 ////////////////
 /// Here me must implement im::hashmap::Entry
-pub trait MapEntry: IObject+AMapEntry
-{
-}
+pub trait MapEntry: IObject+AMapEntry {}

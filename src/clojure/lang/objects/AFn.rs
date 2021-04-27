@@ -5,6 +5,4 @@ use clojure::lang::*;
 
 use crate::*;
 
-pub trait AFn: IFn
-{
-}
+pub trait AFn: IFn {}

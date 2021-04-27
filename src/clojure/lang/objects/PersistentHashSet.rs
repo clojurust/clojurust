@@ -15,16 +15,14 @@ use intertrait::*;
 use crate::*;
 castable_to!(SPersistentHashSet => [sync] IObject, PersistentHashSet, IObj, IMeta, APersistentSet);
 
-pub struct SPersistentHashSet
-{
+pub struct SPersistentHashSet {
     /// hashmap::HashMap<Object>
     meta:  Arc<HashMap<Object, Object>>,
     /// hashset::HashSet<Object>
     inner: Arc<HashSet<Object>>,
 }
 
-impl IObject for SPersistentHashSet
-{
+impl IObject for SPersistentHashSet {
     #[allow(non_snake_case)]
     fn getClass<'a>(&self) -> &'a SClass { todo!() }
 
@@ -34,8 +32,7 @@ impl IObject for SPersistentHashSet
     fn equals(
         &self,
         other: &Object,
-    ) -> bool
-    {
+    ) -> bool {
         todo!()
     }
 
@@ -43,10 +40,8 @@ impl IObject for SPersistentHashSet
     fn toString(&self) -> String { todo!() }
 }
 
-impl Default for SPersistentHashSet
-{
-    fn default() -> Self
-    {
+impl Default for SPersistentHashSet {
+    fn default() -> Self {
         SPersistentHashSet {
             meta:  Arc::new(HashMap::<Object, Object>::default()),
             inner: Arc::new(HashSet::<Object>::default()),
@@ -54,39 +49,32 @@ impl Default for SPersistentHashSet
     }
 }
 
-pub trait PersistentHashSet: IObject+IObj+APersistentSet
-{
-}
+pub trait PersistentHashSet: IObject+IObj+APersistentSet {}
 
 impl PersistentHashSet for SPersistentHashSet {}
 
-impl IMeta for SPersistentHashSet
-{
+impl IMeta for SPersistentHashSet {
     fn meta(&self) -> ObjResult<Object> { todo!() }
 }
 
-impl IObj for SPersistentHashSet
-{
+impl IObj for SPersistentHashSet {
     fn withMeta(
         &self,
         meta: &Object,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 }
 
 impl APersistentSet for SPersistentHashSet {}
 
-impl IHashEq for SPersistentHashSet
-{
+impl IHashEq for SPersistentHashSet {
     fn hasheq(&self) -> ObjResult<usize> { todo!() }
 }
 
 impl Serializable for SPersistentHashSet {}
 
-impl Set for SPersistentHashSet
-{
+impl Set for SPersistentHashSet {
     fn size(&self) -> usize { todo!() }
 
     fn isEmpty(&self) -> bool { todo!() }
@@ -94,67 +82,57 @@ impl Set for SPersistentHashSet
     fn containsKey(
         &self,
         key: Object,
-    ) -> bool
-    {
+    ) -> bool {
         todo!()
     }
 
     fn containsValue(
         &self,
         key: Object,
-    ) -> bool
-    {
+    ) -> bool {
         todo!()
     }
 
     fn get(
         &self,
         key: Object,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 }
 
-impl IPersistentSet for SPersistentHashSet
-{
+impl IPersistentSet for SPersistentHashSet {
     fn disjoin(
         &self,
         key: Object,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 
     fn assocEx(
         &self,
         key: Object,
-    ) -> ObjResult<bool>
-    {
+    ) -> ObjResult<bool> {
         todo!()
     }
 
     fn get(
         &self,
         key: Object,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 }
 
-impl Iterable for SPersistentHashSet
-{
+impl Iterable for SPersistentHashSet {
     fn iterator(&self) -> ObjResult<Object> { todo!() }
 }
 
-impl IPersistentCollection for SPersistentHashSet
-{
+impl IPersistentCollection for SPersistentHashSet {
     fn cons(
         &self,
         o: &Object,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 
@@ -165,50 +143,42 @@ impl IPersistentCollection for SPersistentHashSet
     fn equiv(
         &self,
         o: Object,
-    ) -> ObjResult<bool>
-    {
+    ) -> ObjResult<bool> {
         todo!()
     }
 }
 
-impl Counted for SPersistentHashSet
-{
+impl Counted for SPersistentHashSet {
     fn count(&self) -> ObjResult<usize> { todo!() }
 }
 
-impl Sequable for SPersistentHashSet
-{
+impl Sequable for SPersistentHashSet {
     fn seq(&self) -> ObjResult<Object> { todo!() }
 }
 
 impl AFn for SPersistentHashSet {}
 
-impl IFn for SPersistentHashSet
-{
+impl IFn for SPersistentHashSet {
     fn invoke(
         &self,
         args: &[&Object],
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 
     fn apply(
         &self,
         arglist: &ISeq,
-    ) -> ObjResult<Object>
-    {
+    ) -> ObjResult<Object> {
         todo!()
     }
 }
 
-impl Callable for SPersistentHashSet
-{
+impl Callable for SPersistentHashSet {
     fn call(&self) -> ObjResult<Object> { todo!() }
 }
 
-impl Collection for SPersistentHashSet
-{
+impl Collection for SPersistentHashSet {
     fn size(&self) -> usize { todo!() }
 
     fn isEmpty(&self) -> bool { todo!() }
@@ -220,8 +190,7 @@ impl Collection for SPersistentHashSet
     fn containsAll(
         &self,
         c: &Object,
-    ) -> ObjResult<bool>
-    {
+    ) -> ObjResult<bool> {
         todo!()
     }
 }

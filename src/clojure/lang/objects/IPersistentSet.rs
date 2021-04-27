@@ -5,8 +5,7 @@ use clojure::rust::*;
 
 use crate::*;
 
-pub trait IPersistentSet: IObject+IPersistentCollection+Counted
-{
+pub trait IPersistentSet: IObject+IPersistentCollection+Counted {
     // IPersistentSet -> Object -> IPersistentSet
     fn disjoin(
         &self,

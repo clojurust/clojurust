@@ -5,8 +5,7 @@ use clojure::rust::*;
 
 use crate::*;
 
-pub trait IEditableCollection: IObject
-{
+pub trait IEditableCollection: IObject {
     /// IEditableCollection -> ITransientCollection
     fn asTransient(&self) -> ObjResult<Object>;
 }

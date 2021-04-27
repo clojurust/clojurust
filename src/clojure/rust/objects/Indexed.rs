@@ -4,8 +4,7 @@ use clojure::rust::*;
 use crate::*;
 // use clojure::lang::*;
 
-pub trait Indexed: IObject+Counted
-{
+pub trait Indexed: IObject+Counted {
     /// Indexed -> usize -> Object
     fn nth_1(
         &self,

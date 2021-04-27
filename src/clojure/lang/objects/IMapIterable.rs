@@ -3,8 +3,7 @@ use clojure::rust::*;
 use crate::*;
 // use clojure::lang::*;
 
-pub trait IMapIterable: IObject+Iterator
-{
+pub trait IMapIterable: IObject+Iterator {
     type Item = Object;
 
     /// IMapIterable -> Iterator

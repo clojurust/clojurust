@@ -5,8 +5,7 @@ use clojure::rust::*;
 use crate::*;
 // use clojure::lang::*;
 
-pub trait IPersistentMap: IObject+Associative+Iterable+Counted
-{
+pub trait IPersistentMap: IObject+Associative+Iterable+Counted {
     fn assoc(
         &self,
         key: Object,

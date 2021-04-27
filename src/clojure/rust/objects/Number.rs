@@ -12,8 +12,7 @@ use intertrait::*;
 use crate::*;
 
 /// All numeric values have the `Number` trait.
-pub trait Number: IObject
-{
+pub trait Number: IObject {
     fn big_integer_value_o(&self) -> Object;
 
     fn long_value_o(&self) -> Object;
@@ -47,21 +46,13 @@ pub trait Number: IObject
     fn usize_value(&self) -> usize;
 }
 
-pub trait Numeric
-{
-}
+pub trait Numeric {}
 
-pub trait Floating
-{
-}
+pub trait Floating {}
 
-pub trait Decimal
-{
-}
+pub trait Decimal {}
 
-pub trait Ratio
-{
-}
+pub trait Ratio {}
 
 // use std::fmt::*;
 number_def!(BigInteger, i128);
