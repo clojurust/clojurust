@@ -7,7 +7,7 @@ license    = "MPL-2.0+"
 name       = "clojurust"
 readme     = "./README.md"
 repository = "https://github.com/clojurust/clojurust"
-version    = "0.1.0"
+version    = "0.0.0-alpha"
 
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -35,8 +35,10 @@ serde       = "1.0.125"
 
 # docs.rs-specific configuration
 [package.metadata.docs.rs]
+
 # document all features
 all-features = true
+
 # defines the configuration attribute
 rustdoc-args = [
     "--lib",
@@ -44,7 +46,7 @@ rustdoc-args = [
     "--open",
     "--package",
     "clojurust",
-    "--exmples",
+    "--exemples",
     "--tests",
     "--benches",
 ]
