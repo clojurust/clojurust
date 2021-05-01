@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["CLASSES",""],["PROTOCOLS",""],["SGlobals",""]],"trait":[["Globals",""]]});

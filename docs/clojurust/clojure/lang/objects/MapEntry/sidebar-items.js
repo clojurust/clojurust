@@ -1,0 +1,1 @@
+initSidebarItems({"trait":[["MapEntry","Here me must implement im::hashmap::Entry"]]});
