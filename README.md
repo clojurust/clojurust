@@ -7,6 +7,7 @@ A proof of concept version of Clojure in Rust.
     - [Current state](#current-state)
     - [Goals](#goals)
     - [Documentation](#documentation)
+- [Code projects](#code-projects)
     - [Licence](#licence)
         - [Persistent data structures licence](#persistent-data-structures-licence)
         - [Original Clojure licence](#original-clojure-licence)
@@ -36,7 +37,12 @@ Meanwhile, the first Core Clojure classes can be developed in parallel, for test
 * Test a way to create Rust code to compile Clojure code.
 
 ## Documentation
-The whole documentation is located [HERE.](https://clojurust.github.io/clojurust.doc/clojurust/)
+* [Clojurust crate](https://clojurust.github.io/clojurust.doc/clojurust/)
+
+# Code projects
+* [ClojuRust Core](https://github.com/clojurust/clojurust) ClojuRust library
+* [ClojuRust macros](https://github.com/clojurust/clojurust-macros) Macros to standardize ClojuRust
+
 
 ## Licence
 This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. 
@@ -45,8 +51,6 @@ If a copy of the MPL was not distributed within this file, You can obtain one at
 
 
     Copyright (c) 2020 Ivan Pierre, kilroySoft, <Ivan Pierre, ivan@kilroysoft.ch>, under MPL 2.0.
-
-* Code is on GitHub: https://github.com/clojurust/clojurust
 
 ### Persistent data structures licence
 
