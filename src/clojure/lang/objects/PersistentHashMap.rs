@@ -10,7 +10,7 @@ use im::hashmap::*;
 use intertrait::*;
 
 use crate::*;
-castable_to!(SPersistentHashMap => [sync] Associative, Callable, Counted,  IEditableCollection, IFn, IObj, IObject, IMeta, Iterable, IHashEq,  IKVReduce, ILookup, IMapIterable, IPersistentCollection, IPersistentMap,   Map, MapEquivalence, Runnable, Sequable, Serializable);
+castable_to!(SPersistentHashMap => [sync] Associative, Callable, Counted,IEditableCollection, IFn, IObj, IObject, IMeta, Iterable, IHashEq, IKVReduce,ILookup, IPersistentCollection, IPersistentMap, Map,MapEquivalence, Runnable, Sequable, Serializable);
 
 pub struct SPersistentHashMap {
     inner: HashMap<Object, Object>,
@@ -122,7 +122,7 @@ impl Iterator for SPersistentHashMap {
 }
 
 impl IMapIterable for SPersistentHashMap {
-    type Item = SPersistentHashMap;
+    type Item = Object;
 
     fn keyIterator(&self) -> ObjResult<Object> { todo!() }
 
