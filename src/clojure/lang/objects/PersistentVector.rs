@@ -18,12 +18,12 @@ castable_to!(SPersistentVector => [sync] IObject, PersistentVector,      APersis
 /////////////////////////////////
 // Objects
 pub struct SPersistentVector {
-    _hash:    usize,
-    _hash_eq: usize,
+    pub _hash:    usize,
+    pub _hash_eq: usize,
     /// hashmap::HashMap<Object>
-    meta:     Object,
+    pub meta:     Object,
     ///
-    inner:    Object,
+    pub inner:    Object,
 }
 
 //////////////////////////////////
@@ -104,7 +104,7 @@ impl IObj for SPersistentVector {
 }
 
 impl IMeta for SPersistentVector {
-    fn meta(&self) -> ObjResult<Object> { Ok(self.meta) }
+    fn meta(&self) -> ObjResult<Object> { Ok(self.meta.clone()) }
 }
 
 impl List for SPersistentVector {}

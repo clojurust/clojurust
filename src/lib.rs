@@ -31,7 +31,6 @@
 #![feature(try_blocks)]
 #![feature(control_flow_enum)]
 #![feature(try_find)]
-#![feature(cmp_min_max_by)]
 #![feature(iter_order_by)]
 #![feature(associated_type_defaults)]
 
@@ -42,15 +41,12 @@
 /// Clojure Module
 ///
 /// description de clojure
-pub mod clojure
-{
+pub mod clojure {
     /// Clojure language module
     ///
     /// clojure::lang modules
-    pub mod lang
-    {
-        pub mod objects
-        {
+    pub mod lang {
+        pub mod objects {
             pub mod AFn;
             pub mod AFunction;
             pub mod AMapEntry;
@@ -128,10 +124,8 @@ pub mod clojure
     }
 
     /// clojure::rust host modules
-    pub mod rust
-    {
-        pub mod objects
-        {
+    pub mod rust {
+        pub mod objects {
             pub mod Associative;
             pub mod Callable;
             pub mod Class;
@@ -163,8 +157,7 @@ pub mod clojure
             pub mod Thread;
             pub mod Unique;
         }
-        pub mod macros
-        {
+        pub mod macros {
             pub mod macros;
             pub mod number;
         }
@@ -203,11 +196,9 @@ pub mod clojure
 }
 
 #[cfg(test)]
-mod tests
-{
+mod tests {
     #[test]
-    fn it_works()
-    {
+    fn it_works() {
         assert_eq!(2 + 2, 4);
     }
 }

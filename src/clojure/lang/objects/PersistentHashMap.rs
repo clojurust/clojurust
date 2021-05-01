@@ -139,7 +139,7 @@ impl IObj for SPersistentHashMap {
 }
 
 impl Callable for SPersistentHashMap {
-    fn call(&self) -> ObjResult<Object> { self.call() }
+    fn call(&self) -> ObjResult<Object> { todo!() }
 }
 
 impl IFn for SPersistentHashMap {

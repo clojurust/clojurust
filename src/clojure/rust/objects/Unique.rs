@@ -4,7 +4,7 @@ use std::sync::*;
 
 use clojure::lang::*;
 use clojure::rust::*;
-use intertrait::cast::CastArc;
+// use intertrait::cast::CastArc;
 use intertrait::cast::CastRef;
 use intertrait::*;
 use lazy_static::lazy_static;
@@ -98,25 +98,26 @@ impl Unique for SUnique {
         &mut self,
         name: &str,
     ) -> ObjResult<usize> {
-        let m = self.map.cast::<SPersistentHashMap>().unwrap();
-        let v = self.vect.cast::<SPersistentVector>().unwrap();
+        // let m = self.map.cast::<SPersistentHashMap>().unwrap();
+        // let v = self.vect.cast::<SPersistentVector>().unwrap();
 
-        if let Some(o) = m.get(name) {
-            return *o;
-        } else {
-            let length = self.len().unwrap();
-            v.push_back(String::from(name));
-            *m = m.update(String::from(name), length);
+        // if let Some(o) = m.get(name) {
+        //     return *o;
+        // } else {
+        //     let length = self.len().unwrap();
+        //     v.push_back(String::from(name));
+        //     *m = m.update(String::from(name), length);
 
-            let k = SUnique {
-                map:  new_obj!(*m),
-                vect: new_obj!(*v),
-            };
-            *self = k;
+        //     let k = SUnique {
+        //         map:  new_obj!(*m),
+        //         vect: new_obj!(*v),
+        //     };
+        //     *self = k;
 
-            // return new index that was the length of the vector
-            return length;
-        }
+        //     // return new index that was the length of the vector
+        //     return length;
+        // }
+        todo!()
     }
 
     /// Gives index of name
@@ -126,10 +127,11 @@ impl Unique for SUnique {
         &mut self,
         name: &str,
     ) -> ObjResult<usize> {
-        let m = self.map.cast::<SPersistentHashMap>().unwrap();
-        let v = self.vect.cast::<SPersistentVector>().unwrap();
-        let o = m.get(name).unwrap();
-        Ok(o)
+        // let m = self.map.cast::<SPersistentHashMap>().unwrap();
+        // let v = self.vect.cast::<SPersistentVector>().unwrap();
+        // let o = m.get(name).unwrap();
+        // Ok(o)
+        todo!()
     }
 
     /// Tests if name exists
@@ -137,12 +139,14 @@ impl Unique for SUnique {
         &self,
         name: &str,
     ) -> ObjResult<bool> {
-        if let m = self.map.cast::<SPersistentHashMap>().unwrap() {
-            match m.get(name) {
-                | Some(_) => return Ok(true),
-                | None => return Ok(false),
-            }
-        }
+        // if let m = self.map.cast::<SPersistentHashMap>().unwrap() {
+        //     match m.get(name) {
+        //         | Some(_) => return Ok(true),
+        //         | None => return Ok(false),
+        //     }
+        // }
+        // Ok(false)
+        todo!()
     }
 }
 
@@ -163,19 +167,20 @@ impl IObject for SUnique {
 
 impl SUnique {
     fn get_vect(&self) -> ObjResult<&SPersistentVector> {
-        let v = match self.vect.inner {
-            | Some(v) => v,
-            | _ => {
-                return err::<&SPersistentVector>(
-                    "SUnique.vect not initialized",
-                )
-            },
-        };
+        // let v = match self.vect.inner {
+        //     | Some(v) => v,
+        //     | _ => {
+        //         return err::<&SPersistentVector>(
+        //             "SUnique.vect not initialized",
+        //         )
+        //     },
+        // };
 
-        match v.cast::<SPersistentVector>() {
-            | Ok(c) => Ok(c.as_ref()),
-            | Err(e) => err_cast(&self.vect, "<&SPersistentVector>"),
-        }
+        // match v.cast::<SPersistentVector>() {
+        //     | Ok(c) => Ok(c.as_ref()),
+        //     | Err(e) => err_cast(&self.vect, "<&SPersistentVector>"),
+        // }
+        todo!()
     }
 }
 
@@ -194,7 +199,7 @@ impl SUnique {
 
 impl Drop for SUnique {
     fn drop(&mut self) {
-        println!("Dropping Keyword state! -> {:?}", self.to_string());
+        println!("Dropping Keyword state! -> {:?}", self.toString());
     }
 }
 
