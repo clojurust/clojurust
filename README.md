@@ -7,7 +7,7 @@ A proof of concept version of Clojure in Rust.
     - [Current state](#current-state)
     - [Goals](#goals)
     - [Documentation](#documentation)
-- [Code projects](#code-projects)
+    - [Code projects](#code-projects)
     - [Licence](#licence)
         - [Persistent data structures licence](#persistent-data-structures-licence)
         - [Original Clojure licence](#original-clojure-licence)
@@ -40,7 +40,7 @@ Meanwhile, the first Core Clojure classes can be developed in parallel, for test
 * [Clojurust crate](https://clojurust.github.io/clojurust.doc/clojurust/) Rust version of Clojure Java Core
 * [Im crate](https://clojurust.github.io/clojurust.doc/im/) Immutable data structures for Rust by Bodil
 
-# Code projects
+## Code projects
 * [ClojuRust Core](https://github.com/clojurust/clojurust) ClojuRust library
 * [ClojuRust macros](https://github.com/clojurust/clojurust-macros) Macros to standardize ClojuRust
 
