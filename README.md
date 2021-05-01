@@ -36,7 +36,7 @@ Meanwhile, the first Core Clojure classes can be developed in parallel, for test
 * Test a way to create Rust code to compile Clojure code.
 
 ## Documentation
-The whole documentation will be located in a .io page (WIP)
+The whole documentation is located [HERE.](https://clojurust.github.io/clojurust.doc/clojurust/)
 
 ## Licence
 This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. 
