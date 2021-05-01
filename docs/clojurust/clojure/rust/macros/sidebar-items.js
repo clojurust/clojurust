@@ -1,1 +1,0 @@
-initSidebarItems({"mod":[["macros","Macros to manage static `Clojure`’s data wrtiting."],["number","All numbers and `Number` protocol"]]});

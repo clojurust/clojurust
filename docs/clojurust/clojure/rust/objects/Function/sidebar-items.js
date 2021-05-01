@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["SFunction",""]],"trait":[["Function",""]]});

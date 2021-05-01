@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["SClass","Clojure Class descriptor for Class :"]],"trait":[["Class","`Class`: `Protocol` for `Object`s and `SClass`es"]]});

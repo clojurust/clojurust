@@ -1,1 +1,0 @@
-initSidebarItems({"enum":[["ErrorType",""]],"fn":[["err",""],["err_arity",""],["err_cast",""],["err_not_found",""]],"struct":[["SObjError","Standard error for the library"]],"trait":[["ObjError","`Protocol` ObjError"]],"type":[["ObjResult",""]]});

@@ -1,1 +1,0 @@
-initSidebarItems({"macro":[["new_obj",""],["number_def",""]],"mod":[["clojure","Clojure Module"]]});

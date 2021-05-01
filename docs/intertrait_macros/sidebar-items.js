@@ -1,1 +1,0 @@
-initSidebarItems({"attr":[["cast_to","Attached on an `impl` item or type definition, registers traits as targets for casting."]],"macro":[["castable_to","Declares target traits for casting implemented by a type."]]});

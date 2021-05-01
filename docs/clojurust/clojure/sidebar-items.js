@@ -1,1 +1,0 @@
-initSidebarItems({"mod":[["lang","Clojure language module"],["rust","clojure::rust host modules"]]});

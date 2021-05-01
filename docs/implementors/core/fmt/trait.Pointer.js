@@ -1,3 +1,0 @@
-(function() {var implementors = {};
-implementors["rc"] = [{"text":"impl&lt;T&gt; <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/fmt/trait.Pointer.html\" title=\"trait core::fmt::Pointer\">Pointer</a> for <a class=\"struct\" href=\"rc/struct.Rc.html\" title=\"struct rc::Rc\">Rc</a>&lt;T&gt;","synthetic":false,"types":["rc::stable_rc::Rc"]}];
-if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

@@ -1,1 +1,0 @@
-window.ALL_CRATES = ["bigint","bitmaps","byteorder","cfg_if","clojurust","crunchy","dashmap","delegate","error_chain","getrandom","im","intertrait","intertrait_macros","lazy_static","libc","linkme","linkme_impl","mut_static","num_cpus","once_cell","proc_macro2","quote","rand_core","rand_xoshiro","rc","serde","sized_chunks","syn","typenum","unicode_xid","uuid"];

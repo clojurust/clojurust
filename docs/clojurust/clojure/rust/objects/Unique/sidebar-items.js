@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["SUnique","A keyword storage structure"]],"trait":[["Unique","Protocole `Unique`"]]});

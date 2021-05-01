@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["BigInteger",""],["Byte",""],["Double",""],["Float",""],["Integer",""],["Long",""],["Short",""],["Usize",""]],"trait":[["Decimal",""],["Floating",""],["Number","All numeric values have the `Number` trait."],["Numeric",""],["Ratio",""]]});

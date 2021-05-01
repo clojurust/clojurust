@@ -41,7 +41,7 @@ all-features = true
 
 # defines the configuration attribute
 rustdoc-args = [
-    "--lib clojurust",
+    "--lib",
     "--bins",
     "--open",
     "--package",

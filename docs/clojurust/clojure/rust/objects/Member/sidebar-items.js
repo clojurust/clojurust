@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["SMember",""]],"trait":[["Member",""]]});
