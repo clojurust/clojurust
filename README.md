@@ -30,7 +30,8 @@ Meanwhile, the first Core Clojure classes can be developed in parallel, for test
 
 ## Goals
 * Define an internal object model.
-* Translate Clojure java code to Rust.
+* Generate skeleton from Clojure core library programmatically.
+* Implement Clojure Java code into Rust implementation.
 * Test a way to have an interpreter of Clojure code.
 * Test a way to have a VM based on a stack machine.
 * Test a way to dynamically compile Clojure code in machine code.
