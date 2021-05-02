@@ -5,6 +5,11 @@ A proof of concept version of Clojure in Rust.
 
 - [ClojuRust](#clojurust)
     - [Current state](#current-state)
+    - [Processes](#processes)
+        - [Getting original code structure](#getting-original-code-structure)
+        - [Create or update the code with the data](#create-or-update-the-code-with-the-data)
+        - [Macros to add Rust missing code](#macros-to-add-rust-missing-code)
+        - [Implement Rust code](#implement-rust-code)
     - [Goals](#goals)
     - [Documentation](#documentation)
     - [Code projects](#code-projects)
@@ -16,29 +21,49 @@ A proof of concept version of Clojure in Rust.
 <!-- /TOC -->
 
 ## Current state
-WIP in an analysis and test state, and so a working version is out of sight for now.
+WIP in an analysis and test state, and so a working version is out of sight for now. Days have only 48 hours, be patient.
 
-As I'm a newbie in Rust, I hit all the bads of borrowing, referencing, Arcs, automatic derefs, timeline problems... But it begin to enter in my fingers... :wink:
+As I'm a newbie in Rust, I hit all the bad of borrowing, referencing, Arcs, automatic deref, time-line problems... But it begin to enter in my fingers... :wink:
 
 For now, in the creation of the clojure::rust modules, say the Rust host environment, as Clojure is an hosted language. Rust, as a bare-metal language, has no dynamic abilities per se, and is even opposed to such an approach as all is verified at compile time. So a lot of information should be statically stored for the library to function.
 
 The idea, is not to have an optimized structure as first draft, but a working concepts framework, easy to refactor as experiments are tested.
 
-For example the current model for Clojure objects is a boxed and synchronized structure. Returned values are boxed in a Result struct incorporating error values. So it's clearly the less efficient and the more ressource consumig way to do it, so optimization can only go in a more fast result... :grind:
+For example the current model for Clojure objects is a boxed and synchronized structure. Returned values are boxed in a Result enum incorporating error values. So it's clearly the less efficient and the more ressource consuming way to do it, so optimization can only go in a more fast result... :grind:
 
 Meanwhile, the first Core Clojure classes can be developed in parallel, for testing purposes, but a strong separation shall be preserved.
 
+## Processes
+The idea is to mainly automatize the process in order to grab all data and to create standard implementation w/o errors.
+
+### Getting original code structure
+With the intend to grab all the skeleton of the original Java library and ease creation of Rust code skeleton as Rust doesn't play with reflection well... This will get the Objects, Abstract, Interfaces, defined in the core of the library, and to get the same info for the Java standard library to be implemented in Rust.
+
+This will be written in Clojure as it has access to reflection and, well... It's a better language for this type of work.
+
+### Create or update the code with the data
+This will create or modify module and files hierarchy according to original data. Each Interface, and Abstract will create a new .rs file with a trait, each Object will create a TObject struct. The process will create code implementation place in the trait and struct definition with macros to generate all necessary code to match Java behavior. A new version of original code can modify the generated code, but not regenerate it. I shall only modify, if deletion of element is done, there should be done by commenting out the intended place.
+
+In order to differentiate Generated code and Rust code, the names will be camel-cased... even is this is bad Rust writing. 
+
+### Macros to add Rust missing code
+We can access functions in Rust from trait object, but not automagically in the implemented structs. The same way derived trait doesn't permit to use function from their parents. Macros will add code to the files from simple struct and trait definitions, with code to implement them with struct functions call. Placeholders are already generated, so there should be only one place to add code to. This will also create generation of Functions, Classes, Interfaces, Protocols data to permit ClojuRust runtime to work.
+
+### Implement Rust code
+This is the long and painful work that will be proceeded manually... pfff...
+
 ## Goals
-* Define an internal object model.
-* Generate skeleton from Clojure core library programmatically.
-* Implement Clojure Java code into Rust implementation.
-* Test a way to have an interpreter of Clojure code.
-* Test a way to have a VM based on a stack machine.
-* Test a way to dynamically compile Clojure code in machine code.
-* Test a way to create Rust code to compile Clojure code.
+* [X] Define an internal object model.
+* [ ] Grab code structure from original JVM Clojure. 
+* [ ] Generate skeleton from Clojure core library programmatically.
+* [ ] Implement Clojure Java code into Rust implementation.
+* [ ] Test a way to have an interpreter of Clojure code (eval).
+* [ ] Test a way to have a VM based on a stack machine.
+* [ ] Test a way to dynamically compile Clojure code in machine code.
+* [ ] Test a way to create Rust code to compile Clojure code.
 
 ## Documentation
-* [Clojurust crate](https://clojurust.github.io/clojurust.doc/clojurust/) Rust version of Clojure Java Core
+* [ClojuRust crate](https://clojurust.github.io/clojurust.doc/clojurust/) Rust version of Clojure Java Core
 * [Im crate](https://clojurust.github.io/clojurust.doc/im/) Immutable data structures for Rust by Bodil
 
 ## Code projects
@@ -51,10 +76,12 @@ This Source Code Form is subject to the terms of the Mozilla Public License, v. 
 
 If a copy of the MPL was not distributed within this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-
     Copyright (c) 2020 Ivan Pierre, kilroySoft, <Ivan Pierre, ivan@kilroysoft.ch>, under MPL 2.0.
 
 ### Persistent data structures licence
+This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. 
+
+If a copy of the MPL was not distributed within this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
     Copyright 2017 Bodil Stokke, under MPL 2.0.
 
@@ -85,6 +112,6 @@ The goal to use this type of licence by Rich is to keep control of evolution of 
 This project goal is not to make a fork of Clojure core, but to make a Rust version as close as possible to the original project. Code creation is quite different of the original. Differences are due to the limitations or possibilities caused by implementation context of the Rust ecosystem, else this would be a fork or more probably a completely different project made from scratch.
 
 ### clojure.core original code
-The goal is to compile the originaly written `clojure.core` code, so normally the original code will remain in the original repository, and so final executable should envolve in parallel with the main project.
+The goal is to compile the originally written `clojure.core` code, so normally the original code will remain in the original repository, and so final executable should involve in parallel with the main project.
 
-This will perhaps no be feasible, but only implementation problems should be cause of particular rewrites, and enhancement of the Rust core should be prioritized. For example the compilation in JVM bytecode will be of no usage, but the AST analysis will be valid.
+This will perhaps no be feasible, but only implementation problems should be cause of particular rewrites, and enhancement of the Rust core should be prioritized. For example the compilation in JVM byte code will be of no usage, but the AST analysis will be valid.
