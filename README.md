@@ -37,9 +37,9 @@ Meanwhile, the first Core Clojure classes can be developed in parallel, for test
 The idea is to mainly automatize the process in order to grab all data and to create standard implementation w/o errors.
 
 ### Getting original code structure
-With the intend to grab all the skeleton of the original Java library and ease creation of Rust code skeleton as Rust doesn't play with reflection well... This will get the Objects, Abstract, Interfaces, defined in the core of the library, and to get the same info for the Java standard library to be implemented in Rust.
+With the intend to grab all the skeleton of the original Java library, ease creation of Rust code skeleton, as Rust doesn't play with reflection well, this will get the Objects, Abstract, Interfaces, defined in the core of the library, and get the same info for the Java standard library to be implemented in Rust.
 
-This will be written in Clojure as it has access to reflection and, well... It's a better language for this type of work.
+This will be written in Clojure as it has access to reflection and, well... it's a better language for this sort of work.
 
 ### Create or update the code with the data
 This will create or modify module and files hierarchy according to original data. Each Interface, and Abstract will create a new .rs file with a trait, each Object will create a TObject struct. The process will create code implementation place in the trait and struct definition with macros to generate all necessary code to match Java behavior. A new version of original code can modify the generated code, but not regenerate it. I shall only modify, if deletion of element is done, there should be done by commenting out the intended place.
@@ -56,6 +56,7 @@ This is the long and painful work that will be proceeded manually... pfff...
 * [X] Define an internal object model.
 * [ ] Grab code structure from original JVM Clojure. 
 * [ ] Generate skeleton from Clojure core library programmatically.
+* [ ] Manage macros to generate code to complete right functions of the 
 * [ ] Implement Clojure Java code into Rust implementation.
 * [ ] Test a way to have an interpreter of Clojure code (eval).
 * [ ] Test a way to have a VM based on a stack machine.
@@ -107,7 +108,7 @@ As is, I put this advice of the original project licence:
     By using this software in any fashion, you are agreeing to be bound by the terms of this license.
     You must not remove this notice, or any other, from this software.
 
-The goal to use this type of licence by Rich is to keep control of evolution of the Clojure project core, and garantee not have an overwhelming core with elements that could be added w/o problem as external libraries.
+The goal to use this type of licence by Rich is to keep control of evolution of the Clojure project core, and guarantee not have an overwhelming core with elements that could be added w/o problem as external libraries.
 
 This project goal is not to make a fork of Clojure core, but to make a Rust version as close as possible to the original project. Code creation is quite different of the original. Differences are due to the limitations or possibilities caused by implementation context of the Rust ecosystem, else this would be a fork or more probably a completely different project made from scratch.
 
