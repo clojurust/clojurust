@@ -49,6 +49,8 @@ In order to differentiate Generated code and Rust code, the names will be camel-
 ### Macros to add Rust missing code
 We can access functions in Rust from trait object, but not automagically in the implemented structs. The same way derived trait doesn't permit to use function from their parents. Macros will add code to the files from simple struct and trait definitions, with code to implement them with struct functions call. Placeholders are already generated, so there should be only one place to add code to. This will also create generation of Functions, Classes, Interfaces, Protocols data to permit ClojuRust runtime to work.
 
+Some existing crates can already make a part of the work, so these should be used.
+
 ### Implement Rust code
 This is the long and painful work that will be proceeded manually... pfff...
 
