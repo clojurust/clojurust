@@ -14,23 +14,23 @@ use crate::*;
 castable_to!(Object => [sync] IObject);
 
 pub struct Object {
-    pub inner: Option<Arc<IObject>>,
+    pub inner: Arc<IObject>,
 }
 
 impl<'a> Object
 where
     Object: IObject+'a,
 {
-    pub fn new(obj: Option<Arc<IObject>>) -> Object {
+    pub fn new(obj: Arc<IObject>) -> Object {
         Object {
             inner: obj,
         }
     }
 
     pub fn null() -> Object {
-        Object {
-            inner: None,
-        }
+        // Object {
+        //     inner: None,
+        // }
     }
 
     pub fn is_null(&self) -> bool {

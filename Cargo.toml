@@ -32,6 +32,7 @@ linkme      = "0.2"
 mut_static  = "5.0.0"
 rc          = "0.1.1"
 serde       = "1.0.125"
+inheritance = { version = "0.0.1-alpha.2", features = ["specialization"] }
 
 # docs.rs-specific configuration
 [package.metadata.docs.rs]
