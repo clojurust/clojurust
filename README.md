@@ -27,6 +27,8 @@ As I'm a newbie in Rust, I hit all the bad of borrowing, referencing, Arcs, auto
 
 For now, in the creation of the clojure::rust modules, say the Rust host environment, as Clojure is an hosted language. Rust, as a bare-metal language, has no dynamic abilities per se, and is even opposed to such an approach as all is verified at compile time. So a lot of information should be statically stored for the library to function.
 
+To create the skeleton of the Clojure core library, the info shall be imported from original Clojure jar infos automatically, so syncing will be done with ease.
+
 The idea, is not to have an optimized structure as first draft, but a working concepts framework, easy to refactor as experiments are tested.
 
 For example the current model for Clojure objects is a boxed and synchronized structure. Returned values are boxed in a Result enum incorporating error values. So it's clearly the less efficient and the more ressource consuming way to do it, so optimization can only go in a more fast result... :grind:
@@ -55,11 +57,11 @@ Some existing crates can already make a part of the work, so these should be use
 This is the long and painful work that will be proceeded manually... pfff...
 
 ## Goals
-* [X] Define an internal object model.
-* [ ] Grab code structure from original JVM Clojure. 
+* [X] Define an internal object model. (clojurust::clojure::rust)
+* [ ] Grab code structure from original JVM Clojure. (java-analysis) 
 * [ ] Generate skeleton from Clojure core library programmatically.
-* [ ] Manage macros to generate code to complete right functions of the 
-* [ ] Implement Clojure Java code into Rust implementation.
+* [ ] Manage macros to generate code to complete functions of the library. (clojurust-macro)
+* [ ] Implement Clojure Java code into Rust implementation. (clojurust)
 * [ ] Test a way to have an interpreter of Clojure code (eval).
 * [ ] Test a way to have a VM based on a stack machine.
 * [ ] Test a way to dynamically compile Clojure code in machine code.
