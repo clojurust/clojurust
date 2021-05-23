@@ -60,6 +60,7 @@ This is the long and painful work that will be proceeded manually... pfff...
 * [X] Define an internal object model. (clojurust::clojure::rust)
 * [ ] Grab code structure from original JVM Clojure. (java-analysis) 
 * [ ] Generate skeleton from Clojure core library programmatically.
+* [ ] Update skeleton from Clojure core library changes.
 * [ ] Manage macros to generate code to complete functions of the library. (clojurust-macro)
 * [ ] Implement Clojure Java code into Rust implementation. (clojurust)
 * [ ] Test a way to have an interpreter of Clojure code (eval).
@@ -77,11 +78,13 @@ This is the long and painful work that will be proceeded manually... pfff...
 
 
 ## Licence
-This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. 
+This Source Code Form is subject to the terms of the MIT License. 
 
-If a copy of the MPL was not distributed within this file, You can obtain one at http://mozilla.org/MPL/2.0/.
+If a copy of the MIT was not distributed within this file, You can obtain one at https://choosealicense.com/licenses/mit.
 
-    Copyright (c) 2020 Ivan Pierre, kilroySoft, <Ivan Pierre, ivan@kilroysoft.ch>, under MPL 2.0.
+    MIT License
+
+    Copyright (c) 2021 kilroySoft, Ivan Pierre <ivan@kilroysoft.ch>
 
 ### Persistent data structures licence
 This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. 
